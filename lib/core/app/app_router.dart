@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/services/dio_repository.dart';
@@ -14,6 +13,10 @@ import 'package:tpb_business_flutter/features/home/home_page.dart';
 import 'package:tpb_business_flutter/features/login/cadastrar_page.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
 import 'package:tpb_business_flutter/features/login/login_page.dart';
+import 'package:tpb_business_flutter/features/servicos/item/servico_item_controller.dart';
+import 'package:tpb_business_flutter/features/servicos/item/servico_item_page.dart';
+import 'package:tpb_business_flutter/features/servicos/lista/servico_lista_controller.dart';
+import 'package:tpb_business_flutter/features/servicos/lista/servico_lista_page.dart';
 
 GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -56,31 +59,24 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/user',
       name: 'user',
-      builder: (context, state) => MultiBlocProvider(
-        key: UniqueKey(),
-        providers: [
-          BlocProvider(create: (_) => UserController(DioRepository())),
-        ],
+      builder: (context, state) => BlocProvider(
+        create: (_) => UserController(DioRepository()),
         child: const UserPage(),
       ),
     ),
     GoRoute(
       path: '/cliente',
       name: 'cliente',
-      builder: (context, state) => MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => ClienteListaController(DioRepository())),
-        ],
+      builder: (context, state) => BlocProvider(
+        create: (_) => ClienteListaController(DioRepository()),
         child: const ClienteListaPage(),
       ),
       routes: [
         GoRoute(
           path: 'new',
           name: 'cliente.novo',
-          builder: (context, state) => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => ClienteItemController(DioRepository())),
-            ],
+          builder: (context, state) => BlocProvider(
+            create: (_) => ClienteItemController(DioRepository()),
             child: ClienteItemPage(uid: ''),
           ),
         ),
@@ -89,15 +85,42 @@ GoRouter appRouter = GoRouter(
           name: 'cliente.editar',
           builder: (context, state) {
             final uid = state.pathParameters['uid'] ?? '';
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(create: (_) => ClienteItemController(DioRepository())),
-              ],
+            return BlocProvider(
+              create: (_) => ClienteItemController(DioRepository()),
               child: ClienteItemPage(uid: uid),
             );
           },
         ),
-      ]
+      ],
+    ),
+    GoRoute(
+      path: '/servico',
+      name: 'servico',
+      builder: (context, state) => BlocProvider(
+        create: (_) => ServicoListaController(DioRepository()),
+        child: const ServicoListaPage(),
+      ),
+      routes: [
+        GoRoute(
+          path: 'new',
+          name: 'servico.novo',
+          builder: (context, state) => BlocProvider(
+            create: (_) => ServicoItemController(DioRepository()),
+            child: ServicoItemPage(uid: ''),
+          ),
+        ),
+        GoRoute(
+          path: ':uid',
+          name: 'servico.editar',
+          builder: (context, state) {
+            final uid = state.pathParameters['uid'] ?? '';
+            return BlocProvider(
+              create: (_) => ServicoItemController(DioRepository()),
+              child: ServicoItemPage(uid: uid),
+            );
+          },
+        ),
+      ],
     ),
   ],
 );

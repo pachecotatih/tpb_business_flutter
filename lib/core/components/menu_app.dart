@@ -90,6 +90,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
             title: const Text('Clientes'),
             onTap: () => appRouter.pushReplacement('/cliente'),
           ),
+          ListTile(
+            selected: (caminhoMapeado.startsWith('/servico')),
+            leading: const Icon(Icons.work),
+            title: const Text('Serviços'),
+            onTap: () => appRouter.pushReplacement('/servico'),
+          ),
           Divider(),
           ListTile(
             selected: (caminhoMapeado.startsWith('/configuracoes')),
