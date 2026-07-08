@@ -23,11 +23,17 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
+    context.read<UserController>().getUser();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    context.read<UserController>().close();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<UserController>().getUser();
     return ThemePage(
       children: [
         Card(

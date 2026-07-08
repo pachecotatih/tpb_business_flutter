@@ -28,6 +28,12 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    context.read<ClienteItemController>().close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ClienteItemController, StateBloc<ClienteModel>>(
       builder: (context, state) => ThemePage(
