@@ -94,7 +94,10 @@ class ClienteItemController extends Cubit<StateBloc<ClienteModel>> {
           break;
         case 422:
           emit(
-            state.copyWith(hasError: response.data['errors'], isLoading: false),
+            state.copyWith(
+              hasError: response.data['errors'][0],
+              isLoading: false,
+            ),
           );
           break;
         default:

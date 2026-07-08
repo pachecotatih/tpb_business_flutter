@@ -88,7 +88,10 @@ class UserController extends Cubit<StateBloc<UserModel>> {
           break;
         case 422:
           emit(
-            state.copyWith(hasError: response.data['errors'], isLoading: false),
+            state.copyWith(
+              hasError: response.data['errors'][0],
+              isLoading: false,
+            ),
           );
           break;
         default:
@@ -144,7 +147,7 @@ class UserController extends Cubit<StateBloc<UserModel>> {
           case 422:
             emit(
               state.copyWith(
-                hasError: response.data['errors'],
+                hasError: response.data['errors'][0],
                 isLoading: false,
               ),
             );

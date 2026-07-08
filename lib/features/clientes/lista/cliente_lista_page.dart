@@ -98,7 +98,4 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
       ],
     );
   }
-
-  // contextpushReplacement('/cliente/new');
-  // contextpushReplacement('/cliente/123');
 }

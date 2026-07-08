@@ -102,7 +102,10 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           break;
         case 422:
           _safeEmit(
-            state.copyWith(hasError: response.data['errors'], isLoading: false),
+            state.copyWith(
+              hasError: response.data['errors'][0],
+              isLoading: false,
+            ),
           );
           break;
         default:
