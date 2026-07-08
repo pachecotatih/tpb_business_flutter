@@ -4,8 +4,10 @@ class UserModel {
   String telefone;
   String documento;
   String moeda;
+  String password;
+  String? confirmPassword;
 
-  UserModel({this.name='', this.email='', this.telefone='', this.documento='', this.moeda="R\$"});
+  UserModel({this.name='', this.email='', this.telefone='', this.documento='', this.moeda="R\$", this.password='', this.confirmPassword});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -24,6 +26,7 @@ class UserModel {
     data['telefone'] = telefone;
     data['documento'] = documento;
     data['moeda'] = moeda;
+    data['password'] = password;
     return data;
   }
 }

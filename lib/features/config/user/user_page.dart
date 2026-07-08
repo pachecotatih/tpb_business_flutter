@@ -6,6 +6,7 @@ import 'package:tpb_business_flutter/core/components/brazil_phone_formatter.dart
 import 'package:tpb_business_flutter/core/components/camposelect_component.dart';
 import 'package:tpb_business_flutter/core/components/cpf_cnpj_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
+import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
@@ -47,6 +48,13 @@ class _UserPageState extends State<UserPage> {
                 }
                 return Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TituloH1(
+                          text:"Dados pessoais",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                        TextfieldComponent(
                               label: "Nome",
                               text: state.data?.name,
@@ -89,14 +97,14 @@ class _UserPageState extends State<UserPage> {
                             CampoSelectComponent<String>(
                               value: state.data?.moeda,
                               items: [
-                              CampoSelectItem<String>(label: 'Real: R\$', value: 'R\$'),
-                              CampoSelectItem<String>(label: 'Dólar: \$', value: '\$'),
-                              CampoSelectItem<String>(label: 'Euro: €', value: '€'),
-                            ], 
-                            label: 'Moeda',
-                            onChange: (value) {
-                              state.data?.moeda = value;
-                            }
+                                CampoSelectItem<String>(label: 'Real: R\$', value: 'R\$'),
+                                CampoSelectItem<String>(label: 'Dólar: \$', value: '\$'),
+                                CampoSelectItem<String>(label: 'Euro: €', value: '€'),
+                              ], 
+                              label: 'Moeda',
+                              onChange: (value) {
+                                state.data?.moeda = value;
+                              }
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -105,12 +113,29 @@ class _UserPageState extends State<UserPage> {
                                   backgroundColor: Cores.primaryColor,
                                   foregroundColor: Colors.white,
                                 ),
-                                child: const Text("Salvar alterações"),
-                                onPressed: () {
-                                  context.read<UserController>().updateUser();
+                                child: const Text("Alterar senha"),
+                                onPressed: () async {
+                                  _dialogAlterarSenha(context);
                                 },
                               ),
-                            )
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Cores.positiveColor,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: const Text("Salvar alterações"),
+                                onPressed: () async {
+                                  bool result = await context.read<UserController>().updateUser();
+                                  if (result && context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Alterações salvas com sucesso"), backgroundColor: Cores.positiveColor,));
+                                  }
+                                },
+                              ),
+                            ),
+                            
                     ],
                 );
               }
@@ -124,5 +149,52 @@ class _UserPageState extends State<UserPage> {
             }
         }
     );
+  }
+
+  Future<void> _dialogAlterarSenha(BuildContext contextScreen) async {
+    showDialog(
+      barrierDismissible: false,
+      context: contextScreen,
+      builder: (context) => BlocProvider.value(
+      value: contextScreen.read<UserController>(), child: BlocBuilder<UserController, StateBloc<UserModel>>(
+      builder: (context, stateUser) { return AlertDialog(
+        title: const Text('Alterar senha'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: (stateUser.isLoading)? [const Center(child: CircularProgressIndicator(),)]:[
+            TextfieldComponent(
+              label: "Nova senha",
+              text: stateUser.data?.password,
+              obscureText: true,
+              onChange: (value) {
+                stateUser.data?.password = value;
+              },
+            ),
+            TextfieldComponent(
+              label: "Confirmar senha",
+              text: stateUser.data?.confirmPassword,
+              obscureText: true,
+              onChange: (value) {
+                stateUser.data?.confirmPassword = value;
+              },
+            ),]),
+        actions: [
+          TextButton(
+            child: const Text('Cancelar'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          TextButton(
+            child: const Text('Salvar'),
+            onPressed: () async {
+              bool result = await context.read<UserController>().changePasswordUser();
+              if (result && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Senha alterada com sucesso"), backgroundColor: Cores.positiveColor,));
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ]
+      );}),
+    ));
   }
 }

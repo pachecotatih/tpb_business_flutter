@@ -69,4 +69,39 @@ class UserController extends Cubit<StateBloc<UserModel>> {
     }
     return false;
   }
+
+  Future<bool> changePasswordUser() async {
+    Response response;
+    emit(state.copyWith(isLoading: true));
+    if(state.data!.password.isNotEmpty && (state.data!.confirmPassword??'').isNotEmpty && state.data!.password == state.data!.confirmPassword){
+      try {
+        try {
+          response = await repository.post('${Globals.urlApi}/user/change-password', state.data!.toJson());
+        } on DioException catch (e) {
+          throw Exception("Ocorreu um erro ao alterar a senha do usuário. ${e.message}");
+        }
+
+        switch (response.statusCode) {
+          case 200:
+            emit(state.copyWith(data: UserModel.fromJson(response.data), isLoading: false));
+            return true;
+          case 500:
+            emit(state.copyWith(hasError: 'Erro interno ao alterar a senha do usuário', isLoading: false));
+            break;
+          case 422:
+            emit(state.copyWith(hasError: response.data['errors'], isLoading: false));
+            break;
+          default:
+            emit(state.copyWith(hasError: 'Erro ao alterar a senha do usuário', isLoading: false));
+            break;
+        }
+      } catch (e) {
+        emit(state.copyWith(hasError: e, isLoading: false));
+      }
+    } else {
+      emit(state.copyWith(hasError: 'Senhas não conferem', isLoading: false));
+      
+    }
+    return false;
+  }
 }
