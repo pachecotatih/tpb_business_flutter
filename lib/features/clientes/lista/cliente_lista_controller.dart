@@ -66,9 +66,7 @@ class ClienteListaController extends Cubit<StateBloc<List<ClienteModel>>> {
         case 200:
           emit(
             state.copyWith(
-              data: state.data!
-                  .where((element) => element.uid != uid)
-                  .toList(),
+              data: state.data!.where((element) => element.uid != uid).toList(),
               isLoading: false,
             ),
           );
@@ -90,7 +88,7 @@ class ClienteListaController extends Cubit<StateBloc<List<ClienteModel>>> {
           );
           break;
       }
-  } catch (e) {
+    } catch (e) {
       emit(state.copyWith(hasError: e.toString(), isLoading: false));
     }
   }

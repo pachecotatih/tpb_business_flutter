@@ -9,14 +9,13 @@ class Bloco extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
-      child: Material( // Substituto do Container interno para habilitar o Material Design
+      child: Material(
+        // Substituto do Container interno para habilitar o Material Design
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        clipBehavior: Clip.antiAlias, // Garante que o hover respeite as bordas arredondadas
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: child,
-        ),
+        clipBehavior: Clip
+            .antiAlias, // Garante que o hover respeite as bordas arredondadas
+        child: Padding(padding: const EdgeInsets.all(10), child: child),
       ),
     );
   }

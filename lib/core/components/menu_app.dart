@@ -8,6 +8,7 @@ import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
 import 'package:tpb_business_flutter/features/login/login_model.dart';
+
 class MenuApp extends StatefulWidget implements PreferredSizeWidget {
   const MenuApp({super.key});
 
@@ -23,18 +24,18 @@ class _MenuAppState extends State<MenuApp> {
   Widget build(BuildContext context) {
     return AppBar(
       leading: Builder(
-      builder: (context) {
-        final bool temDrawer = Scaffold.of(context).hasDrawer;
-        if (temDrawer) {
-          return IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          );
-        } else {
-          return const SizedBox.shrink(); 
-        }
-      },
-    ),
+        builder: (context) {
+          final bool temDrawer = Scaffold.of(context).hasDrawer;
+          if (temDrawer) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      ),
       iconTheme: IconThemeData(color: Cores.colorLogo),
       centerTitle: true,
       actions: [],
@@ -97,37 +98,45 @@ class _MenuDrawerState extends State<MenuDrawer> {
             onTap: () => appRouter.pushReplacement('/configuracoes'),
           ),
           ListTile(
-            leading:  Icon(Icons.logout, color: Cores.negativeColor),
-            title:  Text(
+            leading: Icon(Icons.logout, color: Cores.negativeColor),
+            title: Text(
               'Sair',
-              style: TextStyle(color: Cores.negativeColor, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Cores.negativeColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             onTap: () async {
               showDialog(
                 context: context,
-                builder: (dialogContext) => BlocBuilder<LoginController, StateBloc<LoginModel>>(
-                  builder: (contextUser, stateUser) {
-                    return AlertDialog(
-                  title: const Text('Sair'),
-                  content: const Text('Deseja realmente sair?'),
-                  actions: (stateUser.isLoading)
-                    ? [const Center(child: CircularProgressIndicator())]
-                    : [
-                    TextButton(
-                      onPressed: () => Navigator.pop(dialogContext),
-                      child: const Text('Não'),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        await Util.logoutUser(contextUser);
+                builder: (dialogContext) =>
+                    BlocBuilder<LoginController, StateBloc<LoginModel>>(
+                      builder: (contextUser, stateUser) {
+                        return AlertDialog(
+                          title: const Text('Sair'),
+                          content: const Text('Deseja realmente sair?'),
+                          actions: (stateUser.isLoading)
+                              ? [
+                                  const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ]
+                              : [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(dialogContext),
+                                    child: const Text('Não'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await Util.logoutUser(contextUser);
+                                    },
+                                    child: const Text('Sim'),
+                                  ),
+                                ],
+                        );
                       },
-                      child: const Text('Sim'),
                     ),
-                  ],
-               
-              );
-            },
-              ),
               );
             },
           ),

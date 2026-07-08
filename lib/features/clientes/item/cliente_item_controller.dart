@@ -8,10 +8,11 @@ import 'package:tpb_business_flutter/features/clientes/cliente_model.dart';
 class ClienteItemController extends Cubit<StateBloc<ClienteModel>> {
   final Repository repository;
 
-  ClienteItemController(this.repository) : super(StateBloc<ClienteModel>(data:ClienteModel()));
-  
+  ClienteItemController(this.repository)
+    : super(StateBloc<ClienteModel>(data: ClienteModel()));
+
   Future<void> get(String uid) async {
-    if(uid.isNotEmpty) {
+    if (uid.isNotEmpty) {
       Response response;
       emit(state.copyWith(isLoading: true));
       try {
@@ -58,10 +59,16 @@ class ClienteItemController extends Cubit<StateBloc<ClienteModel>> {
 
     try {
       try {
-        if(state.data!.uid.isNotEmpty) {
-          response = await repository.put('${Globals.urlApi}/cliente/${state.data!.uid}', state.data!.toJson());
+        if (state.data!.uid.isNotEmpty) {
+          response = await repository.put(
+            '${Globals.urlApi}/cliente/${state.data!.uid}',
+            state.data!.toJson(),
+          );
         } else {
-          response = await repository.post('${Globals.urlApi}/cliente', state.data!.toJson());
+          response = await repository.post(
+            '${Globals.urlApi}/cliente',
+            state.data!.toJson(),
+          );
         }
       } on DioException catch (e) {
         throw Exception("Ocorreu um erro ao salvar cliente. ${e.message}");
@@ -87,10 +94,7 @@ class ClienteItemController extends Cubit<StateBloc<ClienteModel>> {
           break;
         case 422:
           emit(
-            state.copyWith(
-              hasError: response.data['errors'],
-              isLoading: false,
-            ),
+            state.copyWith(hasError: response.data['errors'], isLoading: false),
           );
           break;
         default:
@@ -113,19 +117,16 @@ class ClienteItemController extends Cubit<StateBloc<ClienteModel>> {
     emit(state.copyWith(isLoading: true));
     try {
       try {
-        response = await repository.delete('${Globals.urlApi}/cliente/${state.data!.uid}');
+        response = await repository.delete(
+          '${Globals.urlApi}/cliente/${state.data!.uid}',
+        );
       } on DioException catch (e) {
         throw Exception("Ocorreu um erro ao excluir cliente. ${e.message}");
       }
 
       switch (response.statusCode) {
         case 200:
-          emit(
-            state.copyWith(
-              data: null,
-              isLoading: false,
-            ),
-          );
+          emit(state.copyWith(data: null, isLoading: false));
           return true;
         case 500:
           emit(

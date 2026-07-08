@@ -11,12 +11,10 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => LoginController(DioRepository()),
-          ),
-        ],      
-        child: MaterialApp.router(
+      providers: [
+        BlocProvider(create: (_) => LoginController(DioRepository())),
+      ],
+      child: MaterialApp.router(
         title: 'TPB Business',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
