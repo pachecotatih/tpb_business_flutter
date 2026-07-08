@@ -63,7 +63,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
   String caminhoMapeado = '';
   @override
   Widget build(BuildContext context) {
-    caminhoMapeado = GoRouterState.of(context).matchedLocation;
+    caminhoMapeado = GoRouterState.of(context).uri.toString();
     return SizedBox(
       width: 300,
       child: ListView(
@@ -84,14 +84,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
           ),
           Divider(),
           ListTile(
-            selected: (caminhoMapeado == '/cliente'),
+            selected: (caminhoMapeado.startsWith('/cliente')),
             leading: const Icon(Icons.people),
             title: const Text('Clientes'),
             onTap: () => appRouter.pushReplacement('/cliente'),
           ),
           Divider(),
           ListTile(
-            selected: (caminhoMapeado == '/configuracoes'),
+            selected: (caminhoMapeado.startsWith('/configuracoes')),
             leading: const Icon(Icons.settings),
             title: const Text('Configurações'),
             onTap: () => appRouter.pushReplacement('/configuracoes'),
