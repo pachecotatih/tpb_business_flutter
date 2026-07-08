@@ -9,7 +9,8 @@ import 'package:tpb_business_flutter/features/login/login_model.dart';
 
 class LoginController extends Cubit<StateBloc<LoginModel>> {
   final Repository repository;
-  LoginController(this.repository) : super(StateBloc(data: LoginModel()));
+  LoginController(this.repository)
+    : super(StateBloc<LoginModel>(data: LoginModel()));
 
   void _safeEmit(StateBloc<LoginModel> newState) {
     if (!isClosed) {
@@ -100,7 +101,9 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
           break;
         case 422:
-          _safeEmit(state.copyWith(hasError: response.data['errors'], isLoading: false));
+          _safeEmit(
+            state.copyWith(hasError: response.data['errors'], isLoading: false),
+          );
           break;
         default:
           _safeEmit(

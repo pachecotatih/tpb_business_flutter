@@ -16,9 +16,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String dataFormatada = DateFormat(
-  "EEEE, dd 'de' MMMM 'de' yyyy",
-  "pt_BR",
-).format(DateTime.now());
+    "EEEE, dd 'de' MMMM 'de' yyyy",
+    "pt_BR",
+  ).format(DateTime.now());
   @override
   void initState() {
     super.initState();
@@ -38,11 +38,15 @@ class _HomePageState extends State<HomePage> {
           margin: const EdgeInsets.all(20),
           color: Colors.white,
           child: Column(
-          children: [
-            TituloH1(text:"Bem vindo, ${Preferences.instance.name}!"),
-            TituloH2(text:dataFormatada[0].toUpperCase() + dataFormatada.substring(1)),
-          ],
-        )),
+            children: [
+              TituloH1(text: "Bem vindo, ${Preferences.instance.name}!"),
+              TituloH2(
+                text:
+                    dataFormatada[0].toUpperCase() + dataFormatada.substring(1),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

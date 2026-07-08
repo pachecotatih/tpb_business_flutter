@@ -22,9 +22,7 @@ class _ThemePageState extends State<ThemePage> {
       backgroundColor: Cores.principalBackground,
       appBar: MenuApp(),
       drawer: useDrawer
-          ? Drawer(
-              child: MenuDrawer(onLogout: widget.onLogout),
-            )
+          ? Drawer(child: MenuDrawer(onLogout: widget.onLogout))
           : null,
       body: SafeArea(
         child: Row(
@@ -35,13 +33,8 @@ class _ThemePageState extends State<ThemePage> {
                 width: 280,
                 child: MenuDrawer(onLogout: widget.onLogout),
               ),
-            if (!useDrawer)
-            const SizedBox(width: 10),
-            Expanded(
-              child: ListView(
-                children: widget.children,
-              ),
-            ),
+            if (!useDrawer) const SizedBox(width: 10),
+            Expanded(child: ListView(children: widget.children)),
           ],
         ),
       ),

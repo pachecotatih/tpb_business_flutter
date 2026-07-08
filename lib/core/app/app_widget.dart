@@ -11,9 +11,8 @@ class AppWidget extends StatelessWidget {
       title: 'TPB Business',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white, 
+          seedColor: Colors.white,
           primary: Cores.primaryColor,
-          
         ),
         useMaterial3: true,
         fontFamily: 'Poppins',

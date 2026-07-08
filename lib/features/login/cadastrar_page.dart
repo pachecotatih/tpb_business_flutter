@@ -146,9 +146,15 @@ class _CadastrarPageState extends State<CadastrarPage> {
             GoRouter.of(context).go('/');
           }
           if (state.hasError != null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.hasError.toString(), style: const TextStyle(color: Colors.white),), backgroundColor: Colors.red,));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  state.hasError.toString(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
       ),

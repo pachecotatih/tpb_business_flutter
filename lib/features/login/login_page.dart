@@ -112,9 +112,12 @@ class _LoginPageState extends State<LoginPage> {
             appRouter.go('/');
           }
           if (state.hasError != null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.hasError.toString()), backgroundColor: Colors.red,));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.hasError.toString()),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
       ),

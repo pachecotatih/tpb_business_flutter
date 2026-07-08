@@ -7,7 +7,15 @@ class UserModel {
   String password;
   String? confirmPassword;
 
-  UserModel({this.name='', this.email='', this.telefone='', this.documento='', this.moeda="R\$", this.password='', this.confirmPassword});
+  UserModel({
+    this.name = '',
+    this.email = '',
+    this.telefone = '',
+    this.documento = '',
+    this.moeda = "R\$",
+    this.password = '',
+    this.confirmPassword,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
