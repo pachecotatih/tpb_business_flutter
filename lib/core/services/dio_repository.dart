@@ -112,7 +112,7 @@ class DioRepository implements Repository {
 
   Future<void> _redirecionarParaLoginSeguro() async {
     await Preferences.clear();
-    appRouter.go('/login');
+    appRouter.pushReplacement('/login');
   }
 
   @override

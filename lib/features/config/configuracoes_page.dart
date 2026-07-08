@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
+import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
 
 class ConfiguracoesPage extends StatelessWidget {
@@ -13,12 +14,12 @@ class ConfiguracoesPage extends StatelessWidget {
       children: [
         ListTile(
           title: const Text('Informações pessoais'),
-          onTap: () => appRouter.go('/user'),
+          onTap: () => appRouter.pushReplacement('/user'),
         ),
         ListTile(
-          title: const Text(
+          title: Text(
             'Sair da conta',
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: Cores.negativeColor),
           ),
           onTap: () async {
             showDialog(

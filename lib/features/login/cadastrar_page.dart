@@ -42,7 +42,7 @@ class _CadastrarPageState extends State<CadastrarPage> {
                             alignment: Alignment.topLeft,
                             child: TextButton(
                               onPressed: () {
-                                appRouter.go('/login');
+                                appRouter.pushReplacement('/login');
                               },
                               child: Icon(Icons.arrow_back),
                             ),
@@ -131,7 +131,7 @@ class _CadastrarPageState extends State<CadastrarPage> {
                                 .read<LoginController>()
                                 .cadastrar();
                             if (result) {
-                              appRouter.go('/login', extra: true);
+                              appRouter.pushReplacement('/login', extra: true);
                             }
                           },
                           child: const Text('Criar Conta'),
@@ -143,7 +143,7 @@ class _CadastrarPageState extends State<CadastrarPage> {
         },
         listener: (context, state) {
           if (Preferences.instance.token.isNotEmpty) {
-            GoRouter.of(context).go('/');
+            GoRouter.of(context).pushReplacement('/');
           }
           if (state.hasError != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -152,7 +152,7 @@ class _CadastrarPageState extends State<CadastrarPage> {
                   state.hasError.toString(),
                   style: const TextStyle(color: Colors.white),
                 ),
-                backgroundColor: Colors.red,
+                backgroundColor: Cores.negativeColor,
               ),
             );
           }

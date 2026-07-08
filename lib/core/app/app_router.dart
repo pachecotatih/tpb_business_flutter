@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/services/dio_repository.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
+import 'package:tpb_business_flutter/features/clientes/item/cliente_item_controller.dart';
+import 'package:tpb_business_flutter/features/clientes/item/cliente_item_page.dart';
+import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_controller.dart';
+import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_page.dart';
 import 'package:tpb_business_flutter/features/config/configuracoes_page.dart';
 import 'package:tpb_business_flutter/features/config/user/user_controller.dart';
 import 'package:tpb_business_flutter/features/config/user/user_page.dart';
@@ -41,11 +46,7 @@ GoRouter appRouter = GoRouter(
         }
         return '/';
       },
-      builder: (context, state) => MultiBlocProvider(
-        providers: [
-        ],
-        child: HomePage(),
-      ),
+      builder: (context, state) => HomePage(),
     ),
     GoRoute(
       path: '/configuracoes',
@@ -56,11 +57,47 @@ GoRouter appRouter = GoRouter(
       path: '/user',
       name: 'user',
       builder: (context, state) => MultiBlocProvider(
+        key: UniqueKey(),
         providers: [
           BlocProvider(create: (_) => UserController(DioRepository())),
         ],
         child: const UserPage(),
       ),
+    ),
+    GoRoute(
+      path: '/cliente',
+      name: 'cliente',
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => ClienteListaController(DioRepository())),
+        ],
+        child: const ClienteListaPage(),
+      ),
+      routes: [
+        GoRoute(
+          path: 'new',
+          name: 'cliente.novo',
+          builder: (context, state) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => ClienteItemController(DioRepository())),
+            ],
+            child: ClienteItemPage(uid: ''),
+          ),
+        ),
+        GoRoute(
+          path: ':uid',
+          name: 'cliente.editar',
+          builder: (context, state) {
+            final uid = state.pathParameters['uid'] ?? '';
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => ClienteItemController(DioRepository())),
+              ],
+              child: ClienteItemPage(uid: uid),
+            );
+          },
+        ),
+      ]
     ),
   ],
 );

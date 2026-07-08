@@ -41,7 +41,7 @@ class _UserPageState extends State<UserPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.hasError.toString()),
-                      backgroundColor: Colors.red,
+                      backgroundColor: Cores.negativeColor,
                     ),
                   );
                 }

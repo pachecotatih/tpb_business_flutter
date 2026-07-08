@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                                 .read<LoginController>()
                                 .login();
                             if (result) {
-                              appRouter.go('/');
+                              appRouter.pushReplacement('/');
                             }
                           },
                           child: const Text('Entrar'),
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                                 foregroundColor: Cores.primaryColor,
                               ),
                               onPressed: () {
-                                appRouter.go('/cadastrar');
+                                appRouter.pushReplacement('/cadastrar');
                               },
                               child: const Text('Criar conta'),
                             ),
@@ -109,13 +109,13 @@ class _LoginPageState extends State<LoginPage> {
         },
         listener: (context, state) {
           if (Preferences.instance.token.isNotEmpty) {
-            appRouter.go('/');
+            appRouter.pushReplacement('/');
           }
           if (state.hasError != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.hasError.toString()),
-                backgroundColor: Colors.red,
+                backgroundColor: Cores.negativeColor,
               ),
             );
           }

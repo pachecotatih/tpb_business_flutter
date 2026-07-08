@@ -1,0 +1,136 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:tpb_business_flutter/core/app/app_router.dart';
+import 'package:tpb_business_flutter/core/components/brazil_phone_formatter.dart';
+import 'package:tpb_business_flutter/core/components/campoSelect_component.dart';
+import 'package:tpb_business_flutter/core/components/textfield_component.dart';
+import 'package:tpb_business_flutter/core/components/theme_page.dart';
+import 'package:tpb_business_flutter/core/constants/cores.dart';
+import 'package:tpb_business_flutter/core/services/state_bloc.dart';
+import 'package:tpb_business_flutter/features/clientes/cliente_model.dart';
+import 'package:tpb_business_flutter/features/clientes/item/cliente_item_controller.dart';
+
+class ClienteItemPage extends StatefulWidget {
+  final String uid;
+  const ClienteItemPage({super.key, this.uid=''});
+
+  @override
+  State<ClienteItemPage> createState() => _ClienteItemPageState();
+}
+
+class _ClienteItemPageState extends State<ClienteItemPage> {
+  @override
+  void initState() {
+    super.initState();
+    if(widget.uid.isNotEmpty) context.read<ClienteItemController>().get(widget.uid);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<ClienteItemController, StateBloc<ClienteModel>>(
+      builder: (context, state) => ThemePage(
+        title:widget.uid.isNotEmpty ? 'Editar Cliente' : 'Novo Cliente',
+        bottomAppBarItems: [
+          BottomButton(
+            icon: Icons.save,
+            label: 'Salvar',
+            color: Cores.positiveColor,
+            onPressed: () async {
+              bool result = await context.read<ClienteItemController>().save();
+              if(result) appRouter.pushReplacement('/cliente');
+            },
+          ),
+          if(state.data!.uid.isNotEmpty) BottomButton(
+            icon: Icons.delete,
+            label: 'Excluir',
+            color: Cores.negativeColor,
+            onPressed: () async {
+              bool result = await context.read<ClienteItemController>().delete();
+              if(result) appRouter.replace('/cliente');
+            },
+          )
+        ],
+        children: [
+          if(state.isLoading) const Center(child: CircularProgressIndicator()),
+          if(!state.isLoading)
+            ...[
+               Card(
+                color: Colors.white,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                       TextfieldComponent(
+                        label: 'Nome',
+                        text: state.data!.nome,
+                        onChange: (value) => state.data!.nome = value,
+                      ),
+                      TextfieldComponent(
+                        label: 'Email',
+                        text: state.data!.email,
+                        onChange: (value) => state.data!.email = value,
+                      ),
+                      TextfieldComponent(
+                        label: 'Telefone',
+                        text: state.data!.telefone,
+                        keyboardType: TextInputType.phone,
+                        formatters: [FilteringTextInputFormatter.digitsOnly, BrazilPhoneFormatter()],
+                        onChange: (value) => state.data!.telefone = value,
+                      ),
+                      CampoSelectComponent<String>(
+                        label: 'Tipo de cliente',
+                        items: [
+                          CampoSelectItem<String>(value: 'PF', label: 'Pessoa Física'),
+                          CampoSelectItem<String>(value: 'PJ', label: 'Pessoa Jurídica'),
+                        ],
+                        value: state.data?.tipo??'PF',
+                        onChange: (value){
+                          state.data!.tipo = value;
+                          setState(() {
+                            state.data!.documento = '';
+                          });
+                        },
+                      ),
+                      TextfieldComponent(
+                        label: (state.data!.tipo == 'PF') ? 'CPF' : 'CNPJ',
+                        text: state.data!.documento,
+                        keyboardType: TextInputType.number,
+                        formatters: [
+                          FilteringTextInputFormatter.digitsOnly, 
+                          MaskTextInputFormatter(
+                            mask:(state.data!.tipo == 'PF') ? '###.###.###-##' : '##.###.###/####-##'
+                            )
+                        ],
+                        onChange: (value) => state.data!.documento = value,
+                      ),
+                      TextfieldComponent(
+                        label: 'Data de nascimento',
+                        text: state.data!.dataNascimento,
+                        keyboardType: TextInputType.datetime,
+                        formatters: [FilteringTextInputFormatter.digitsOnly, MaskTextInputFormatter(mask: '##/##/####')],
+                        onChange: (value) => state.data!.dataNascimento = value,
+                      ),
+                      TextfieldComponent(
+                        label: 'Observação',
+                        text: state.data!.observacao,
+                        onChange: (value) => state.data!.observacao = value,
+                      ),
+                    ]
+                  ),
+                )
+               )
+            ]
+
+        ],
+      ),
+      listener: (context, state) {
+        if (state.hasError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.hasError!.toString()), backgroundColor: Cores.negativeColor,));
+        }
+      },
+    );
+  }
+}

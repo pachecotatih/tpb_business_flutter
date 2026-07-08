@@ -28,7 +28,7 @@ class Util {
   static Future<void> logoutUser(BuildContext context) async {
     bool logout = await context.read<LoginController>().logout();
     if (logout) {
-      appRouter.go('/login');
+      appRouter.pushReplacement('/login');
     }
   }
 }

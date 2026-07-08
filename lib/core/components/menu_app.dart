@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
@@ -7,7 +8,6 @@ import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
 import 'package:tpb_business_flutter/features/login/login_model.dart';
-
 class MenuApp extends StatefulWidget implements PreferredSizeWidget {
   const MenuApp({super.key});
 
@@ -22,11 +22,24 @@ class _MenuAppState extends State<MenuApp> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: Builder(
+      builder: (context) {
+        final bool temDrawer = Scaffold.of(context).hasDrawer;
+        if (temDrawer) {
+          return IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          );
+        } else {
+          return const SizedBox.shrink(); 
+        }
+      },
+    ),
       iconTheme: IconThemeData(color: Cores.colorLogo),
       centerTitle: true,
       actions: [],
       title: TextButton(
-        onPressed: () => appRouter.go('/'),
+        onPressed: () => appRouter.pushReplacement('/'),
         child: Container(
           width: 120,
           margin: const EdgeInsets.all(10),
@@ -47,8 +60,10 @@ class MenuDrawer extends StatefulWidget {
 }
 
 class _MenuDrawerState extends State<MenuDrawer> {
+  String caminhoMapeado = '';
   @override
   Widget build(BuildContext context) {
+    caminhoMapeado = GoRouterState.of(context).matchedLocation;
     return SizedBox(
       width: 300,
       child: ListView(
@@ -62,15 +77,30 @@ class _MenuDrawerState extends State<MenuDrawer> {
             ),
           ),
           ListTile(
+            selected: (caminhoMapeado == '/'),
+            leading: const Icon(Icons.home),
+            title: const Text('Home'),
+            onTap: () => appRouter.pushReplacement('/'),
+          ),
+          Divider(),
+          ListTile(
+            selected: (caminhoMapeado == '/cliente'),
+            leading: const Icon(Icons.people),
+            title: const Text('Clientes'),
+            onTap: () => appRouter.pushReplacement('/cliente'),
+          ),
+          Divider(),
+          ListTile(
+            selected: (caminhoMapeado == '/configuracoes'),
             leading: const Icon(Icons.settings),
             title: const Text('Configurações'),
-            onTap: () => appRouter.go('/configuracoes'),
+            onTap: () => appRouter.pushReplacement('/configuracoes'),
           ),
           ListTile(
-            leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text(
+            leading:  Icon(Icons.logout, color: Cores.negativeColor),
+            title:  Text(
               'Sair',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              style: TextStyle(color: Cores.negativeColor, fontWeight: FontWeight.bold),
             ),
             onTap: () async {
               showDialog(
@@ -89,8 +119,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        Navigator.pop(dialogContext);
-                        Util.logoutUser(contextUser);
+                        await Util.logoutUser(contextUser);
                       },
                       child: const Text('Sim'),
                     ),
@@ -98,7 +127,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                
               );
             },
-                ),
+              ),
               );
             },
           ),
