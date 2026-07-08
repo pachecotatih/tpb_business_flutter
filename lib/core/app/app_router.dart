@@ -43,9 +43,6 @@ GoRouter appRouter = GoRouter(
       },
       builder: (context, state) => MultiBlocProvider(
         providers: [
-          BlocProvider<LoginController>(
-            create: (_) => LoginController(DioRepository()),
-          ),
         ],
         child: HomePage(),
       ),
@@ -53,22 +50,14 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/configuracoes',
       name: 'configuracoes',
-      builder: (context, state) => BlocProvider(
-        create: (_) => LoginController(DioRepository()),
-        child: const ConfiguracoesPage(),
-      ),
+      builder: (context, state) => const ConfiguracoesPage(),
     ),
     GoRoute(
       path: '/user',
       name: 'user',
       builder: (context, state) => MultiBlocProvider(
-        providers:[
-           BlocProvider(
-              create: (_) => LoginController(DioRepository()),
-            ),
-            BlocProvider(
-              create: (_) => UserController(DioRepository()),
-            ),
+        providers: [
+          BlocProvider(create: (_) => UserController(DioRepository())),
         ],
         child: const UserPage(),
       ),

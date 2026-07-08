@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/brazil_phone_formatter.dart';
 import 'package:tpb_business_flutter/core/components/camposelect_component.dart';
 import 'package:tpb_business_flutter/core/components/cpf_cnpj_formatter.dart';
@@ -12,7 +11,6 @@ import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/config/user/user_controller.dart';
 import 'package:tpb_business_flutter/features/config/user/user_model.dart';
-import 'package:tpb_business_flutter/features/login/login_controller.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -161,12 +159,6 @@ class _UserPageState extends State<UserPage> {
           ),
         ),
       ],
-      onLogout: () async {
-        bool logout = await context.read<LoginController>().logout();
-        if (logout) {
-          appRouter.go('/login');
-        }
-      },
     );
   }
 

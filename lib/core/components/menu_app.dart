@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
+import 'package:tpb_business_flutter/core/services/state_bloc.dart';
+import 'package:tpb_business_flutter/core/utils/util.dart';
+import 'package:tpb_business_flutter/features/login/login_controller.dart';
+import 'package:tpb_business_flutter/features/login/login_model.dart';
 
 class MenuApp extends StatefulWidget implements PreferredSizeWidget {
   const MenuApp({super.key});
@@ -35,8 +40,7 @@ class _MenuAppState extends State<MenuApp> {
 }
 
 class MenuDrawer extends StatefulWidget {
-  final void Function() onLogout;
-  const MenuDrawer({super.key, required this.onLogout});
+  const MenuDrawer({super.key});
 
   @override
   State<MenuDrawer> createState() => _MenuDrawerState();
@@ -71,22 +75,29 @@ class _MenuDrawerState extends State<MenuDrawer> {
             onTap: () async {
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
+                builder: (dialogContext) => BlocBuilder<LoginController, StateBloc<LoginModel>>(
+                  builder: (contextUser, stateUser) {
+                    return AlertDialog(
                   title: const Text('Sair'),
                   content: const Text('Deseja realmente sair?'),
-                  actions: [
+                  actions: (stateUser.isLoading)
+                    ? [const Center(child: CircularProgressIndicator())]
+                    : [
                     TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.pop(dialogContext),
                       child: const Text('Não'),
                     ),
                     TextButton(
                       onPressed: () async {
-                        Navigator.pop(context);
-                        widget.onLogout();
+                        Navigator.pop(dialogContext);
+                        Util.logoutUser(contextUser);
                       },
                       child: const Text('Sim'),
                     ),
                   ],
+               
+              );
+            },
                 ),
               );
             },

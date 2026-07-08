@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
-import 'package:tpb_business_flutter/features/login/login_controller.dart';
+import 'package:tpb_business_flutter/core/utils/util.dart';
 
 class ConfiguracoesPage extends StatelessWidget {
   const ConfiguracoesPage({super.key});
@@ -11,12 +10,6 @@ class ConfiguracoesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     BuildContext contextScreen = context;
     return ThemePage(
-      onLogout: () async {
-        bool logout = await context.read<LoginController>().logout();
-        if (logout) {
-          appRouter.go('/login');
-        }
-      },
       children: [
         ListTile(
           title: const Text('Informações pessoais'),
@@ -40,13 +33,7 @@ class ConfiguracoesPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () async {
-                      Navigator.pop(context);
-                      bool logout = await contextScreen
-                          .read<LoginController>()
-                          .logout();
-                      if (logout) {
-                        appRouter.go('/login');
-                      }
+                      await Util.logoutUser(contextScreen);
                     },
                     child: const Text('Sim'),
                   ),

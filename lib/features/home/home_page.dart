@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
-import 'package:tpb_business_flutter/features/login/login_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,12 +24,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ThemePage(
-      onLogout: () async {
-        bool logout = await context.read<LoginController>().logout();
-        if (logout) {
-          appRouter.go('/login');
-        }
-      },
       children: [
         Card(
           margin: const EdgeInsets.all(20),
