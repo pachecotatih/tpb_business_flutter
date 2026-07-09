@@ -70,45 +70,47 @@ class DataFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
-          child: TextfieldComponent(
-            label: "Data Inicial",
-            readOnly: true,
-            text: Util.dateFormatString(dataInicio),
-            onClick: () {
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.parse(dataInicio),
-                firstDate: DateTime(2000),
-                lastDate: DateTime.parse(dataFim),
-              ).then((value){
-                if(value != null) onFilterInicio.call(value);
-              });
-            },
+    return Bloco(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: TextfieldComponent(
+              label: "Data Inicial",
+              readOnly: true,
+              text: Util.dateFormatString(dataInicio),
+              onClick: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: DateTime.parse(dataInicio),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.parse(dataFim),
+                ).then((value){
+                  if(value != null) onFilterInicio.call(value);
+                });
+              },
+            ),
           ),
-        ),
-        const SizedBox(width: 10),
-        Flexible(
-          child: TextfieldComponent(
-            label: "Data Final",
-            readOnly: true,
-            text: Util.dateFormatString(dataFim),
-            onClick: () {
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.parse(dataFim),
-                firstDate: DateTime.parse(dataInicio),
-                lastDate: DateTime(3000),
-              ).then((value){
-                if(value != null) onFilterFim.call(value);
-              });
-            },
+          const SizedBox(width: 10),
+          Flexible(
+            child: TextfieldComponent(
+              label: "Data Final",
+              readOnly: true,
+              text: Util.dateFormatString(dataFim),
+              onClick: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: DateTime.parse(dataFim),
+                  firstDate: DateTime.parse(dataInicio),
+                  lastDate: DateTime(3000),
+                ).then((value){
+                  if(value != null) onFilterFim.call(value);
+                });
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
