@@ -70,9 +70,9 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                                   Icons.delete,
                                   color: Cores.negativeColor,
                                 ),
-                                onPressed: () => context
-                                    .read<ClienteListaController>()
-                                    .delete(cliente.uid),
+                                onPressed: () {
+                                  _deleteCliente(context, cliente.uid);
+                                },
                               ),
                             );
                           },
@@ -95,6 +95,34 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
               ),
         ),
       ],
+    );
+  }
+  Future<void> _deleteCliente(BuildContext contextScreen, String uid) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Excluir Cliente'),
+          content: const Text(
+            'Tem certeza que deseja excluir?',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () =>
+                  Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await contextScreen.read<ClienteListaController>().delete(uid);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

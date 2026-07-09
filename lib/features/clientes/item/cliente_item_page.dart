@@ -55,37 +55,8 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
               label: 'Excluir',
               color: Cores.negativeColor,
               onPressed: () async {
-                final contextScreen = context;
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Excluir Cliente'),
-                      content: const Text('Tem certeza que deseja excluir?'),
-                      actions: state.isLoading ? [
-                        const Center(child: CircularProgressIndicator()),
-                      ] : <Widget>[
-                        TextButton(
-                          child: const Text('Cancelar'),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        TextButton(
-                          child: const Text('Excluir'),
-                          onPressed: () async {
-                            bool result = await contextScreen
-                                .read<ClienteItemController>()
-                                .delete();
-                            if (result && context.mounted) {
-                              Navigator.of(context).pop();
-                               appRouter.pushReplacement('/cliente');
-                            }
-                          },
-                        ),
-                      ],
-                    );
-                  }
-                );
+                _deleteCliente(context, state.data!.uid);
+                
               },
             ),
         ],
@@ -184,6 +155,36 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
             ),
           );
         }
+      },
+    );
+  }
+  Future<void> _deleteCliente(BuildContext contextScreen, String uid) {
+    return showDialog<void>(
+      context: contextScreen,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Excluir Cliente'),
+          content: const Text('Tem certeza que deseja excluir?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                bool result = await contextScreen
+                    .read<ClienteItemController>()
+                    .delete();
+                if (result) {
+                  appRouter.pushReplacement('/cliente');
+                }
+              },
+            ),
+          ],
+        );
       },
     );
   }
