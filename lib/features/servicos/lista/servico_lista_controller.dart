@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/constants/globals.dart';
+import 'package:tpb_business_flutter/core/services/base_controller.dart';
 import 'package:tpb_business_flutter/core/services/repository.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/servicos/servico_model.dart';
 
-class ServicoListaController extends Cubit<StateBloc<List<ServicoModel>>> {
+class ServicoListaController extends BaseController<List<ServicoModel>> {
   final Repository repository;
 
   ServicoListaController(this.repository) : super(StateBloc(data: []));

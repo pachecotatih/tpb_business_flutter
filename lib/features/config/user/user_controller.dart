@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/constants/globals.dart';
+import 'package:tpb_business_flutter/core/services/base_controller.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/services/repository.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/config/user/user_model.dart';
 
-class UserController extends Cubit<StateBloc<UserModel>> {
+class UserController extends BaseController<UserModel> {
   final Repository repository;
 
   UserController(this.repository)

@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/constants/globals.dart';
+import 'package:tpb_business_flutter/core/services/base_controller.dart';
 import 'package:tpb_business_flutter/core/services/repository.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/clientes/cliente_model.dart';
 
-class ClienteListaController extends Cubit<StateBloc<List<ClienteModel>>> {
+class ClienteListaController extends BaseController<List<ClienteModel>> {
   final Repository repository;
   ClienteListaController(this.repository)
     : super(StateBloc<List<ClienteModel>>(data: []));

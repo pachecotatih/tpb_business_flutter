@@ -26,7 +26,6 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
   @override
   void dispose() {
     super.dispose();
-    context.read<ClienteListaController>().close();
   }
 
   @override

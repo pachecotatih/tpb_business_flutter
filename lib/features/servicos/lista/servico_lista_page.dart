@@ -28,7 +28,6 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
   @override
   void dispose() {
     super.dispose();
-    context.read<ServicoListaController>().close();
   }
 
   @override

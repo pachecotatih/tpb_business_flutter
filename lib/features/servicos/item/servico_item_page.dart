@@ -32,7 +32,6 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
   @override
   void dispose() {
     super.dispose();
-    context.read<ServicoItemController>().close();
   }
 
   @override

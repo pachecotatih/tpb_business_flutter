@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/constants/globals.dart';
+import 'package:tpb_business_flutter/core/services/base_controller.dart';
 import 'package:tpb_business_flutter/core/services/repository.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/clientes/cliente_model.dart';
 
-class ClienteItemController extends Cubit<StateBloc<ClienteModel>> {
+class ClienteItemController extends BaseController<ClienteModel> {
   final Repository repository;
 
   ClienteItemController(this.repository)

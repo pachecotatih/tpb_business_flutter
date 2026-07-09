@@ -1,27 +1,22 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/constants/globals.dart';
+import 'package:tpb_business_flutter/core/services/base_controller.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/services/repository.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
 import 'package:tpb_business_flutter/features/login/login_model.dart';
 
-class LoginController extends Cubit<StateBloc<LoginModel>> {
+class LoginController extends BaseController<LoginModel> {
   final Repository repository;
   LoginController(this.repository)
     : super(StateBloc<LoginModel>(data: LoginModel()));
 
-  void _safeEmit(StateBloc<LoginModel> newState) {
-    if (!isClosed) {
-      emit(newState);
-    }
-  }
 
   Future<bool> login() async {
     Response response;
     try {
-      _safeEmit(
+      emit(
         state.copyWith(isLoading: true, hasError: null, data: state.data!),
       );
       String deviceId = Util.getDeviceId();
@@ -39,7 +34,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
 
       switch (response.statusCode) {
         case 200:
-          _safeEmit(state.copyWith(data: state.data, isLoading: false));
+          emit(state.copyWith(data: state.data, isLoading: false));
           Preferences.instance.setToken(response.data['access_token']);
           Preferences.instance.setRefreshToken(response.data['refresh_token']);
           Preferences.instance.setUser(response.data['user']);
@@ -49,12 +44,12 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           Preferences.instance.setDeviceId(response.data['device_id']);
           return true;
         case 401:
-          _safeEmit(
+          emit(
             state.copyWith(hasError: 'Credenciais inválidas', isLoading: false),
           );
           break;
         case 500:
-          _safeEmit(
+          emit(
             state.copyWith(
               hasError: 'Erro interno ao efetuar login',
               isLoading: false,
@@ -62,12 +57,12 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
           break;
         default:
-          _safeEmit(
+          emit(
             state.copyWith(hasError: 'Erro ao efetuar login', isLoading: false),
           );
       }
     } catch (e) {
-      _safeEmit(state.copyWith(hasError: e, isLoading: false));
+      emit(state.copyWith(hasError: e, isLoading: false));
     }
     return false;
   }
@@ -75,7 +70,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
   Future<bool> cadastrar() async {
     Response response;
     try {
-      _safeEmit(
+      emit(
         state.copyWith(isLoading: true, hasError: null, data: state.data!),
       );
       try {
@@ -90,10 +85,10 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
       switch (response.statusCode) {
         case 200:
         case 201:
-          _safeEmit(state.copyWith(data: state.data, isLoading: false));
+          emit(state.copyWith(data: state.data, isLoading: false));
           return true;
         case 500:
-          _safeEmit(
+          emit(
             state.copyWith(
               hasError: 'Erro interno ao efetuar cadastro',
               isLoading: false,
@@ -101,7 +96,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
           break;
         case 422:
-          _safeEmit(
+          emit(
             state.copyWith(
               hasError: response.data['errors'][0],
               isLoading: false,
@@ -109,7 +104,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
           break;
         default:
-          _safeEmit(
+          emit(
             state.copyWith(
               hasError: 'Erro ao efetuar cadastro',
               isLoading: false,
@@ -117,7 +112,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
       }
     } catch (e) {
-      _safeEmit(state.copyWith(hasError: e, isLoading: false));
+      emit(state.copyWith(hasError: e, isLoading: false));
     }
     return false;
   }
@@ -125,7 +120,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
   Future<bool> logout() async {
     Response response;
     try {
-      _safeEmit(
+      emit(
         state.copyWith(isLoading: true, hasError: null, data: state.data!),
       );
       try {
@@ -139,11 +134,11 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
 
       switch (response.statusCode) {
         case 200:
-          _safeEmit(state.copyWith(data: state.data, isLoading: false));
+          emit(state.copyWith(data: state.data, isLoading: false));
           await Preferences.clear();
           return true;
         case 500:
-          _safeEmit(
+          emit(
             state.copyWith(
               hasError: 'Erro interno ao efetuar logout',
               isLoading: false,
@@ -151,7 +146,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
           break;
         default:
-          _safeEmit(
+          emit(
             state.copyWith(
               hasError: 'Erro ao efetuar logout',
               isLoading: false,
@@ -159,7 +154,7 @@ class LoginController extends Cubit<StateBloc<LoginModel>> {
           );
       }
     } catch (e) {
-      _safeEmit(state.copyWith(hasError: e, isLoading: false));
+      emit(state.copyWith(hasError: e, isLoading: false));
     }
     return false;
   }

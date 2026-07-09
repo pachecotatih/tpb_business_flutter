@@ -29,7 +29,6 @@ class _UserPageState extends State<UserPage> {
   @override
   void dispose() {
     super.dispose();
-    context.read<UserController>().close();
   }
 
   @override

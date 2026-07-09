@@ -32,7 +32,6 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
   @override
   void dispose() {
     super.dispose();
-    context.read<ClienteItemController>().close();
   }
 
   @override
@@ -56,10 +55,37 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
               label: 'Excluir',
               color: Cores.negativeColor,
               onPressed: () async {
-                bool result = await context
-                    .read<ClienteItemController>()
-                    .delete();
-                if (result) appRouter.replace('/cliente');
+                final contextScreen = context;
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Excluir Cliente'),
+                      content: const Text('Tem certeza que deseja excluir?'),
+                      actions: state.isLoading ? [
+                        const Center(child: CircularProgressIndicator()),
+                      ] : <Widget>[
+                        TextButton(
+                          child: const Text('Cancelar'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        TextButton(
+                          child: const Text('Excluir'),
+                          onPressed: () async {
+                            bool result = await contextScreen
+                                .read<ClienteItemController>()
+                                .delete();
+                            if (result && context.mounted) {
+                              Navigator.of(context).pop();
+                               appRouter.pushReplacement('/cliente');
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                );
               },
             ),
         ],
