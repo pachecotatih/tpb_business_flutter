@@ -9,6 +9,10 @@ import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_page.
 import 'package:tpb_business_flutter/features/config/configuracoes_page.dart';
 import 'package:tpb_business_flutter/features/config/user/user_controller.dart';
 import 'package:tpb_business_flutter/features/config/user/user_page.dart';
+import 'package:tpb_business_flutter/features/fluxo_caixa/item/fluxo_caixa_item_controller.dart';
+import 'package:tpb_business_flutter/features/fluxo_caixa/item/fluxo_caixa_item_page.dart';
+import 'package:tpb_business_flutter/features/fluxo_caixa/lista/fluxo_caixa_lista_controller.dart';
+import 'package:tpb_business_flutter/features/fluxo_caixa/lista/fluxo_caixa_lista_page.dart';
 import 'package:tpb_business_flutter/features/home/home_page.dart';
 import 'package:tpb_business_flutter/features/login/cadastrar_page.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
@@ -117,6 +121,35 @@ GoRouter appRouter = GoRouter(
             return BlocProvider(
               create: (_) => ServicoItemController(DioRepository()),
               child: ServicoItemPage(uid: uid),
+            );
+          },
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/fluxocaixa',
+      name: 'fluxocaixa',
+      builder: (context, state) => BlocProvider(
+        create: (_) => FluxoCaixaListaController(DioRepository()),
+        child: const FluxoCaixaListaPage(),
+      ),
+      routes: [
+        GoRoute(
+          path: 'new',
+          name: 'fluxocaixa.novo',
+          builder: (context, state) => BlocProvider(
+            create: (_) => FluxoCaixaItemController(DioRepository()),
+            child: FluxoCaixaItemPage(uid: ''),
+          ),
+        ),
+        GoRoute(
+          path: ':uid',
+          name: 'fluxocaixa.editar',
+          builder: (context, state) {
+            final uid = state.pathParameters['uid'] ?? '';
+            return BlocProvider(
+              create: (_) => FluxoCaixaItemController(DioRepository()),
+              child: FluxoCaixaItemPage(uid: uid),
             );
           },
         ),

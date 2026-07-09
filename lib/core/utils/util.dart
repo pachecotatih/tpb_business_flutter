@@ -43,4 +43,9 @@ class Util {
     );
     return format.format(valor);
   }
+
+  static String dateFormatString(String data) {
+    String dataNova = DateFormat('dd/MM/yyyy').format(DateTime.parse(data));
+    return dataNova;
+  }
 }

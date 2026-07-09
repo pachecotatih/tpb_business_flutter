@@ -98,6 +98,13 @@ class _MenuDrawerState extends State<MenuDrawer> {
           ),
           Divider(),
           ListTile(
+            selected: (caminhoMapeado.startsWith('/fluxocaixa')),
+            leading: const Icon(Icons.account_balance_wallet),
+            title: const Text('Fluxo de Caixa'),
+            onTap: () => appRouter.pushReplacement('/fluxocaixa'),
+          ),
+          Divider(),
+          ListTile(
             selected: (caminhoMapeado.startsWith('/configuracoes')),
             leading: const Icon(Icons.settings),
             title: const Text('Configurações'),
