@@ -12,13 +12,10 @@ class LoginController extends BaseController<LoginModel> {
   LoginController(this.repository)
     : super(StateBloc<LoginModel>(data: LoginModel()));
 
-
   Future<bool> login() async {
     Response response;
     try {
-      emit(
-        state.copyWith(isLoading: true, hasError: null, data: state.data!),
-      );
+      emit(state.copyWith(isLoading: true, hasError: null, data: state.data!));
       String deviceId = Util.getDeviceId();
       String deviceName = Util.getDeviceName();
       state.data!.deviceId = deviceId;
@@ -70,9 +67,7 @@ class LoginController extends BaseController<LoginModel> {
   Future<bool> cadastrar() async {
     Response response;
     try {
-      emit(
-        state.copyWith(isLoading: true, hasError: null, data: state.data!),
-      );
+      emit(state.copyWith(isLoading: true, hasError: null, data: state.data!));
       try {
         response = await repository.post(
           '${Globals.urlApi}/register',
@@ -120,9 +115,7 @@ class LoginController extends BaseController<LoginModel> {
   Future<bool> logout() async {
     Response response;
     try {
-      emit(
-        state.copyWith(isLoading: true, hasError: null, data: state.data!),
-      );
+      emit(state.copyWith(isLoading: true, hasError: null, data: state.data!));
       try {
         response = await repository.post('${Globals.urlApi}/logout', {
           'email': Preferences.instance.email,

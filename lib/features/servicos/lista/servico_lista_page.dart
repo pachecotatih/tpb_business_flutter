@@ -90,7 +90,7 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                                     ),
                                     onPressed: () {
                                       _deleteServico(context, servico.uid);
-                                    }
+                                    },
                                   ),
                                 ],
                               ),

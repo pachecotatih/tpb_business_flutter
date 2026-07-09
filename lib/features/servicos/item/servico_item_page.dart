@@ -76,7 +76,9 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
                     ),
                     TextfieldComponent(
                       label: 'Valor do Serviço (${Preferences.instance.moeda})',
-                      text: Util.stringFormatValor(state.data!.valorPadrao ?? 0),
+                      text: Util.stringFormatValor(
+                        state.data!.valorPadrao ?? 0,
+                      ),
                       formatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         MoneyInputFormatter(
@@ -148,8 +150,6 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
     }
   }
 
-  
-
   Future<void> _deleteServico(BuildContext contextScreen) async {
     return showDialog<void>(
       context: contextScreen,
@@ -167,8 +167,10 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
               child: const Text('Excluir'),
               onPressed: () async {
                 Navigator.of(context).pop();
-                bool result = await contextScreen.read<ServicoItemController>().delete();
-                if(result) {
+                bool result = await contextScreen
+                    .read<ServicoItemController>()
+                    .delete();
+                if (result) {
                   appRouter.pushReplacement('/servico');
                 }
               },

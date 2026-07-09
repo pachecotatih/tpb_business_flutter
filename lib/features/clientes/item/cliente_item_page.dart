@@ -56,7 +56,6 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
               color: Cores.negativeColor,
               onPressed: () async {
                 _deleteCliente(context, state.data!.uid);
-                
               },
             ),
         ],
@@ -158,6 +157,7 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
       },
     );
   }
+
   Future<void> _deleteCliente(BuildContext contextScreen, String uid) {
     return showDialog<void>(
       context: contextScreen,

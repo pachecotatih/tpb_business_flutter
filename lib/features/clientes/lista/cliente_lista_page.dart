@@ -97,6 +97,7 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
       ],
     );
   }
+
   Future<void> _deleteCliente(BuildContext contextScreen, String uid) {
     return showDialog<void>(
       context: context,
@@ -104,14 +105,11 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Excluir Cliente'),
-          content: const Text(
-            'Tem certeza que deseja excluir?',
-          ),
+          content: const Text('Tem certeza que deseja excluir?'),
           actions: <Widget>[
             TextButton(
               child: const Text('Cancelar'),
-              onPressed: () =>
-                  Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
               child: const Text('Excluir'),
