@@ -31,14 +31,13 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
   @override
   Widget build(BuildContext context) {
     return ThemePage(
-      bottomAppBarItems: [
-        BottomButton(
-          icon: Icons.add,
-          label: 'Novo',
-          color: Cores.positiveColor,
-          onPressed: () => context.pushReplacement('/cliente/new'),
-        ),
-      ],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Cores.positiveColor,
+        foregroundColor: Colors.white,
+        tooltip: "Adicionar cliente",
+        child: const Icon(Icons.add),
+        onPressed: () => context.pushReplacement('/cliente/new'),
+      ),
       title: 'Clientes',
       children: [
         Bloco(

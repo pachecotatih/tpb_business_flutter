@@ -39,16 +39,17 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
     return BlocConsumer<ServicoItemController, StateBloc<ServicoModel>>(
       builder: (context, state) => ThemePage(
         title: widget.uid.isNotEmpty ? 'Editar Serviço' : 'Novo Serviço',
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Cores.positiveColor,
+          foregroundColor: Colors.white,
+          tooltip: "Salvar",
+          child: const Icon(Icons.check),
+          onPressed: () async {
+            bool result = await context.read<ServicoItemController>().save();
+            if (result) appRouter.pushReplacement('/servico');
+          },
+        ),
         bottomAppBarItems: [
-          BottomButton(
-            icon: Icons.save,
-            label: 'Salvar',
-            color: Cores.positiveColor,
-            onPressed: () async {
-              bool result = await context.read<ServicoItemController>().save();
-              if (result) appRouter.pushReplacement('/servico');
-            },
-          ),
           if (state.data!.uid.isNotEmpty)
             BottomButton(
               icon: Icons.delete,

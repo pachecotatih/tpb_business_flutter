@@ -33,14 +33,13 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
   @override
   Widget build(BuildContext context) {
     return ThemePage(
-      bottomAppBarItems: [
-        BottomButton(
-          icon: Icons.add,
-          label: 'Novo',
-          color: Cores.positiveColor,
-          onPressed: () => context.pushReplacement('/servico/new'),
-        ),
-      ],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Cores.positiveColor,
+        foregroundColor: Colors.white,
+        tooltip: "Adicionar serviço",
+        child: const Icon(Icons.add),
+        onPressed: () => context.pushReplacement('/servico/new'),
+      ),
       title: 'Serviços',
       children: [
         Bloco(

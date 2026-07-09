@@ -8,11 +8,13 @@ class ThemePage extends StatefulWidget {
   final List<Widget> children;
   final List<Widget>? bottomAppBarItems;
   final String? title;
+  final Widget? floatingActionButton;
   const ThemePage({
     super.key,
     required this.children,
     this.bottomAppBarItems,
     this.title,
+    this.floatingActionButton,
   });
 
   @override
@@ -29,48 +31,64 @@ class _ThemePageState extends State<ThemePage> {
       backgroundColor: Cores.principalBackground,
       appBar: MenuApp(),
       drawer: useDrawer ? Drawer(child: MenuDrawer()) : null,
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!useDrawer) SizedBox(width: 280, child: MenuDrawer()),
-            if (!useDrawer) const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (widget.title != null)
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: TituloH1(
-                        text: widget.title!,
-                        color: Cores.colorLogo,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 60),
+              child: SafeArea(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!useDrawer) SizedBox(width: 280, child: MenuDrawer()),
+                    if (!useDrawer) const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (widget.title != null)
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: TituloH1(
+                                text: widget.title!,
+                                color: Cores.colorLogo,
+                              ),
+                            ),
+                          Expanded(child: ListView(children: widget.children)),
+                        ],
                       ),
                     ),
-                  Expanded(child: ListView(children: widget.children)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if ((widget.bottomAppBarItems ?? []).isNotEmpty)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Row(
+                children: [
+                  if (!useDrawer) SizedBox(width: 280),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: widget.bottomAppBarItems!,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+        ],
       ),
-      bottomNavigationBar: (widget.bottomAppBarItems ?? []).isNotEmpty
-          ? Row(
-              children: [
-                if (!useDrawer) SizedBox(width: 280),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: widget.bottomAppBarItems!,
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : null,
+      floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: null,
     );
   }
 }

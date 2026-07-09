@@ -39,16 +39,17 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
     return BlocConsumer<ClienteItemController, StateBloc<ClienteModel>>(
       builder: (context, state) => ThemePage(
         title: widget.uid.isNotEmpty ? 'Editar Cliente' : 'Novo Cliente',
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Cores.positiveColor,
+          foregroundColor: Colors.white,
+          tooltip: "Salvar",
+          child: const Icon(Icons.check),
+          onPressed: () async {
+            bool result = await context.read<ClienteItemController>().save();
+            if (result) appRouter.pushReplacement('/cliente');
+          },
+        ),
         bottomAppBarItems: [
-          BottomButton(
-            icon: Icons.save,
-            label: 'Salvar',
-            color: Cores.positiveColor,
-            onPressed: () async {
-              bool result = await context.read<ClienteItemController>().save();
-              if (result) appRouter.pushReplacement('/cliente');
-            },
-          ),
           if (state.data!.uid.isNotEmpty)
             BottomButton(
               icon: Icons.delete,
