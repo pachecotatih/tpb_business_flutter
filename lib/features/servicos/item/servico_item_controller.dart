@@ -86,10 +86,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
           return true;
         case 422:
           emit(
-            state.copyWith(
-              hasError: response.data['errors'][0],
-              isLoading: false,
-            ),
+            state.copyWith(hasError: response.data['errors'], isLoading: false),
           );
           return false;
         case 500:

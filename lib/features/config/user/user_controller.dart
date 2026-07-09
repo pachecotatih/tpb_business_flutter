@@ -88,10 +88,7 @@ class UserController extends BaseController<UserModel> {
           break;
         case 422:
           emit(
-            state.copyWith(
-              hasError: response.data['errors'][0],
-              isLoading: false,
-            ),
+            state.copyWith(hasError: response.data['errors'], isLoading: false),
           );
           break;
         default:
@@ -147,7 +144,7 @@ class UserController extends BaseController<UserModel> {
           case 422:
             emit(
               state.copyWith(
-                hasError: response.data['errors'][0],
+                hasError: response.data['errors'],
                 isLoading: false,
               ),
             );

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class TextfieldComponent extends StatefulWidget {
   final String label;
   final String? text;
-  final Function(String value) onChange;
+  final Function(String value)? onChange;
   final List<TextInputFormatter>? formatters;
   final TextInputType? keyboardType;
   final bool? obscureText;
@@ -15,7 +15,7 @@ class TextfieldComponent extends StatefulWidget {
     super.key,
     required this.label,
     this.text,
-    required this.onChange,
+    this.onChange,
     this.formatters,
     this.keyboardType,
     this.obscureText,
@@ -49,7 +49,7 @@ class _TextfieldComponentState extends State<TextfieldComponent> {
         ),
         inputFormatters: widget.formatters,
         keyboardType: TextInputType.number,
-        onChanged: (value) => widget.onChange(value),
+        onChanged: (value) => widget.onChange?.call(value),
       ),
     );
   }

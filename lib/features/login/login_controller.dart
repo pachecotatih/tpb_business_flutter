@@ -92,10 +92,7 @@ class LoginController extends BaseController<LoginModel> {
           break;
         case 422:
           emit(
-            state.copyWith(
-              hasError: response.data['errors'][0],
-              isLoading: false,
-            ),
+            state.copyWith(hasError: response.data['errors'], isLoading: false),
           );
           break;
         default:
