@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/money_input_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
@@ -9,6 +8,7 @@ import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
+import 'package:tpb_business_flutter/core/utils/util.dart';
 import 'package:tpb_business_flutter/features/servicos/item/servico_item_controller.dart';
 import 'package:tpb_business_flutter/features/servicos/servico_model.dart';
 
@@ -55,10 +55,7 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
               label: 'Excluir',
               color: Cores.negativeColor,
               onPressed: () async {
-                bool result = await context
-                    .read<ServicoItemController>()
-                    .delete();
-                if (result) appRouter.replace('/servico');
+                _deleteServico(context);
               },
             ),
         ],
@@ -79,7 +76,7 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
                     ),
                     TextfieldComponent(
                       label: 'Valor do Serviço (${Preferences.instance.moeda})',
-                      text: stringFormatValor(state.data!.valorPadrao ?? 0),
+                      text: Util.stringFormatValor(state.data!.valorPadrao ?? 0),
                       formatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         MoneyInputFormatter(
@@ -150,13 +147,35 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
       setState(() {});
     }
   }
-   String stringFormatValor(double valor) {
-    final format = NumberFormat.simpleCurrency(
-      locale: Preferences.instance.moeda == 'R\$'
-          ? 'pt_BR'
-          : (Preferences.instance.moeda == '\$' ? 'en_US' : 'de_DE'),
-      name: '',
+
+  
+
+  Future<void> _deleteServico(BuildContext contextScreen) async {
+    return showDialog<void>(
+      context: contextScreen,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Excluir Serviço'),
+          content: const Text('Tem certeza que deseja excluir?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                bool result = await contextScreen.read<ServicoItemController>().delete();
+                if(result) {
+                  appRouter.pushReplacement('/servico');
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
-    return format.format(valor);
   }
 }

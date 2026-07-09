@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
+import 'package:tpb_business_flutter/core/utils/util.dart';
 import 'package:tpb_business_flutter/features/servicos/lista/servico_lista_controller.dart';
 import 'package:tpb_business_flutter/features/servicos/servico_model.dart';
 
@@ -66,7 +66,7 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                             final servico = state.data![index];
                             return ListTile(
                               title: Text(
-                                '${servico.nome} - ${Preferences.instance.moeda}${stringFormatValor(servico.valorPadrao ?? 0.0)}',
+                                '${servico.nome} - ${Preferences.instance.moeda}${Util.stringFormatValor(servico.valorPadrao ?? 0.0)}',
                               ),
                               onTap: () => context.pushReplacement(
                                 '/servico/${servico.uid}',
@@ -88,9 +88,9 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                                       Icons.delete,
                                       color: Cores.negativeColor,
                                     ),
-                                    onPressed: () => context
-                                        .read<ServicoListaController>()
-                                        .delete(servico.uid),
+                                    onPressed: () {
+                                      _deleteServico(context, servico.uid);
+                                    }
                                   ),
                                 ],
                               ),
@@ -118,13 +118,29 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
     );
   }
 
-  String stringFormatValor(double valor) {
-    final format = NumberFormat.simpleCurrency(
-      locale: Preferences.instance.moeda == 'R\$'
-          ? 'pt_BR'
-          : (Preferences.instance.moeda == '\$' ? 'en_US' : 'de_DE'),
-      name: '',
+  Future<void> _deleteServico(BuildContext contextScreen, String uid) async {
+    return showDialog<void>(
+      context: contextScreen,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Excluir Serviço'),
+          content: const Text('Tem certeza que deseja excluir?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await contextScreen.read<ServicoListaController>().delete(uid);
+              },
+            ),
+          ],
+        );
+      },
     );
-    return format.format(valor);
   }
 }

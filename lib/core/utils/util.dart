@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
+import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
 
 class Util {
@@ -30,5 +32,15 @@ class Util {
     if (logout) {
       appRouter.pushReplacement('/login');
     }
+  }
+
+  static String stringFormatValor(double valor) {
+    final format = NumberFormat.simpleCurrency(
+      locale: Preferences.instance.moeda == 'R\$'
+          ? 'pt_BR'
+          : (Preferences.instance.moeda == '\$' ? 'en_US' : 'de_DE'),
+      name: '',
+    );
+    return format.format(valor);
   }
 }
