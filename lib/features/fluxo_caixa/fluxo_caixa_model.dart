@@ -9,7 +9,8 @@ class FluxoCaixaModel {
 
   String? dataInicio;
   String? dataFim;
-  String movimentacaoEscolhida = 'Todos';
+  String? tipoMovimentacao;
+  String? formaPagamento;
 
   FluxoCaixaModel({
     this.saldo = 0,
@@ -52,7 +53,6 @@ class FluxoCaixaItemModel {
   ClienteModel? cliente;
   String? createdAt;
 
-
   FluxoCaixaItemModel({
     this.uid,
     this.descricao,
@@ -64,7 +64,7 @@ class FluxoCaixaItemModel {
     this.pago,
     this.observacao,
     this.cliente,
-    this.createdAt
+    this.createdAt,
   });
 
   factory FluxoCaixaItemModel.fromJson(Map<String, dynamic> json) {

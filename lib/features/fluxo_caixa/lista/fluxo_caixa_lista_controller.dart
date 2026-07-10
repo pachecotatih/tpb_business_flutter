@@ -15,7 +15,6 @@ class FluxoCaixaListaController extends BaseController<FluxoCaixaModel> {
     String? tipoMovimentacao,
     String? dataRegistroInicio,
     String? dataRegistroFim,
-    String movimentacaoEscolhida="Todos",
   }) async {
     Response response;
     emit(state.copyWith(isLoading: true));
@@ -23,10 +22,10 @@ class FluxoCaixaListaController extends BaseController<FluxoCaixaModel> {
       try {
         String url = '${Globals.urlApi}/fluxocaixa';
         List params = [];
-        if (formaPagamento != null) {
+        if (formaPagamento != null && formaPagamento != 'todas') {
           params.add('forma_pagamento=$formaPagamento');
         }
-        if (tipoMovimentacao != null && movimentacaoEscolhida != 'Todos') {
+        if (tipoMovimentacao != null && tipoMovimentacao != 'todos') {
           params.add('tipo_movimentacao=$tipoMovimentacao');
         }
         if (dataRegistroInicio != null) {
@@ -48,9 +47,10 @@ class FluxoCaixaListaController extends BaseController<FluxoCaixaModel> {
         case 200:
           FluxoCaixaModel fluxoCaixa = FluxoCaixaModel.fromJson(response.data);
           fluxoCaixa.grupos = getGrupos(fluxoCaixa.fluxoCaixaList);
-          fluxoCaixa.movimentacaoEscolhida = movimentacaoEscolhida;
+          fluxoCaixa.tipoMovimentacao = tipoMovimentacao;
           fluxoCaixa.dataInicio = dataRegistroInicio;
           fluxoCaixa.dataFim = dataRegistroFim;
+          fluxoCaixa.formaPagamento = formaPagamento;
           emit(state.copyWith(data: fluxoCaixa, isLoading: false));
 
           break;
@@ -79,19 +79,26 @@ class FluxoCaixaListaController extends BaseController<FluxoCaixaModel> {
   List<FluxoCaixaGrupoModel> getGrupos(
     List<FluxoCaixaItemModel>? fluxoCaixaList,
   ) {
-    final map = <String, List<FluxoCaixaItemModel>>{};
-
-    for (final item in (fluxoCaixaList ?? [])) {
-      final data = item.createdAt.substring(0, 10);
-      map.putIfAbsent(data, () => []);
-      map[data]!.add(item);
-    }
-
-    return map.entries.map((e) {
-      return FluxoCaixaGrupoModel(
-        data: DateTime.parse(e.key),
-        fluxoCaixaList: e.value,
+    if (fluxoCaixaList != null && fluxoCaixaList.isNotEmpty) {
+      final map = <String, List<FluxoCaixaItemModel>>{};
+      fluxoCaixaList.sort(
+        (a, b) => DateTime.parse(
+          b.createdAt!,
+        ).compareTo(DateTime.parse(a.createdAt!)),
       );
-    }).toList();
+      for (final item in (fluxoCaixaList)) {
+        final data = item.createdAt!.substring(0, 10);
+        map.putIfAbsent(data, () => []);
+        map[data]!.add(item);
+      }
+
+      return map.entries.map((e) {
+        return FluxoCaixaGrupoModel(
+          data: DateTime.parse(e.key),
+          fluxoCaixaList: e.value,
+        );
+      }).toList();
+    }
+    return [];
   }
 }

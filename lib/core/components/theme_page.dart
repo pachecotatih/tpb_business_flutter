@@ -9,12 +9,16 @@ class ThemePage extends StatefulWidget {
   final List<Widget>? bottomAppBarItems;
   final String? title;
   final Widget? floatingActionButton;
+  final ScrollPhysics? physics;
+  final Widget? contentTop;
   const ThemePage({
     super.key,
     required this.children,
     this.bottomAppBarItems,
     this.title,
     this.floatingActionButton,
+    this.physics,
+    this.contentTop,
   });
 
   @override
@@ -47,15 +51,29 @@ class _ThemePageState extends State<ThemePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (widget.title != null)
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              child: TituloH1(
-                                text: widget.title!,
-                                color: Cores.colorLogo,
-                              ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                if (widget.title != null)
+                                  TituloH1(
+                                    text: widget.title!,
+                                    color: Cores.colorLogo,
+                                  ),
+
+                                Spacer(),
+                                if (widget.contentTop != null)
+                                  widget.contentTop!,
+                              ],
                             ),
-                          Expanded(child: ListView(children: widget.children)),
+                          ),
+
+                          Expanded(
+                            child: ListView(
+                              physics: widget.physics,
+                              children: widget.children,
+                            ),
+                          ),
                         ],
                       ),
                     ),

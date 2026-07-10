@@ -48,7 +48,7 @@ class _TextfieldComponentState extends State<TextfieldComponent> {
           ),
         ),
         inputFormatters: widget.formatters,
-        keyboardType: TextInputType.number,
+        keyboardType: widget.keyboardType,
         onChanged: (value) => widget.onChange?.call(value),
       ),
     );
