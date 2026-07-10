@@ -24,7 +24,7 @@ class _CadastrarPageState extends State<CadastrarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Cores.principalBackground,
       body: BlocConsumer<LoginController, StateBloc<LoginModel>>(
         builder: (context, state) {

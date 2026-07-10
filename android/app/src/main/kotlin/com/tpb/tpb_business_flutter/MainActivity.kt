@@ -1,4 +1,4 @@
-package com.example.tpb_business_flutter
+package com.tpb.tpb_business_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 

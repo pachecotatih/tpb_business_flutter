@@ -28,6 +28,7 @@ class _ThemePageState extends State<ThemePage> {
     final useDrawer = screenWidth < Globals.mediumWidth;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Cores.principalBackground,
       appBar: MenuApp(),
       drawer: useDrawer ? Drawer(child: MenuDrawer()) : null,

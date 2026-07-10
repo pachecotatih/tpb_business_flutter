@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Cores.principalBackground,
       body: BlocConsumer<LoginController, StateBloc<LoginModel>>(
         builder: (context, state) {
