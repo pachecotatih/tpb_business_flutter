@@ -38,48 +38,43 @@ class _ThemePageState extends State<ThemePage> {
       drawer: useDrawer ? Drawer(child: MenuDrawer()) : null,
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 60),
-              child: SafeArea(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (!useDrawer) SizedBox(width: 280, child: MenuDrawer()),
-                    if (!useDrawer) const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                if (widget.title != null)
-                                  TituloH1(
-                                    text: widget.title!,
-                                    color: Cores.colorLogo,
-                                  ),
-
-                                Spacer(),
-                                if (widget.contentTop != null)
-                                  widget.contentTop!,
-                              ],
-                            ),
-                          ),
-
-                          Expanded(
-                            child: ListView(
-                              physics: widget.physics,
-                              children: widget.children,
-                            ),
-                          ),
-                        ],
+          SafeArea(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!useDrawer) SizedBox(width: 280, child: MenuDrawer()),
+                if (!useDrawer) const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            if (widget.title != null)
+                              TituloH1(
+                                text: widget.title!,
+                                color: Cores.colorLogo,
+                              ),
+                    
+                            Spacer(),
+                            if (widget.contentTop != null)
+                              widget.contentTop!,
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    
+                      Expanded(
+                        child: ListView(
+                          physics: widget.physics,
+                          children: widget.children,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           if ((widget.bottomAppBarItems ?? []).isNotEmpty)
