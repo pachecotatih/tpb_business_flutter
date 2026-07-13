@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
-import 'package:tpb_business_flutter/core/components/money_input_formatter.dart';
+import 'package:tpb_business_flutter/core/components/formatters/money_input_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';

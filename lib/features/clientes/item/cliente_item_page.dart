@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
-import 'package:tpb_business_flutter/core/components/brazil_phone_formatter.dart';
 import 'package:tpb_business_flutter/core/components/campoSelect_component.dart';
+import 'package:tpb_business_flutter/core/components/formatters/brazil_phone_formatter.dart';
+import 'package:tpb_business_flutter/core/components/formatters/uppercase_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
@@ -113,16 +114,18 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
                     TextfieldComponent(
                       label: (state.data!.tipo == 'PF') ? 'CPF' : 'CNPJ',
                       text: state.data!.documento,
-                      keyboardType: TextInputType.number,
+                      keyboardType: (state.data!.tipo == 'PF') 
+                        ? TextInputType.number 
+                        : TextInputType.text,
                       formatters: [
-                        FilteringTextInputFormatter.digitsOnly,
+                        UpperCaseFormatter(),
                         MaskTextInputFormatter(
                           mask: (state.data!.tipo == 'PF')
                               ? '###.###.###-##'
-                              : '##.###.###/####-##',
+                              : 'AA.AAA.AAA/AAAA-##',
                         ),
                       ],
-                      onChange: (value) => state.data!.documento = value,
+                      onChange: (value) => state.data!.documento = value.toUpperCase(),
                     ),
                     TextfieldComponent(
                       label: 'Data de nascimento',

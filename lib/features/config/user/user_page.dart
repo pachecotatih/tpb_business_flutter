@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tpb_business_flutter/core/components/brazil_phone_formatter.dart';
+import 'package:tpb_business_flutter/core/components/formatters/brazil_phone_formatter.dart';
 import 'package:tpb_business_flutter/core/components/camposelect_component.dart';
-import 'package:tpb_business_flutter/core/components/cpf_cnpj_formatter.dart';
+import 'package:tpb_business_flutter/core/components/formatters/cpf_cnpj_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
@@ -86,10 +86,9 @@ class _UserPageState extends State<UserPage> {
                         state.data?.documento = value;
                       },
                       formatters: [
-                        FilteringTextInputFormatter.digitsOnly,
                         CpfCnpjFormatter(),
                       ],
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                     ),
                     TextfieldComponent(
                       label: "Telefone",

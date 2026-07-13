@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
-import 'package:tpb_business_flutter/core/components/brazil_phone_formatter.dart';
-import 'package:tpb_business_flutter/core/components/cpf_cnpj_formatter.dart';
+import 'package:tpb_business_flutter/core/components/formatters/brazil_phone_formatter.dart';
+import 'package:tpb_business_flutter/core/components/formatters/cpf_cnpj_formatter.dart';
 import 'package:tpb_business_flutter/core/components/login_screen.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
@@ -99,10 +99,9 @@ class _CadastrarPageState extends State<CadastrarPage> {
                                 state.data?.documento = value;
                               },
                               formatters: [
-                                FilteringTextInputFormatter.digitsOnly,
                                 CpfCnpjFormatter(),
                               ],
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                             ),
                             TextfieldComponent(
                               label: "Telefone",
