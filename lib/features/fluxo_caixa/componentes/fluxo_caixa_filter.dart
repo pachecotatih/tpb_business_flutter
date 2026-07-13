@@ -57,7 +57,7 @@ class _FluxoCaixaFilterState extends State<FluxoCaixaFilter> {
           TituloH1(text: 'Filtros'),
           Spacer(),
           TextButton(
-          style: TextButton.styleFrom(foregroundColor: Cores.negativeColor),
+            style: TextButton.styleFrom(foregroundColor: Cores.negativeColor),
             child: const Icon(Icons.close),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -156,13 +156,17 @@ class _FluxoCaixaFilterState extends State<FluxoCaixaFilter> {
           style: TextButton.styleFrom(foregroundColor: Cores.negativeColor),
           child: const Text('Limpar filtros'),
           onPressed: () {
-             widget.onTipoChanged('todos');
+            widget.onTipoChanged('todos');
             widget.onFormaPagamentoChanged('todas');
-            widget.onDataInicioChanged(DateTime(DateTime.now().year, DateTime.now().month, 1));
-            widget.onDataFimChanged(DateTime(DateTime.now().year, DateTime.now().month + 1, 0));
+            widget.onDataInicioChanged(
+              DateTime(DateTime.now().year, DateTime.now().month, 1),
+            );
+            widget.onDataFimChanged(
+              DateTime(DateTime.now().year, DateTime.now().month + 1, 0),
+            );
             Navigator.of(context).pop();
             widget.onFilter();
-          }
+          },
         ),
         TextButton(
           style: TextButton.styleFrom(foregroundColor: Cores.positiveColor),

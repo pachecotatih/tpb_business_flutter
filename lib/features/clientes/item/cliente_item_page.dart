@@ -114,9 +114,9 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
                     TextfieldComponent(
                       label: (state.data!.tipo == 'PF') ? 'CPF' : 'CNPJ',
                       text: state.data!.documento,
-                      keyboardType: (state.data!.tipo == 'PF') 
-                        ? TextInputType.number 
-                        : TextInputType.text,
+                      keyboardType: (state.data!.tipo == 'PF')
+                          ? TextInputType.number
+                          : TextInputType.text,
                       formatters: [
                         UpperCaseFormatter(),
                         MaskTextInputFormatter(
@@ -125,7 +125,8 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
                               : 'AA.AAA.AAA/AAAA-##',
                         ),
                       ],
-                      onChange: (value) => state.data!.documento = value.toUpperCase(),
+                      onChange: (value) =>
+                          state.data!.documento = value.toUpperCase(),
                     ),
                     TextfieldComponent(
                       label: 'Data de nascimento',

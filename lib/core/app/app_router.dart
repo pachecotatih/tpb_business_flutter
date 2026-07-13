@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/services/dio_repository.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
+import 'package:tpb_business_flutter/features/agendamentos/calendario/agendamento_calendario_controller.dart';
+import 'package:tpb_business_flutter/features/agendamentos/calendario/agendamento_calendario_page.dart';
 import 'package:tpb_business_flutter/features/clientes/item/cliente_item_controller.dart';
 import 'package:tpb_business_flutter/features/clientes/item/cliente_item_page.dart';
 import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_controller.dart';
@@ -154,6 +156,14 @@ GoRouter appRouter = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: '/agendamento',
+      name: 'agendamento',
+      builder: (context, state) => BlocProvider(
+        create: (_) => AgendamentoCalendarioController(DioRepository()),
+        child: const AgendamentoCalendarioPage(),
+      ),
     ),
   ],
 );

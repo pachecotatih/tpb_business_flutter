@@ -48,4 +48,14 @@ class Util {
     String dataNova = DateFormat('dd/MM/yyyy').format(DateTime.parse(data));
     return dataNova;
   }
+
+  static DateTime dateFormatDateTime(String value) {
+    return (value != '')
+        ? DateTime.parse(
+            DateFormat(
+              'yyyy-MM-dd',
+            ).format((DateFormat("dd/MM/yyyy").parse(value))),
+          )
+        : DateTime.parse('2000-01-01');
+  }
 }

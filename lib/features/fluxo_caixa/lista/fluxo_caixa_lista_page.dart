@@ -53,10 +53,7 @@ class _FluxoCaixaListaPageState extends State<FluxoCaixaListaPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 3,
-              children: [
-                const Icon(Icons.filter_alt),
-                const Text('Filtrar'),
-              ],
+              children: [const Icon(Icons.filter_alt), const Text('Filtrar')],
             ),
           ),
           floatingActionButton: FloatingActionButton(
@@ -266,7 +263,7 @@ class _FluxoCaixaListaPageState extends State<FluxoCaixaListaPage> {
               dataRegistroInicio: fluxoCaixa.dataInicio,
               dataRegistroFim: fluxoCaixa.dataFim,
             );
-          }
+          },
         );
       },
     );

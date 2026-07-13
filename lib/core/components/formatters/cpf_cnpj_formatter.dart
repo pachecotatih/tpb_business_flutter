@@ -7,7 +7,9 @@ class CpfCnpjFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     // 1. Limpa o texto mantendo apenas o que interessa e joga para Maiúsculo
-    String rawText = newValue.text.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '').toUpperCase();
+    String rawText = newValue.text
+        .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '')
+        .toUpperCase();
     final bufferCleaned = StringBuffer();
 
     // Aplica a regra de filtragem caractere por caractere enquanto o usuário digita

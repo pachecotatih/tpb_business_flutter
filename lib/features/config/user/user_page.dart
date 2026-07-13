@@ -85,9 +85,7 @@ class _UserPageState extends State<UserPage> {
                       onChange: (value) {
                         state.data?.documento = value;
                       },
-                      formatters: [
-                        CpfCnpjFormatter(),
-                      ],
+                      formatters: [CpfCnpjFormatter()],
                       keyboardType: TextInputType.text,
                     ),
                     TextfieldComponent(

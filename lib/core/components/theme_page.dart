@@ -57,14 +57,13 @@ class _ThemePageState extends State<ThemePage> {
                                 text: widget.title!,
                                 color: Cores.colorLogo,
                               ),
-                    
+
                             Spacer(),
-                            if (widget.contentTop != null)
-                              widget.contentTop!,
+                            if (widget.contentTop != null) widget.contentTop!,
                           ],
                         ),
                       ),
-                    
+
                       Expanded(
                         child: ListView(
                           physics: widget.physics,

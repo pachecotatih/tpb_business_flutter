@@ -98,9 +98,7 @@ class _CadastrarPageState extends State<CadastrarPage> {
                               onChange: (value) {
                                 state.data?.documento = value;
                               },
-                              formatters: [
-                                CpfCnpjFormatter(),
-                              ],
+                              formatters: [CpfCnpjFormatter()],
                               keyboardType: TextInputType.text,
                             ),
                             TextfieldComponent(

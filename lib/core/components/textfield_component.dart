@@ -22,7 +22,8 @@ class TextfieldComponent extends StatefulWidget {
     this.obscureText,
     this.prefixText,
     this.readOnly,
-    this.onClick, this.enabledLines = false,
+    this.onClick,
+    this.enabledLines = false,
   });
 
   @override

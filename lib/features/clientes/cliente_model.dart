@@ -1,4 +1,5 @@
 class ClienteModel {
+  int? id;
   String uid;
   String nome;
   String? email;
@@ -9,6 +10,7 @@ class ClienteModel {
   String? observacao;
 
   ClienteModel({
+    this.id,
     this.uid = '',
     this.nome = '',
     this.email = '',
@@ -21,6 +23,7 @@ class ClienteModel {
 
   factory ClienteModel.fromJson(Map<String, dynamic> json) {
     return ClienteModel(
+      id: json['id'],
       uid: json['uid'],
       nome: json['nome'],
       email: json['email'],
@@ -34,6 +37,7 @@ class ClienteModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'uid': uid,
       'nome': nome,
       'email': email,
