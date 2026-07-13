@@ -198,6 +198,8 @@ class _FluxoCaixaItemPageState extends State<FluxoCaixaItemPage> {
                       SizedBox(height: 10),
                       TextfieldComponent(
                         label: 'Observação',
+                        enabledLines: true,
+                        keyboardType: TextInputType.multiline,
                         text: state.data!.observacao,
                         onChange: (value) {
                           state.data!.observacao = value;

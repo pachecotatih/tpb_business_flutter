@@ -11,6 +11,7 @@ class TextfieldComponent extends StatefulWidget {
   final String? prefixText;
   final bool? readOnly;
   final Function()? onClick;
+  final bool enabledLines;
   const TextfieldComponent({
     super.key,
     required this.label,
@@ -21,7 +22,7 @@ class TextfieldComponent extends StatefulWidget {
     this.obscureText,
     this.prefixText,
     this.readOnly,
-    this.onClick,
+    this.onClick, this.enabledLines = false,
   });
 
   @override
@@ -38,6 +39,7 @@ class _TextfieldComponentState extends State<TextfieldComponent> {
         obscureText: widget.obscureText ?? false,
         readOnly: widget.readOnly ?? false,
         onTap: widget.onClick,
+        maxLines: widget.enabledLines ? null : 1,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: widget.label,

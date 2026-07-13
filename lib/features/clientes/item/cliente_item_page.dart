@@ -136,6 +136,8 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
                     ),
                     TextfieldComponent(
                       label: 'Observação',
+                      enabledLines: true,
+                      keyboardType: TextInputType.multiline,
                       text: state.data!.observacao,
                       onChange: (value) => state.data!.observacao = value,
                     ),
