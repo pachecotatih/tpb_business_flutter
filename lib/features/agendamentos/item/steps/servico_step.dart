@@ -83,7 +83,7 @@ class _ServicoStepState extends State<ServicoStep> {
 
   Widget _itemServico(ServicoModel servico) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
