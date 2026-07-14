@@ -15,7 +15,8 @@ import 'package:tpb_business_flutter/features/clientes/item/cliente_item_control
 
 class ClienteItemPage extends StatefulWidget {
   final String uid;
-  const ClienteItemPage({super.key, this.uid = ''});
+  final bool isAgendamento;
+  const ClienteItemPage({super.key, this.uid = '', this.isAgendamento = false});
 
   @override
   State<ClienteItemPage> createState() => _ClienteItemPageState();
@@ -47,7 +48,15 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
           child: const Icon(Icons.check),
           onPressed: () async {
             bool result = await context.read<ClienteItemController>().save();
-            if (result) appRouter.pushReplacement('/cliente');
+            if (result) {
+              if (widget.isAgendamento && context.mounted) {
+                appRouter.pop(
+                  context.read<ClienteItemController>().state.data!,
+                );
+              } else {
+                appRouter.pushReplacement('/cliente');
+              }
+            }
           },
         ),
         bottomAppBarItems: [

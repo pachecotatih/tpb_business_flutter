@@ -4,6 +4,8 @@ import 'package:tpb_business_flutter/core/services/dio_repository.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/features/agendamentos/calendario/agendamento_calendario_controller.dart';
 import 'package:tpb_business_flutter/features/agendamentos/calendario/agendamento_calendario_page.dart';
+import 'package:tpb_business_flutter/features/agendamentos/item/agendamento_item_controller.dart';
+import 'package:tpb_business_flutter/features/agendamentos/item/agendamento_item_page.dart';
 import 'package:tpb_business_flutter/features/clientes/item/cliente_item_controller.dart';
 import 'package:tpb_business_flutter/features/clientes/item/cliente_item_page.dart';
 import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_controller.dart';
@@ -81,10 +83,16 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'new',
           name: 'cliente.novo',
-          builder: (context, state) => BlocProvider(
-            create: (_) => ClienteItemController(DioRepository()),
-            child: ClienteItemPage(uid: ''),
-          ),
+          builder: (context, state) {
+            bool? isAgendamento = state.extra as bool?;
+            return BlocProvider(
+              create: (_) => ClienteItemController(DioRepository()),
+              child: ClienteItemPage(
+                uid: '',
+                isAgendamento: isAgendamento ?? false,
+              ),
+            );
+          },
         ),
         GoRoute(
           path: ':uid',
@@ -110,10 +118,16 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'new',
           name: 'servico.novo',
-          builder: (context, state) => BlocProvider(
-            create: (_) => ServicoItemController(DioRepository()),
-            child: ServicoItemPage(uid: ''),
-          ),
+          builder: (context, state) {
+            bool? isAgendamento = state.extra as bool?;
+            return BlocProvider(
+              create: (_) => ServicoItemController(DioRepository()),
+              child: ServicoItemPage(
+                uid: '',
+                isAgendamento: isAgendamento ?? false,
+              ),
+            );
+          },
         ),
         GoRoute(
           path: ':uid',
@@ -164,6 +178,35 @@ GoRouter appRouter = GoRouter(
         create: (_) => AgendamentoCalendarioController(DioRepository()),
         child: const AgendamentoCalendarioPage(),
       ),
+      routes: [
+        GoRoute(
+          path: 'new',
+          name: 'agendamento.novo',
+          builder: (context, state) {
+            final date = DateTime.parse(
+              state.pathParameters['data'] ?? DateTime.now().toString(),
+            );
+            return BlocProvider(
+              create: (_) => AgendamentoItemController(DioRepository()),
+              child: AgendamentoItemPage(uid: '', date: date),
+            );
+          },
+        ),
+        GoRoute(
+          path: ':uid',
+          name: 'agendamento.editar',
+          builder: (context, state) {
+            final uid = state.pathParameters['uid'] ?? '';
+            final date = DateTime.parse(
+              state.pathParameters['data'] ?? DateTime.now().toString(),
+            );
+            return BlocProvider(
+              create: (_) => AgendamentoItemController(DioRepository()),
+              child: AgendamentoItemPage(uid: uid, date: date),
+            );
+          },
+        ),
+      ],
     ),
   ],
 );

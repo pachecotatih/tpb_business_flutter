@@ -11,6 +11,10 @@ class AgendamentoModel {
   String? observacao;
   double? valorTotal;
   List<ServicoModel>? servicos;
+  List<ServicoModel>? servicosInit;
+  List<ClienteModel>? clientes;
+
+  int step = 0;
 
   AgendamentoModel({
     this.uid,
@@ -35,6 +39,7 @@ class AgendamentoModel {
     clienteId = json['cliente_id'];
     observacao = json['observacao'];
     valorTotal = json['valor_total'];
+    clientes = json['clientes'];
     if (json['servicos'] != null) {
       servicos = <ServicoModel>[];
       json['servicos'].forEach((v) {
@@ -53,6 +58,7 @@ class AgendamentoModel {
     data['cliente_id'] = clienteId;
     data['observacao'] = observacao;
     data['valor_total'] = valorTotal;
+    data['clientes'] = clientes;
     if (servicos != null) {
       data['servicos'] = servicos!.map((v) => v.toJson()).toList();
     }

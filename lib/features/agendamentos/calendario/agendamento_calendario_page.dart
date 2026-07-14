@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/camposelect_component.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
+import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
+import 'package:tpb_business_flutter/core/utils/util.dart';
 import 'package:tpb_business_flutter/features/agendamentos/calendario/agendamento_calendario_controller.dart';
 import 'package:tpb_business_flutter/features/agendamentos/meetings_model.dart';
 
@@ -36,142 +40,217 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
     >(
       builder: (BuildContext context, StateBloc<MeetingDataSource> state) {
         return ThemePage(
+          physics: NeverScrollableScrollPhysics(),
           title: 'Agendamentos',
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Cores.positiveColor,
+            foregroundColor: Colors.white,
+            tooltip: "Adicionar agendamento",
+            child: const Icon(Icons.add),
+            onPressed: () {
+              context.pushReplacement(
+                '/agendamento/new',
+                extra: {'data': DateTime.now()},
+              );
+            },
+          ),
           children: [
-            if (state.isLoading)
-              const Center(child: CircularProgressIndicator())
-            else
-              SfCalendar(
-                view: CalendarView.day,
-                dataSource: state.data,
-                appointmentBuilder: (context, calendarAppointmentDetails) {
-                  final Meeting meeting =
-                      calendarAppointmentDetails.appointments.first as Meeting;
-                  return Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: meeting.background,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: meeting.status == 'concluido',
-                          onChanged: (bool? value) {
-                            setState(() {
-                              meeting.status = value!
-                                  ? 'concluido'
-                                  : 'agendado';
-                            });
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: Bloco(
+                child: (state.isLoading)
+                    ? const Center(child: CircularProgressIndicator())
+                    : SfCalendar(
+                        onTap: (CalendarTapDetails details) {
+                          if (details.appointments == null) {
+                            context.pushReplacement(
+                              '/agendamento/new',
+                              extra: {'data': details.date},
+                            );
+                          } else {
+                            context.pushReplacement(
+                              '/agendamento/editar/${details.appointments!.first.id}',
+                            );
                             showDialog<void>(
                               context: context,
                               barrierDismissible: false,
                               builder: (BuildContext context) {
-                                return BlocBuilder<
-                                  AgendamentoCalendarioController,
-                                  StateBloc<MeetingDataSource>
-                                >(
-                                  builder: (context, state) {
-                                    return AlertDialog(
-                                      title: const Text('Adicionar pagamento'),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CampoSelectComponent<String>(
-                                            items: [
-                                              CampoSelectItem<String>(
-                                                label: 'Dinheiro',
-                                                value: 'dinheiro',
-                                              ),
-                                              CampoSelectItem<String>(
-                                                label: 'Cartão de Crédito',
-                                                value: 'cartao_credito',
-                                              ),
-                                              CampoSelectItem<String>(
-                                                label: 'Cartão de Débito',
-                                                value: 'cartao_debito',
-                                              ),
-                                              CampoSelectItem<String>(
-                                                label: 'Boleto',
-                                                value: 'boleto',
-                                              ),
-                                              CampoSelectItem<String>(
-                                                label: 'Pix',
-                                                value: 'pix',
-                                              ),
-                                              CampoSelectItem<String>(
-                                                label: 'Pix Particular',
-                                                value: 'pix_particular',
-                                              ),
-                                            ],
-                                            label: "Forma de pagamento",
-                                            value: meeting.formaPagamento,
-                                            onChange: (value) {
-                                              meeting.formaPagamento = value;
-                                            },
-                                          ),
-                                        ],
+                                return AlertDialog(
+                                  content: ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      Text(
+                                        "Cliente: ${details.appointments!.first.cliente.nome}",
                                       ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Cancelar'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('Confirmar'),
-                                          onPressed: () {
-                                            context
-                                                .read<
-                                                  AgendamentoCalendarioController
-                                                >()
-                                                .updateAgendamentos(meeting);
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
+                                      Text(
+                                        "Serviços: ${details.appointments!.first.servicos.join(',')}",
+                                      ),
+                                      Text(
+                                        "Valor total: ${Preferences.instance.moeda}${Util.stringFormatValor(details.appointments!.first.valorTotal)}",
+                                      ),
+                                      Text(
+                                        "Observação: ${details.appointments!.first.observacao}",
+                                      ),
+                                    ],
+                                  ),
                                 );
                               },
                             );
-                          },
+                          }
+                        },
+                        view: CalendarView.day,
+                        timeSlotViewSettings: const TimeSlotViewSettings(
+                          timelineAppointmentHeight: 500,
                         ),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                meeting.eventName,
-                                style: TextStyle(
-                                  color: Cores.principalText,
-                                  fontWeight: FontWeight.bold,
+                        showNavigationArrow: true,
+                        allowedViews: [
+                          CalendarView.day,
+                          CalendarView.week,
+                          CalendarView.month,
+                        ],
+                        dataSource: state.data,
+                        appointmentBuilder: (context, calendarAppointmentDetails) {
+                          final Meeting meeting =
+                              calendarAppointmentDetails.appointments.first
+                                  as Meeting;
+                          return Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: meeting.background,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: meeting.status == 'concluido',
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      meeting.status = value!
+                                          ? 'concluido'
+                                          : 'agendado';
+                                    });
+                                    showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return BlocBuilder<
+                                          AgendamentoCalendarioController,
+                                          StateBloc<MeetingDataSource>
+                                        >(
+                                          builder: (context, state) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                'Adicionar pagamento',
+                                              ),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  CampoSelectComponent<String>(
+                                                    items: [
+                                                      CampoSelectItem<String>(
+                                                        label: 'Dinheiro',
+                                                        value: 'dinheiro',
+                                                      ),
+                                                      CampoSelectItem<String>(
+                                                        label:
+                                                            'Cartão de Crédito',
+                                                        value: 'cartao_credito',
+                                                      ),
+                                                      CampoSelectItem<String>(
+                                                        label:
+                                                            'Cartão de Débito',
+                                                        value: 'cartao_debito',
+                                                      ),
+                                                      CampoSelectItem<String>(
+                                                        label: 'Boleto',
+                                                        value: 'boleto',
+                                                      ),
+                                                      CampoSelectItem<String>(
+                                                        label: 'Pix',
+                                                        value: 'pix',
+                                                      ),
+                                                      CampoSelectItem<String>(
+                                                        label: 'Pix Particular',
+                                                        value: 'pix_particular',
+                                                      ),
+                                                    ],
+                                                    label: "Forma de pagamento",
+                                                    value:
+                                                        meeting.formaPagamento,
+                                                    onChange: (value) {
+                                                      meeting.formaPagamento =
+                                                          value;
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: const Text('Cancelar'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: const Text(
+                                                    'Confirmar',
+                                                  ),
+                                                  onPressed: () {
+                                                    context
+                                                        .read<
+                                                          AgendamentoCalendarioController
+                                                        >()
+                                                        .updateAgendamentos(
+                                                          meeting,
+                                                        );
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
-                              ),
-                              Text(
-                                meeting.cliente!.telefone ?? "",
-                                style: TextStyle(
-                                  color: Cores.principalText,
-                                  fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        meeting.eventName,
+                                        style: TextStyle(
+                                          color: Cores.principalText,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        meeting.cliente!.telefone ?? "",
+                                        style: TextStyle(
+                                          color: Cores.principalText,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        meeting.servicos.join(", "),
+                                        style: TextStyle(
+                                          color: Cores.principalText,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                meeting.servicos.join(", "),
-                                style: TextStyle(
-                                  color: Cores.principalText,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                              ],
+                            ),
+                          );
+                        },
+                      ),
               ),
+            ),
           ],
         );
       },

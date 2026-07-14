@@ -14,7 +14,8 @@ import 'package:tpb_business_flutter/features/servicos/servico_model.dart';
 
 class ServicoItemPage extends StatefulWidget {
   final String uid;
-  const ServicoItemPage({super.key, this.uid = ''});
+  final bool isAgendamento;
+  const ServicoItemPage({super.key, this.uid = '', this.isAgendamento = false});
 
   @override
   State<ServicoItemPage> createState() => _ServicoItemPageState();
@@ -46,7 +47,15 @@ class _ServicoItemPageState extends State<ServicoItemPage> {
           child: const Icon(Icons.check),
           onPressed: () async {
             bool result = await context.read<ServicoItemController>().save();
-            if (result) appRouter.pushReplacement('/servico');
+            if (result) {
+              if (widget.isAgendamento && context.mounted) {
+                appRouter.pop(
+                  context.read<ServicoItemController>().state.data!,
+                );
+              } else {
+                appRouter.pushReplacement('/servico');
+              }
+            }
           },
         ),
         bottomAppBarItems: [

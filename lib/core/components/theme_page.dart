@@ -66,6 +66,7 @@ class _ThemePageState extends State<ThemePage> {
 
                       Expanded(
                         child: ListView(
+                          shrinkWrap: true,
                           physics: widget.physics,
                           children: widget.children,
                         ),
