@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tpb_business_flutter/core/components/formatters/brazil_phone_formatter.dart';
+import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/camposelect_component.dart';
+import 'package:tpb_business_flutter/core/components/formatters/brazil_phone_formatter.dart';
 import 'package:tpb_business_flutter/core/components/formatters/cpf_cnpj_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
-import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
@@ -34,10 +34,9 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return ThemePage(
+      title: "Dados pessoais",
       children: [
-        Card(
-          color: Colors.white,
-          margin: const EdgeInsets.all(10),
+        Bloco(
           child: Container(
             padding: const EdgeInsets.all(20),
             child: BlocConsumer<UserController, StateBloc<UserModel>>(
@@ -57,13 +56,6 @@ class _UserPageState extends State<UserPage> {
                 }
                 return Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TituloH1(
-                        text: "Dados pessoais",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
                     TextfieldComponent(
                       label: "Nome",
                       text: state.data?.name,
