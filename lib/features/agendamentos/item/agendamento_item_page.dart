@@ -52,6 +52,16 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
                   });
                 },
               ),
+            if ((state.data!.uid ?? '').isNotEmpty) ...[
+              BottomButton(
+                label: 'Excluir',
+                icon: Icons.delete,
+                color: Cores.negativeColor,
+                onPressed: () {
+                  _deleteAgendamento(context);
+                },
+              ),
+            ],
           ],
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
@@ -271,5 +281,36 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToStep(step, context);
     });
+  }
+
+  Future<void> _deleteAgendamento(BuildContext contextScreen) {
+    return showDialog<void>(
+      context: contextScreen,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Excluir Agendamento'),
+          content: const Text('Tem certeza que deseja excluir?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Excluir'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                bool result = await contextScreen
+                    .read<AgendamentoItemController>()
+                    .delete();
+                if (result) {
+                  appRouter.pushReplacement('/agendamento');
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
