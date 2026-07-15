@@ -19,10 +19,16 @@ class AgendamentoItemPage extends StatefulWidget {
 }
 
 class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
+  final ScrollController _stepScrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     context.read<AgendamentoItemController>().get(widget.uid);
+  }
+  @override
+  void dispose() {
+    _stepScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,8 +43,11 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
                 icon: Icons.backspace,
                 color: Cores.secondaryText,
                 onPressed: () {
-                  state.data!.step = state.data!.step - 1;
-                  setState(() {});
+                  
+                  setState(() {
+                    state.data!.step = state.data!.step - 1;
+                  _changeStep(state.data!.step, context);
+                  });
                 },
               ),
           ],
@@ -46,8 +55,11 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
             onPressed: () {
               if (!_validarCamposStep(state.data!.step, context)) return;
               if (state.data!.step < 2) {
-                state.data!.step = state.data!.step + 1;
-                setState(() {});
+                
+                setState(() {
+                  state.data!.step = state.data!.step + 1;
+                _changeStep(state.data!.step, context);
+                });
               } else {
                 context.read<AgendamentoItemController>().save();
               }
@@ -155,37 +167,53 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
 
   Widget _stepHeader(int step) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
+      padding: const EdgeInsets.only(bottom: 20),
+      child: SingleChildScrollView(
+        controller: _stepScrollController,
+      scrollDirection: Axis.horizontal,
+      child: IntrinsicWidth(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
         children: [
-          _stepItem('Cliente', step >= 0),
+          _stepItem('Cliente', step, 0),
           _stepDivider(step >= 1),
-          _stepItem('Serviços', step >= 1),
+          _stepItem('Serviços', step, 1),
           _stepDivider(step >= 2),
-          _stepItem('Agendamento', step >= 2),
+          _stepItem('Agendamento', step, 2),
         ],
+      ),
+      ),
       ),
     );
   }
 
-  Widget _stepItem(String text, bool selected) {
+  Widget _stepItem(String text, int stepAtual, int step) {
     return Expanded(
-      flex: 3,
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: selected ? Cores.primaryColor : Colors.grey,
-          fontWeight: selected ? FontWeight.bold : FontWeight.w500,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 5,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            (stepAtual > step) ? Icons.check_circle : Icons.circle,
+            size: 16,
+            color: (stepAtual >= step) ? Cores.primaryColor : Colors.grey.shade300,
+          ),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: (stepAtual >= step) ? Cores.primaryColor : Colors.grey,
+              fontWeight: (stepAtual >= step) ? FontWeight.bold : FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _stepDivider(bool completed) {
     return Expanded(
-      flex: 2,
       child: Container(
         height: 2,
         margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -195,5 +223,21 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
         ),
       ),
     );
+  }
+
+  void _scrollToStep(int step, BuildContext context) {
+    if (!_stepScrollController.hasClients) return;
+   double itemWidth = MediaQuery.of(context).size.width * 0.8; // ajuste conforme seu layout
+
+  _stepScrollController.animateTo(
+    step * itemWidth,
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.easeInOut,
+  );
+}
+ void _changeStep(int step, BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToStep(step, context);
+    });
   }
 }
