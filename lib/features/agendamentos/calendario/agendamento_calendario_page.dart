@@ -261,7 +261,8 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                             ),
 
                                             // Observação
-                                            if ((meeting.observacao ?? '')
+                                            if (meeting
+                                                .observacao
                                                 .isNotEmpty) ...[
                                               const SizedBox(height: 14),
                                               Row(
