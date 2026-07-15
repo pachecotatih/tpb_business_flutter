@@ -62,251 +62,304 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                     ? const Center(child: CircularProgressIndicator())
                     : SfCalendar(
                         onTap: (CalendarTapDetails details) {
-                          if (details.appointments == null) {
-                            context.pushReplacement(
-                              '/agendamento/new',
-                              extra: {'data': details.date},
-                            );
-                          } else {
-                            final meeting =
-                                details.appointments!.first as Meeting;
-                            final BuildContext contextScreen = context;
-                            showDialog<void>(
-                              context: contextScreen,
-                              barrierColor: Colors.black54,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  constraints: BoxConstraints(maxWidth: 400),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      // Header colorido
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 18,
+                          if (details.targetElement !=
+                              CalendarElement.appointment) {
+                            return;
+                          }
+
+                          final meeting =
+                              details.appointments!.first as Meeting;
+                          final BuildContext contextScreen = context;
+                          showDialog<void>(
+                            context: contextScreen,
+                            barrierColor: Colors.black54,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                constraints: BoxConstraints(maxWidth: 400),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    // Header colorido
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 18,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Cores.primaryColor,
+                                            Cores.primaryColor.withValues(
+                                              alpha: 0.75,
+                                            ),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
                                         ),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Cores.primaryColor,
-                                              Cores.primaryColor.withValues(
-                                                alpha: 0.75,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.person_rounded,
+                                                color: Colors.white,
+                                                size: 18,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                'Agendamento',
+                                                style: TextStyle(
+                                                  color: Colors.white
+                                                      .withValues(alpha: 0.85),
+                                                  fontSize: 13,
+                                                  letterSpacing: 0.5,
+                                                ),
                                               ),
                                             ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
                                           ),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            meeting.cliente?.nome ?? 'Sem nome',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    // Conteúdo
+                                    Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Serviços
+                                          if (meeting.servicos.isNotEmpty) ...[
+                                            Text(
+                                              'Serviços',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: Cores.secondaryText,
+                                                letterSpacing: 0.8,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Wrap(
+                                              spacing: 6,
+                                              runSpacing: 6,
+                                              children: meeting.servicos
+                                                  .map(
+                                                    (s) => Container(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 5,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: Cores
+                                                            .primaryColor
+                                                            .withValues(
+                                                              alpha: 0.1,
+                                                            ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              20,
+                                                            ),
+                                                        border: Border.all(
+                                                          color: Cores
+                                                              .primaryColor
+                                                              .withValues(
+                                                                alpha: 0.3,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      child: Text(
+                                                        s.nome,
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: Cores
+                                                              .primaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                            const SizedBox(height: 16),
+                                          ],
+
+                                          // Valor Total
+                                          Container(
+                                            padding: const EdgeInsets.all(14),
+                                            decoration: BoxDecoration(
+                                              color: Cores.principalBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              border: Border.all(
+                                                color: Colors.grey.shade200,
+                                              ),
+                                            ),
+                                            child: Row(
                                               children: [
-                                                const Icon(
-                                                  Icons.person_rounded,
-                                                  color: Colors.white,
-                                                  size: 18,
+                                                Icon(
+                                                  Icons.attach_money_rounded,
+                                                  color: Cores.positiveColor,
+                                                  size: 22,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'Valor total',
+                                                      style: TextStyle(
+                                                        fontSize: 11,
+                                                        color:
+                                                            Cores.secondaryText,
+                                                        letterSpacing: 0.5,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${Preferences.instance.moeda} ${Util.stringFormatValor(meeting.valorTotal)}',
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Cores.positiveColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          // Observação
+                                          if (meeting
+                                              .observacao
+                                              .isNotEmpty) ...[
+                                            const SizedBox(height: 14),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Icon(
+                                                  Icons.notes_rounded,
+                                                  size: 16,
+                                                  color: Cores.secondaryText,
                                                 ),
                                                 const SizedBox(width: 8),
-                                                Text(
-                                                  'Agendamento',
-                                                  style: TextStyle(
-                                                    color: Colors.white
-                                                        .withValues(
-                                                          alpha: 0.85,
-                                                        ),
-                                                    fontSize: 13,
-                                                    letterSpacing: 0.5,
+                                                Expanded(
+                                                  child: Text(
+                                                    meeting.observacao,
+                                                    style: TextStyle(
+                                                      fontSize: 13,
+                                                      color:
+                                                          Cores.secondaryText,
+                                                      height: 1.4,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              meeting.cliente?.nome ??
-                                                  'Sem nome',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
                                           ],
-                                        ),
-                                      ),
 
-                                      // Conteúdo
-                                      Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // Serviços
-                                            if (meeting
-                                                .servicos
-                                                .isNotEmpty) ...[
-                                              Text(
-                                                'Serviços',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Cores.secondaryText,
-                                                  letterSpacing: 0.8,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Wrap(
-                                                spacing: 6,
-                                                runSpacing: 6,
-                                                children: meeting.servicos
-                                                    .map(
-                                                      (s) => Container(
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                              horizontal: 10,
-                                                              vertical: 5,
-                                                            ),
-                                                        decoration: BoxDecoration(
-                                                          color: Cores
-                                                              .primaryColor
-                                                              .withValues(
-                                                                alpha: 0.1,
-                                                              ),
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                20,
-                                                              ),
-                                                          border: Border.all(
-                                                            color: Cores
-                                                                .primaryColor
-                                                                .withValues(
-                                                                  alpha: 0.3,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          s.nome,
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                            color: Cores
-                                                                .primaryColor,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                    .toList(),
-                                              ),
-                                              const SizedBox(height: 16),
-                                            ],
+                                          const SizedBox(height: 20),
 
-                                            // Valor Total
-                                            Container(
-                                              padding: const EdgeInsets.all(14),
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    Cores.principalBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.grey.shade200,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.attach_money_rounded,
-                                                    color: Cores.positiveColor,
-                                                    size: 22,
+                                          // Botões
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: OutlinedButton(
+                                                  style: OutlinedButton.styleFrom(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          vertical: 12,
+                                                        ),
+                                                    side: BorderSide(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                    ),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            12,
+                                                          ),
+                                                    ),
                                                   ),
-                                                  const SizedBox(width: 10),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Valor total',
-                                                        style: TextStyle(
-                                                          fontSize: 11,
-                                                          color: Cores
-                                                              .secondaryText,
-                                                          letterSpacing: 0.5,
+                                                  onPressed: () =>
+                                                      context.pop(),
+                                                  child: Text(
+                                                    'Fechar',
+                                                    style: TextStyle(
+                                                      color:
+                                                          Cores.secondaryText,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Expanded(
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Cores.primaryColor,
+                                                        Cores.primaryColor
+                                                            .withValues(
+                                                              alpha: 0.8,
+                                                            ),
+                                                      ],
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        '${Preferences.instance.moeda} ${Util.stringFormatValor(meeting.valorTotal)}',
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Cores
-                                                              .positiveColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Cores
+                                                            .primaryColor
+                                                            .withValues(
+                                                              alpha: 0.4,
+                                                            ),
+                                                        blurRadius: 8,
+                                                        offset: const Offset(
+                                                          0,
+                                                          3,
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-
-                                            // Observação
-                                            if (meeting
-                                                .observacao
-                                                .isNotEmpty) ...[
-                                              const SizedBox(height: 14),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Icon(
-                                                    Icons.notes_rounded,
-                                                    size: 16,
-                                                    color: Cores.secondaryText,
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Expanded(
-                                                    child: Text(
-                                                      meeting.observacao,
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color:
-                                                            Cores.secondaryText,
-                                                        height: 1.4,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-
-                                            const SizedBox(height: 20),
-
-                                            // Botões
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: OutlinedButton(
-                                                    style: OutlinedButton.styleFrom(
+                                                  child: ElevatedButton.icon(
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      shadowColor:
+                                                          Colors.transparent,
                                                       padding:
                                                           const EdgeInsets.symmetric(
                                                             vertical: 12,
                                                           ),
-                                                      side: BorderSide(
-                                                        color: Colors
-                                                            .grey
-                                                            .shade300,
-                                                      ),
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.circular(
@@ -314,103 +367,40 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                                             ),
                                                       ),
                                                     ),
-                                                    onPressed: () =>
-                                                        context.pop(),
-                                                    child: Text(
-                                                      'Fechar',
+                                                    onPressed: () {
+                                                      context.pop();
+                                                      contextScreen.pushReplacement(
+                                                        '/agendamento/${meeting.uid}',
+                                                      );
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.edit_rounded,
+                                                      color: Colors.white,
+                                                      size: 16,
+                                                    ),
+                                                    label: const Text(
+                                                      'Editar',
                                                       style: TextStyle(
-                                                        color:
-                                                            Cores.secondaryText,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: DecoratedBox(
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        colors: [
-                                                          Cores.primaryColor,
-                                                          Cores.primaryColor
-                                                              .withValues(
-                                                                alpha: 0.8,
-                                                              ),
-                                                        ],
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            12,
-                                                          ),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Cores
-                                                              .primaryColor
-                                                              .withValues(
-                                                                alpha: 0.4,
-                                                              ),
-                                                          blurRadius: 8,
-                                                          offset: const Offset(
-                                                            0,
-                                                            3,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: ElevatedButton.icon(
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        shadowColor:
-                                                            Colors.transparent,
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                              vertical: 12,
-                                                            ),
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                12,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      onPressed: () {
-                                                        context.pop();
-                                                        contextScreen
-                                                            .pushReplacement(
-                                                              '/agendamento/${meeting.uid}',
-                                                            );
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.edit_rounded,
                                                         color: Colors.white,
-                                                        size: 16,
-                                                      ),
-                                                      label: const Text(
-                                                        'Editar',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          }
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
+                        monthViewSettings: MonthViewSettings(showAgenda: true),
                         view: CalendarView.day,
                         timeSlotViewSettings: const TimeSlotViewSettings(
                           timelineAppointmentHeight: 500,
@@ -433,9 +423,11 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Checkbox(
                                   value: meeting.status == 'concluido',
+                                  side: const BorderSide(color: Colors.white),
                                   onChanged: (bool? value) {
                                     if ((value ?? false)) {
                                       BuildContext contextScreen = context;
@@ -537,6 +529,7 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                     }
                                   },
                                 ),
+
                                 Expanded(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -546,17 +539,18 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                       Text(
                                         meeting.eventName,
                                         style: TextStyle(
-                                          color: Cores.principalText,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
-                                        meeting.cliente!.telefone ?? "",
-                                        style: TextStyle(
-                                          color: Cores.principalText,
-                                          fontWeight: FontWeight.bold,
+                                      if (meeting.cliente!.telefone != null)
+                                        Text(
+                                          meeting.cliente!.telefone!,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),
