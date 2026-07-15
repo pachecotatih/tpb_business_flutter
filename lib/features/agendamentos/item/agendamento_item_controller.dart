@@ -64,7 +64,8 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
 
   Future<void> _getClientes() async {
     Response response;
-    emit(state.copyWith(isLoading: true));
+    state.data!.loadingClientes = true;
+    emit(state.copyWith(data: state.data));
     try {
       try {
         response = await repository.get('${Globals.urlApi}/cliente');
@@ -77,6 +78,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
           agendamento.clientes = (response.data as List)
               .map((e) => ClienteModel.fromJson(e))
               .toList();
+          agendamento.loadingClientes = false;
           emit(state.copyWith(data: agendamento, isLoading: false));
           break;
         case 500:
@@ -103,7 +105,8 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
 
   Future<void> _getServicos() async {
     Response response;
-    emit(state.copyWith(isLoading: true));
+    state.data!.loadingServicos = true;
+    emit(state.copyWith(data: state.data));
     try {
       try {
         response = await repository.get('${Globals.urlApi}/servico');
@@ -116,6 +119,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
           agendamento.servicosInit = (response.data as List)
               .map((e) => ServicoModel.fromJson(e))
               .toList();
+          agendamento.loadingServicos = false;
           emit(state.copyWith(data: agendamento, isLoading: false));
           break;
         case 500:

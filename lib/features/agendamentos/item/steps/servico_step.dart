@@ -28,7 +28,13 @@ class _ServicoStepState extends State<ServicoStep> {
           children: [
             Expanded(
               child: CampoSelectPesquisaComponent<ServicoModel>(
-                items: [
+                items: widget.state.data!.loadingServicos
+                  ? [
+                    CampoSelectItem<ServicoModel>(
+                      label: 'Carregando...',
+                      value: ServicoModel(),
+                    ),
+                  ] : [
                   ...(widget.state.data!.servicosInit ?? []).map(
                     (e) => CampoSelectItem<ServicoModel>(
                       label:
@@ -108,7 +114,8 @@ class _ServicoStepState extends State<ServicoStep> {
                   backgroundColor: Cores.negativeColor.withValues(alpha: 0.1),
                   foregroundColor: Cores.negativeColor,
                 ),
-                onPressed: () {
+                onPressed: () async{
+                  // implementar ação de deletar o serviço do relacionamento com o agendamento quando for editar
                   setState(() {
                     widget.state.data!.servicos?.remove(servico);
                   });
