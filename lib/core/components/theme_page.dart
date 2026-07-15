@@ -36,73 +36,88 @@ class _ThemePageState extends State<ThemePage> {
       backgroundColor: Cores.principalBackground,
       appBar: MenuApp(),
       drawer: useDrawer ? Drawer(child: MenuDrawer()) : null,
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (!useDrawer) SizedBox(width: 280, child: MenuDrawer()),
-                if (!useDrawer) const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1500),
+          child: Stack(
+            children: [
+              SafeArea(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!useDrawer) SizedBox(width: 280, child: MenuDrawer()),
+                    if (!useDrawer) const SizedBox(width: 10),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 60),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (widget.title != null)
-                              TituloH1(
-                                text: widget.title!,
-                                color: Cores.colorLogo,
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  if (widget.title != null)
+                                    TituloH1(
+                                      text: widget.title!,
+                                      color: Cores.colorLogo,
+                                    ),
+                                
+                                  Spacer(),
+                                  if (widget.contentTop != null) widget.contentTop!,
+                                ],
                               ),
-
-                            Spacer(),
-                            if (widget.contentTop != null) widget.contentTop!,
+                            ),
+                                
+                            Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                physics: widget.physics,
+                                children: widget.children,
+                              ),
+                            ),
                           ],
                         ),
                       ),
-
+                    ),
+                  ],
+                ),
+              ),
+              if ((widget.bottomAppBarItems ?? []).isNotEmpty)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Row(
+                    children: [
+                      if (!useDrawer) SizedBox(width: 280),
                       Expanded(
-                        child: ListView(
-                          shrinkWrap: true,
-                          physics: widget.physics,
-                          children: widget.children,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          color: Colors.white,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: widget.bottomAppBarItems!,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+                floatingActionButton(context),
+            ],
           ),
-          if ((widget.bottomAppBarItems ?? []).isNotEmpty)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Row(
-                children: [
-                  if (!useDrawer) SizedBox(width: 280),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: widget.bottomAppBarItems!,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-        ],
+        ),
       ),
-      floatingActionButton: widget.floatingActionButton,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: null,
+    );
+  }
+
+  Widget floatingActionButton(BuildContext context) {
+    return Positioned(
+      right: 0,
+      bottom: 20,
+      child: Container(padding: EdgeInsets.only(right: 10),child: widget.floatingActionButton ?? const SizedBox.shrink()),
     );
   }
 }

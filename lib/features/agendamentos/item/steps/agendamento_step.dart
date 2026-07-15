@@ -155,7 +155,7 @@ class _AgendamentoStepState extends State<AgendamentoStep> {
               firstDate: DateTime(2000),
               lastDate: DateTime(3000),
             );
-            if (data != null) {
+            if (data != null && context.mounted) {
               final prevTime = widget.state.data!.dataInicio != null
                   ? TimeOfDay.fromDateTime(
                       DateTime.parse(widget.state.data!.dataInicio!),

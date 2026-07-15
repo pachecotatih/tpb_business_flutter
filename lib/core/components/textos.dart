@@ -49,6 +49,30 @@ class TituloH2 extends StatelessWidget {
   }
 }
 
+class TituloH3 extends StatelessWidget {
+  final String text;
+  final TextAlign? textAlign;
+  final Color? color;
+  final double? fontSize;
+  const TituloH3({
+    super.key,
+    required this.text,
+    this.textAlign,
+    this.color,
+    this.fontSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextoPadrao(
+      text: text,
+      color: color ?? Cores.principalText,
+      textAlign: textAlign ?? TextAlign.center,
+      fontSize: fontSize ?? 16,
+    );
+  }
+}
+
 class TextoPadrao extends StatelessWidget {
   final String text;
   final TextAlign? textAlign;

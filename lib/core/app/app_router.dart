@@ -17,6 +17,7 @@ import 'package:tpb_business_flutter/features/fluxo_caixa/item/fluxo_caixa_item_
 import 'package:tpb_business_flutter/features/fluxo_caixa/item/fluxo_caixa_item_page.dart';
 import 'package:tpb_business_flutter/features/fluxo_caixa/lista/fluxo_caixa_lista_controller.dart';
 import 'package:tpb_business_flutter/features/fluxo_caixa/lista/fluxo_caixa_lista_page.dart';
+import 'package:tpb_business_flutter/features/home/home_controller.dart';
 import 'package:tpb_business_flutter/features/home/home_page.dart';
 import 'package:tpb_business_flutter/features/login/cadastrar_page.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
@@ -57,7 +58,10 @@ GoRouter appRouter = GoRouter(
         }
         return '/';
       },
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => BlocProvider(
+        create: (_) => HomeController(DioRepository()),
+        child: HomePage(),
+      ),
     ),
     GoRoute(
       path: '/configuracoes',
