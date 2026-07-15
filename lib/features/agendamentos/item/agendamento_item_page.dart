@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
@@ -8,6 +9,7 @@ import 'package:tpb_business_flutter/features/agendamentos/agendamento_model.dar
 import 'package:tpb_business_flutter/features/agendamentos/item/agendamento_item_controller.dart';
 import 'package:tpb_business_flutter/features/agendamentos/item/steps/cliente_step.dart';
 import 'package:tpb_business_flutter/features/agendamentos/item/steps/servico_step.dart';
+import 'package:tpb_business_flutter/features/agendamentos/item/steps/agendamento_step.dart';
 
 class AgendamentoItemPage extends StatefulWidget {
   final String uid;
@@ -52,7 +54,7 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
               ),
           ],
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
               if (!_validarCamposStep(state.data!.step, context)) return;
               if (state.data!.step < 2) {
                 setState(() {
@@ -60,7 +62,12 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
                   _changeStep(state.data!.step, context);
                 });
               } else {
-                context.read<AgendamentoItemController>().save();
+                bool result = await context
+                    .read<AgendamentoItemController>()
+                    .save();
+                if (result) {
+                  appRouter.pushReplacement('/agendamento');
+                }
               }
             },
             backgroundColor: Cores.positiveColor,
@@ -181,7 +188,7 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
     BuildContext context,
     StateBloc<AgendamentoModel> state,
   ) {
-    return [_stepHeader(2)];
+    return [_stepHeader(2), AgendamentoStep(state: state, date: widget.date)];
   }
 
   Widget _stepHeader(int step) {

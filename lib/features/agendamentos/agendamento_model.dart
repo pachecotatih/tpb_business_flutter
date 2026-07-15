@@ -41,7 +41,7 @@ class AgendamentoModel {
     dataFim = json['data_fim'];
     clienteId = json['cliente_id'];
     observacao = json['observacao'];
-    valorTotal = json['valor_total'];
+    valorTotal = double.parse((json['valor_total'] ?? '0').toString());
     clientes = json['clientes'];
     if (json['servicos'] != null) {
       servicos = <ServicoModel>[];
