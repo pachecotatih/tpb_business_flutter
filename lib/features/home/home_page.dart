@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                                   backgroundColor: Cores.primaryColor,
                                 ),
                                 onPressed: () {
-                                  context.pushReplacement('/agendamentos');
+                                  context.pushReplacement('/agendamento');
                                 },
                                 child: Text("Ver todos"),
                               ),
