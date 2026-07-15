@@ -10,4 +10,6 @@ class Cores {
   static Color principalText = Color(0xFF111827);
   static Color secondaryText = Color(0xFF6B7280);
   static Color principalBackground = Color(0xFFF9FAFB);
+
+  static Color scheduleColor = Color(0xFF7C3AED);
 }

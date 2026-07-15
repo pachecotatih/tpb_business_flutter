@@ -61,6 +61,7 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                 child: (state.isLoading)
                     ? const Center(child: CircularProgressIndicator())
                     : SfCalendar(
+                        allowAppointmentResize: true,
                         onTap: (CalendarTapDetails details) {
                           if (details.targetElement !=
                               CalendarElement.appointment) {
@@ -203,6 +204,37 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                             ),
                                             const SizedBox(height: 16),
                                           ],
+
+                                          // Data início e fim
+                                          Container(
+                                            padding: const EdgeInsets.all(14),
+                                            decoration: BoxDecoration(
+                                              color: Cores.principalBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              border: Border.all(
+                                                color: Colors.grey.shade200,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.access_time,
+                                                  size: 18,
+                                                  color: Cores.primaryColor,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  '${Util.dateFormatString(meeting.from.toString())} ${Util.timeFormatString(meeting.from.toString())} - ${Util.timeFormatString(meeting.to.toString())}',
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: Cores.primaryColor,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
 
                                           // Valor Total
                                           Container(
@@ -403,9 +435,16 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                           );
                         },
                         monthViewSettings: MonthViewSettings(showAgenda: true),
+                        scheduleViewSettings: ScheduleViewSettings(
+                          dayHeaderSettings: DayHeaderSettings(),
+                        ),
                         view: CalendarView.day,
+                        allowViewNavigation: false,
+                        showCurrentTimeIndicator: true,
                         timeSlotViewSettings: const TimeSlotViewSettings(
                           timelineAppointmentHeight: 500,
+                          timeInterval: Duration(minutes: 30),
+                          timeFormat: 'HH:mm',
                         ),
                         showNavigationArrow: true,
                         allowedViews: [
@@ -424,8 +463,9 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                               color: meeting.background,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              runAlignment: WrapAlignment.center,
                               children: [
                                 Checkbox(
                                   value: meeting.status == 'concluido',
@@ -499,7 +539,7 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                                   meeting.background =
                                                       (value ?? false)
                                                       ? Cores.positiveColor
-                                                      : Cores.primaryColor;
+                                                      : Cores.scheduleColor;
                                                   Navigator.of(context).pop();
                                                   bool
                                                   result = await contextScreen
@@ -537,29 +577,26 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                   },
                                 ),
 
-                                Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      meeting.eventName,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    if (meeting.cliente!.telefone != null)
                                       Text(
-                                        meeting.eventName,
+                                        meeting.cliente!.telefone!,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      if (meeting.cliente!.telefone != null)
-                                        Text(
-                                          meeting.cliente!.telefone!,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                    ],
-                                  ),
+                                  ],
                                 ),
                               ],
                             ),

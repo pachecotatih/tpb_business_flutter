@@ -49,6 +49,11 @@ class Util {
     return dataNova;
   }
 
+  static String timeFormatString(String data) {
+    String dataNova = DateFormat('HH:mm').format(DateTime.parse(data));
+    return dataNova;
+  }
+
   static DateTime dateFormatDateTime(String value) {
     return (value != '')
         ? DateTime.parse(
