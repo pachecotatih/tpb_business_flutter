@@ -26,8 +26,7 @@ class DioRepository implements Repository {
         "device_id": deviceId,
       },
       validateStatus: (status) {
-        return (status != null && status >= 200 && status < 300) ||
-            status == 422;
+        return status != null;
       },
     );
   }

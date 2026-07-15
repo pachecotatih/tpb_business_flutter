@@ -59,17 +59,19 @@ class AgendamentoCalendarioController
     }
   }
 
-  Future<void> updateAgendamentos(Meeting meeting) async {
+  Future<bool> updateAgendamentos(Meeting meeting) async {
     try {
       Response response;
       try {
         response = await repository
             .put('${Globals.urlApi}/agendamento/${meeting.uid}', {
               'status': meeting.status,
-              'data_inicio': meeting.from,
-              'data_fim': meeting.to,
+              'data_inicio': meeting.from.toString(),
+              'data_fim': meeting.to.toString(),
               'cliente_id': meeting.clienteId,
               'forma_pagamento': meeting.formaPagamento,
+              'valor_total': meeting.valorTotal,
+              'servicos': meeting.servicos.map((e) => e.toJson()).toList(),
             });
       } on DioException catch (e) {
         throw Exception("Ocorreu um erro ao obter agendamentos. ${e.message}");
@@ -78,7 +80,7 @@ class AgendamentoCalendarioController
       switch (response.statusCode) {
         case 200:
           emit(state.copyWith(isLoading: false));
-          break;
+          return true;
         case 500:
           emit(
             state.copyWith(
@@ -104,6 +106,7 @@ class AgendamentoCalendarioController
     } catch (e) {
       emit(state.copyWith(hasError: e.toString(), isLoading: false));
     }
+    return false;
   }
 
   MeetingDataSource _getMeetingDataSource(List<AgendamentoModel> agendamentos) {
@@ -120,10 +123,10 @@ class AgendamentoCalendarioController
     DateTime dataFim = DateTime.now();
 
     if (agendamento.dataInicio != null) {
-      dataInicio = Util.dateFormatDateTime(agendamento.dataInicio!);
+      dataInicio = DateTime.parse(agendamento.dataInicio!);
     }
     if (agendamento.dataFim != null) {
-      dataFim = Util.dateFormatDateTime(agendamento.dataFim!);
+      dataFim = DateTime.parse(agendamento.dataFim!);
     }
     return Meeting(
       eventName: agendamento.cliente?.nome ?? 'Sem nome',

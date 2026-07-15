@@ -42,7 +42,12 @@ class AgendamentoModel {
     clienteId = json['cliente_id'];
     observacao = json['observacao'];
     valorTotal = double.parse((json['valor_total'] ?? '0').toString());
-    clientes = json['clientes'];
+    if (json['clientes'] != null) {
+      clientes = <ClienteModel>[];
+      json['clientes'].forEach((v) {
+        clientes!.add(ClienteModel.fromJson(v));
+      });
+    }
     if (json['servicos'] != null) {
       servicos = <ServicoModel>[];
       json['servicos'].forEach((v) {
