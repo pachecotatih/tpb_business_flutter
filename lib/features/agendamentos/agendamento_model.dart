@@ -14,8 +14,8 @@ class AgendamentoModel {
   List<ServicoModel>? servicosInit;
   List<ClienteModel>? clientes;
 
-  bool loadingClientes=false;
-  bool loadingServicos=false;
+  bool loadingClientes = false;
+  bool loadingServicos = false;
 
   int step = 0;
 

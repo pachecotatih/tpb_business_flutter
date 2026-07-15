@@ -22,13 +22,14 @@ class _ClienteStepState extends State<ClienteStep> {
       children: [
         Expanded(
           child: CampoSelectPesquisaComponent<int>(
-            items: (widget.state.data!.loadingClientes)?[
-              CampoSelectItem<int>(label: 'Carregando...', value: 0),
-            ]:[
-              ...(widget.state.data!.clientes ?? []).map(
-                (e) => CampoSelectItem<int>(label: e.nome, value: e.id ?? 0),
-              ),
-            ],
+            items: (widget.state.data!.loadingClientes)
+                ? [CampoSelectItem<int>(label: 'Carregando...', value: 0)]
+                : [
+                    ...(widget.state.data!.clientes ?? []).map(
+                      (e) =>
+                          CampoSelectItem<int>(label: e.nome, value: e.id ?? 0),
+                    ),
+                  ],
             label: 'Cliente',
             value: widget.state.data!.clienteId ?? 0,
             onChange: (value) async {

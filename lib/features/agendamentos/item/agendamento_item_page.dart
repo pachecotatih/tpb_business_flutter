@@ -25,6 +25,7 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
     super.initState();
     context.read<AgendamentoItemController>().get(widget.uid);
   }
+
   @override
   void dispose() {
     _stepScrollController.dispose();
@@ -43,10 +44,9 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
                 icon: Icons.backspace,
                 color: Cores.secondaryText,
                 onPressed: () {
-                  
                   setState(() {
                     state.data!.step = state.data!.step - 1;
-                  _changeStep(state.data!.step, context);
+                    _changeStep(state.data!.step, context);
                   });
                 },
               ),
@@ -55,10 +55,9 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
             onPressed: () {
               if (!_validarCamposStep(state.data!.step, context)) return;
               if (state.data!.step < 2) {
-                
                 setState(() {
                   state.data!.step = state.data!.step + 1;
-                _changeStep(state.data!.step, context);
+                  _changeStep(state.data!.step, context);
                 });
               } else {
                 context.read<AgendamentoItemController>().save();
@@ -112,10 +111,30 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
         }
         break;
       case 1:
-        if ((context.read<AgendamentoItemController>().state.data!.servicos ?? []).isEmpty) {
+        final servicos =
+            context.read<AgendamentoItemController>().state.data!.servicos ??
+            [];
+        if (servicos.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Selecione um ou mais serviços'),
+              backgroundColor: Cores.negativeColor,
+            ),
+          );
+          return false;
+        }
+
+        bool servicoInvalido = servicos.any(
+          (servico) =>
+              (servico.valorPadrao == null || servico.valorPadrao == 0) ||
+              (servico.duracaoPadrao == null ||
+                  servico.duracaoPadrao!.trim().isEmpty ||
+                  servico.duracaoPadrao == '00:00'),
+        );
+        if (servicoInvalido) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('O serviço precisa conter um valor e uma duração.'),
               backgroundColor: Cores.negativeColor,
             ),
           );
@@ -170,19 +189,19 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
       padding: const EdgeInsets.only(bottom: 20),
       child: SingleChildScrollView(
         controller: _stepScrollController,
-      scrollDirection: Axis.horizontal,
-      child: IntrinsicWidth(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-        children: [
-          _stepItem('Cliente', step, 0),
-          _stepDivider(step >= 1),
-          _stepItem('Serviços', step, 1),
-          _stepDivider(step >= 2),
-          _stepItem('Agendamento', step, 2),
-        ],
-      ),
-      ),
+        scrollDirection: Axis.horizontal,
+        child: IntrinsicWidth(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _stepItem('Cliente', step, 0),
+              _stepDivider(step >= 1),
+              _stepItem('Serviços', step, 1),
+              _stepDivider(step >= 2),
+              _stepItem('Agendamento', step, 2),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -197,14 +216,18 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
           Icon(
             (stepAtual > step) ? Icons.check_circle : Icons.circle,
             size: 16,
-            color: (stepAtual >= step) ? Cores.primaryColor : Colors.grey.shade300,
+            color: (stepAtual >= step)
+                ? Cores.primaryColor
+                : Colors.grey.shade300,
           ),
           Text(
             text,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: (stepAtual >= step) ? Cores.primaryColor : Colors.grey,
-              fontWeight: (stepAtual >= step) ? FontWeight.bold : FontWeight.w500,
+              fontWeight: (stepAtual >= step)
+                  ? FontWeight.bold
+                  : FontWeight.w500,
             ),
           ),
         ],
@@ -227,15 +250,17 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
 
   void _scrollToStep(int step, BuildContext context) {
     if (!_stepScrollController.hasClients) return;
-   double itemWidth = MediaQuery.of(context).size.width * 0.8; // ajuste conforme seu layout
+    double itemWidth =
+        MediaQuery.of(context).size.width * 0.8; // ajuste conforme seu layout
 
-  _stepScrollController.animateTo(
-    step * itemWidth,
-    duration: const Duration(milliseconds: 300),
-    curve: Curves.easeInOut,
-  );
-}
- void _changeStep(int step, BuildContext context) {
+    _stepScrollController.animateTo(
+      step * itemWidth,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _changeStep(int step, BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToStep(step, context);
     });

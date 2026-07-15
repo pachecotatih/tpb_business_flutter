@@ -29,20 +29,21 @@ class _ServicoStepState extends State<ServicoStep> {
             Expanded(
               child: CampoSelectPesquisaComponent<ServicoModel>(
                 items: widget.state.data!.loadingServicos
-                  ? [
-                    CampoSelectItem<ServicoModel>(
-                      label: 'Carregando...',
-                      value: ServicoModel(),
-                    ),
-                  ] : [
-                  ...(widget.state.data!.servicosInit ?? []).map(
-                    (e) => CampoSelectItem<ServicoModel>(
-                      label:
-                          '${e.nome} - ${Util.stringFormatValor(e.valorPadrao ?? 0)}',
-                      value: e,
-                    ),
-                  ),
-                ],
+                    ? [
+                        CampoSelectItem<ServicoModel>(
+                          label: 'Carregando...',
+                          value: ServicoModel(),
+                        ),
+                      ]
+                    : [
+                        ...(widget.state.data!.servicosInit ?? []).map(
+                          (e) => CampoSelectItem<ServicoModel>(
+                            label:
+                                '${e.nome} - ${Util.stringFormatValor(e.valorPadrao ?? 0)}',
+                            value: e,
+                          ),
+                        ),
+                      ],
                 label: 'Serviço',
                 value: ServicoModel(),
                 onChange: (value) async {
@@ -80,7 +81,7 @@ class _ServicoStepState extends State<ServicoStep> {
           itemCount: widget.state.data!.servicos?.length ?? 0,
           itemBuilder: (context, index) {
             ServicoModel? servico = widget.state.data!.servicos?[index];
-            return _itemServico(servico??ServicoModel());
+            return _itemServico(servico ?? ServicoModel());
           },
         ),
       ],
@@ -114,7 +115,7 @@ class _ServicoStepState extends State<ServicoStep> {
                   backgroundColor: Cores.negativeColor.withValues(alpha: 0.1),
                   foregroundColor: Cores.negativeColor,
                 ),
-                onPressed: () async{
+                onPressed: () async {
                   // implementar ação de deletar o serviço do relacionamento com o agendamento quando for editar
                   setState(() {
                     widget.state.data!.servicos?.remove(servico);

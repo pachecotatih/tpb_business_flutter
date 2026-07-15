@@ -4,7 +4,11 @@ class CampoSelectItem<T> {
   final String label;
   final T value;
   final bool disabled;
-  CampoSelectItem({required this.label, required this.value, this.disabled = false});
+  CampoSelectItem({
+    required this.label,
+    required this.value,
+    this.disabled = false,
+  });
 }
 
 class CampoSelectComponent<T> extends StatefulWidget {
@@ -58,7 +62,11 @@ class _CampoSelectComponentState<T> extends State<CampoSelectComponent<T>> {
             widget.items.map((e) => Text(e.label)).toList(),
         items: widget.items
             .map(
-              (e) => DropdownMenuItem<T>(value: e.value,enabled: !e.disabled, child: Text(e.label)),
+              (e) => DropdownMenuItem<T>(
+                value: e.value,
+                enabled: !e.disabled,
+                child: Text(e.label),
+              ),
             )
             .toList(),
         onChanged: (T? value) {
@@ -119,7 +127,7 @@ class _CampoSelectPesquisaComponentState<T>
   void didUpdateWidget(covariant CampoSelectPesquisaComponent<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-     if (oldWidget.items != widget.items) {
+    if (oldWidget.items != widget.items) {
       _controller.text =
           widget.items
               .where((e) => e.value == widget.value)
@@ -160,7 +168,13 @@ class _CampoSelectPesquisaComponentState<T>
         label: Text(widget.label),
         menuHeight: 300,
         dropdownMenuEntries: widget.items
-            .map((e) => DropdownMenuEntry<T>(value: e.value,enabled: !e.disabled, label: e.label))
+            .map(
+              (e) => DropdownMenuEntry<T>(
+                value: e.value,
+                enabled: !e.disabled,
+                label: e.label,
+              ),
+            )
             .toList(),
         onSelected: (value) {
           if (value == null) return;
