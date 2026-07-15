@@ -15,6 +15,13 @@ class ClienteStep extends StatefulWidget {
 }
 
 class _ClienteStepState extends State<ClienteStep> {
+  ClienteModel cliente = ClienteModel();
+  @override
+  void initState() {
+    super.initState();
+    cliente = widget.state.data!.cliente ?? ClienteModel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,7 +30,12 @@ class _ClienteStepState extends State<ClienteStep> {
         Expanded(
           child: CampoSelectPesquisaComponent<int>(
             items: (widget.state.data!.loadingClientes)
-                ? [CampoSelectItem<int>(label: 'Carregando...', value: 0)]
+                ? [
+                    CampoSelectItem<int>(
+                      label: cliente.nome,
+                      value: cliente.id ?? 0,
+                    ),
+                  ]
                 : [
                     ...(widget.state.data!.clientes ?? []).map(
                       (e) =>
