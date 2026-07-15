@@ -142,7 +142,7 @@ class AgendamentoCalendarioController
           ? Cores.negativeColor
           : (agendamento.status == 'concluido'
                 ? Cores.positiveColor
-                : Cores.secondaryText),
+                : Cores.primaryColor),
     );
   }
 }

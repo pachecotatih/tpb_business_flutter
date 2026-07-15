@@ -492,9 +492,14 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                               TextButton(
                                                 child: const Text('Confirmar'),
                                                 onPressed: () async {
-                                                  meeting.status = value!
+                                                  meeting.status =
+                                                      (value ?? false)
                                                       ? 'concluido'
                                                       : 'agendado';
+                                                  meeting.background =
+                                                      (value ?? false)
+                                                      ? Cores.positiveColor
+                                                      : Cores.primaryColor;
                                                   Navigator.of(context).pop();
                                                   bool
                                                   result = await contextScreen
