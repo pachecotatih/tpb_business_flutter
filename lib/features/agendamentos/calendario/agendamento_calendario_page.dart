@@ -368,10 +368,36 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                                       ),
                                                     ),
                                                     onPressed: () {
-                                                      context.pop();
-                                                      contextScreen.pushReplacement(
-                                                        '/agendamento/${meeting.uid}',
-                                                      );
+                                                      if (meeting.status ==
+                                                          'concluido') {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (_) => AlertDialog(
+                                                            title: Text('Ops!'),
+                                                            content: Text(
+                                                              'Você não pode mais editar este agendamento, pois já foi concluído.',
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                    context,
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                  'Entendi',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        context.pop();
+                                                        contextScreen
+                                                            .pushReplacement(
+                                                              '/agendamento/${meeting.uid}',
+                                                            );
+                                                      }
                                                     },
                                                     icon: const Icon(
                                                       Icons.edit_rounded,
