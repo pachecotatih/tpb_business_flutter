@@ -319,102 +319,78 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                                                 ),
                                               ),
                                               const SizedBox(width: 10),
-                                              Expanded(
-                                                child: DecoratedBox(
-                                                  decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      colors: [
-                                                        Cores.primaryColor,
-                                                        Cores.primaryColor
-                                                            .withValues(
-                                                              alpha: 0.8,
-                                                            ),
+                                              if (meeting.status != 'concluido')
+                                                Expanded(
+                                                  child: DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          Cores.primaryColor,
+                                                          Cores.primaryColor
+                                                              .withValues(
+                                                                alpha: 0.8,
+                                                              ),
+                                                        ],
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            12,
+                                                          ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Cores
+                                                              .primaryColor
+                                                              .withValues(
+                                                                alpha: 0.4,
+                                                              ),
+                                                          blurRadius: 8,
+                                                          offset: const Offset(
+                                                            0,
+                                                            3,
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          12,
-                                                        ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Cores
-                                                            .primaryColor
-                                                            .withValues(
-                                                              alpha: 0.4,
+                                                    child: ElevatedButton.icon(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        shadowColor:
+                                                            Colors.transparent,
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                              vertical: 12,
                                                             ),
-                                                        blurRadius: 8,
-                                                        offset: const Offset(
-                                                          0,
-                                                          3,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: ElevatedButton.icon(
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      shadowColor:
-                                                          Colors.transparent,
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            vertical: 12,
-                                                          ),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              12,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      if (meeting.status ==
-                                                          'concluido') {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (_) => AlertDialog(
-                                                            title: Text('Ops!'),
-                                                            content: Text(
-                                                              'Você não pode mais editar este agendamento, pois já foi concluído.',
-                                                            ),
-                                                            actions: [
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                    context,
-                                                                  );
-                                                                },
-                                                                child: Text(
-                                                                  'Entendi',
-                                                                ),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                12,
                                                               ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      } else {
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
                                                         context.pop();
                                                         contextScreen
                                                             .pushReplacement(
                                                               '/agendamento/${meeting.uid}',
                                                             );
-                                                      }
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.edit_rounded,
-                                                      color: Colors.white,
-                                                      size: 16,
-                                                    ),
-                                                    label: const Text(
-                                                      'Editar',
-                                                      style: TextStyle(
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.edit_rounded,
                                                         color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        size: 16,
+                                                      ),
+                                                      label: const Text(
+                                                        'Editar',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
                                             ],
                                           ),
                                         ],
