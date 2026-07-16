@@ -265,6 +265,63 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
           uid: meeting.uid,
           valorTotal: meeting.valorTotal,
           buttons: [
+            Expanded(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Cores.negativeColor,
+                      Cores.negativeColor.withValues(alpha: 0.8),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Cores.negativeColor.withValues(alpha: 0.4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    bool result = await contextScreen
+                        .read<AgendamentoCalendarioController>()
+                        .deleteAgendamento(meeting.uid);
+                    if (result && contextScreen.mounted) {
+                      ScaffoldMessenger.of(contextScreen).showSnackBar(
+                        SnackBar(
+                          content: Text('Agendamento excluído com sucesso'),
+                          backgroundColor: Cores.positiveColor,
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.delete_rounded,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                  label: const Text(
+                    'Excluir',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             if (meeting.status != 'concluido')
               Expanded(
                 child: DecoratedBox(

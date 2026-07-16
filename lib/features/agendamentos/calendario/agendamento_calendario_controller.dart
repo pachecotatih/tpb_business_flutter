@@ -145,4 +145,36 @@ class AgendamentoCalendarioController
                 : Cores.scheduleColor),
     );
   }
+
+  Future<bool> deleteAgendamento(String uid) async {
+    try {
+      Response response = await repository.delete(
+        '${Globals.urlApi}/agendamento/$uid',
+      );
+      if (response.statusCode == 200) {
+        (state.data!.appointments ?? []).removeWhere(
+          (element) => element.uid == uid,
+        );
+        final novaLista = List<Meeting>.from(state.data!.appointments!);
+
+        novaLista.removeWhere((e) => e.uid == uid);
+
+        emit(
+          state.copyWith(
+            data: MeetingDataSource(novaLista),
+          ),
+        );
+        return true;
+      }
+      emit(
+        state.copyWith(
+          hasError: 'Erro ao excluir agendamento',
+          isLoading: false,
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(hasError: e.toString(), isLoading: false));
+    }
+    return false;
+  }
 }

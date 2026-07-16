@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
@@ -58,20 +57,33 @@ class AgendamentoDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
-                      Icons.person_rounded,
-                      color: Colors.white,
-                      size: 18,
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.person_rounded,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Agendamento',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            fontSize: 13,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Agendamento',
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.85),
-                        fontSize: 13,
-                        letterSpacing: 0.5,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Colors.white,
+                        size: 18,
                       ),
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ],
                 ),
@@ -239,30 +251,8 @@ class AgendamentoDialog extends StatelessWidget {
 
                 // Botões
                 Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          side: BorderSide(color: Colors.grey.shade300),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () => context.pop(),
-                        child: Text(
-                          'Fechar',
-                          style: TextStyle(
-                            color: Cores.secondaryText,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    ...buttons,
-                  ],
-                ),
+                  spacing: 5,
+                  children: buttons),
               ],
             ),
           ),
