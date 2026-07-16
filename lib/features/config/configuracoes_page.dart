@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
+import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
@@ -22,25 +23,15 @@ class ConfiguracoesPage extends StatelessWidget {
             style: TextStyle(color: Cores.negativeColor),
           ),
           onTap: () async {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Sair'),
-                content: const Text('Deseja realmente sair?'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Não'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await Util.logoutUser(contextScreen);
-                    },
-                    child: const Text('Sim'),
-                  ),
-                ],
-              ),
-            );
+            ConfirmDialog(
+              onConfirm: () async {
+                await Util.logoutUser(contextScreen);
+              }
+              ,
+              title: 'Sair da conta',
+              textContent: 'Deseja realmente sair da conta?',
+            ).show(contextScreen);
+            
           },
         ),
       ],

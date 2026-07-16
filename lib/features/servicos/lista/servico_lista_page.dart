@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
+import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
@@ -118,28 +119,12 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
   }
 
   Future<void> _deleteServico(BuildContext contextScreen, String uid) async {
-    return showDialog<void>(
-      context: contextScreen,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Excluir Serviço'),
-          content: const Text('Tem certeza que deseja excluir?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await contextScreen.read<ServicoListaController>().delete(uid);
-              },
-            ),
-          ],
-        );
+    return ConfirmDialog(
+      onConfirm: () async {
+        await contextScreen.read<ServicoListaController>().delete(uid);
       },
-    );
+      title: 'Excluir Serviço',
+      textContent: 'Tem certeza que deseja excluir?',
+    ).show(contextScreen);
   }
 }

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
+import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
-import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/core/utils/util.dart';
-import 'package:tpb_business_flutter/features/login/login_controller.dart';
-import 'package:tpb_business_flutter/features/login/login_model.dart';
 
 class MenuApp extends StatefulWidget implements PreferredSizeWidget {
   const MenuApp({super.key});
@@ -126,37 +123,13 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ),
             ),
             onTap: () async {
-              showDialog(
-                context: context,
-                builder: (dialogContext) =>
-                    BlocBuilder<LoginController, StateBloc<LoginModel>>(
-                      builder: (contextUser, stateUser) {
-                        return AlertDialog(
-                          title: const Text('Sair'),
-                          content: const Text('Deseja realmente sair?'),
-                          actions: (stateUser.isLoading)
-                              ? [
-                                  const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ]
-                              : [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(dialogContext),
-                                    child: const Text('Não'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await Util.logoutUser(contextUser);
-                                    },
-                                    child: const Text('Sim'),
-                                  ),
-                                ],
-                        );
-                      },
-                    ),
-              );
+              ConfirmDialog(
+                onConfirm: () async {
+                  await Util.logoutUser(context);
+                },
+                title: 'Sair da conta',
+                textContent: 'Deseja realmente sair da conta?',
+               ).show(context);
             },
           ),
         ],

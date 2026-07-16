@@ -20,13 +20,14 @@ class AgendamentoStep extends StatefulWidget {
 class _AgendamentoStepState extends State<AgendamentoStep> {
   late ClienteModel selectedCliente;
   late double total;
+  Duration totalDuration = Duration.zero;
 
   DateTime? _getCalculatedDataFim() {
     if (widget.state.data!.dataInicio == null) return null;
     try {
       final inicio = DateTime.parse(widget.state.data!.dataInicio!);
 
-      Duration totalDuration = Duration.zero;
+      totalDuration = Duration.zero;
       for (var servico in (widget.state.data!.servicos ?? [])) {
         final duracao = servico.duracaoPadrao;
         if (duracao != null && duracao.isNotEmpty && duracao.contains(':')) {
@@ -189,6 +190,10 @@ class _AgendamentoStepState extends State<AgendamentoStep> {
             if (parsed == null) return '';
             return DateFormat('dd/MM/yyyy HH:mm').format(parsed);
           }()}',
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "Duração total do serviço: ${totalDuration.inHours.toString().padLeft(2, '0')}:${totalDuration.inMinutes.remainder(60).toString().padLeft(2, '0')}",
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 15),

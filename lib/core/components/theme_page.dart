@@ -62,13 +62,14 @@ class _ThemePageState extends State<ThemePage> {
                                       text: widget.title!,
                                       color: Cores.colorLogo,
                                     ),
-                                
+
                                   Spacer(),
-                                  if (widget.contentTop != null) widget.contentTop!,
+                                  if (widget.contentTop != null)
+                                    widget.contentTop!,
                                 ],
                               ),
                             ),
-                                
+
                             Expanded(
                               child: ListView(
                                 shrinkWrap: true,
@@ -104,7 +105,7 @@ class _ThemePageState extends State<ThemePage> {
                     ],
                   ),
                 ),
-                floatingActionButton(context),
+              floatingActionButton(context),
             ],
           ),
         ),
@@ -117,7 +118,10 @@ class _ThemePageState extends State<ThemePage> {
     return Positioned(
       right: 0,
       bottom: 20,
-      child: Container(padding: EdgeInsets.only(right: 10),child: widget.floatingActionButton ?? const SizedBox.shrink()),
+      child: Container(
+        padding: EdgeInsets.only(right: 10),
+        child: widget.floatingActionButton ?? const SizedBox.shrink(),
+      ),
     );
   }
 }

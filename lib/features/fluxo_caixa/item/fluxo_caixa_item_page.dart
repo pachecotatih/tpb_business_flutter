@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/camposelect_component.dart';
+import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
 import 'package:tpb_business_flutter/core/components/formatters/money_input_formatter.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
@@ -227,33 +228,17 @@ class _FluxoCaixaItemPageState extends State<FluxoCaixaItemPage> {
   }
 
   Future<void> _deleteFluxoCaixa(BuildContext contextScreen) {
-    return showDialog<void>(
-      context: contextScreen,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Excluir Fluxo de Caixa'),
-          content: const Text('Tem certeza que deseja excluir?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                bool result = await contextScreen
-                    .read<FluxoCaixaItemController>()
-                    .delete();
-                if (result) {
-                  appRouter.pushReplacement('/fluxocaixa');
-                }
-              },
-            ),
-          ],
-        );
+    return ConfirmDialog(
+      onConfirm: () async {
+        bool result = await contextScreen
+            .read<FluxoCaixaItemController>()
+            .delete();
+        if (result) {
+          appRouter.pushReplacement('/fluxocaixa');
+        }
       },
-    );
+      title: 'Excluir Fluxo de Caixa',
+      textContent: 'Tem certeza que deseja excluir?',
+    ).show(contextScreen);
   }
 }

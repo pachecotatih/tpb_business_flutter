@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
+import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
@@ -98,28 +99,12 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
   }
 
   Future<void> _deleteCliente(BuildContext contextScreen, String uid) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Excluir Cliente'),
-          content: const Text('Tem certeza que deseja excluir?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await contextScreen.read<ClienteListaController>().delete(uid);
-              },
-            ),
-          ],
-        );
+    return ConfirmDialog(
+      onConfirm: () async {
+        await contextScreen.read<ClienteListaController>().delete(uid);
       },
-    );
+      title: 'Excluir Cliente',
+      textContent: 'Tem certeza que deseja excluir?',
+    ).show(contextScreen);
   }
 }

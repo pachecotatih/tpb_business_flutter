@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
+import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/agendamentos/agendamento_model.dart';
 import 'package:tpb_business_flutter/features/agendamentos/item/agendamento_item_controller.dart';
+import 'package:tpb_business_flutter/features/agendamentos/item/steps/agendamento_step.dart';
 import 'package:tpb_business_flutter/features/agendamentos/item/steps/cliente_step.dart';
 import 'package:tpb_business_flutter/features/agendamentos/item/steps/servico_step.dart';
-import 'package:tpb_business_flutter/features/agendamentos/item/steps/agendamento_step.dart';
 
 class AgendamentoItemPage extends StatefulWidget {
   final String uid;
@@ -284,33 +285,18 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
   }
 
   Future<void> _deleteAgendamento(BuildContext contextScreen) {
-    return showDialog<void>(
-      context: contextScreen,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Excluir Agendamento'),
-          content: const Text('Tem certeza que deseja excluir?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: const Text('Excluir'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                bool result = await contextScreen
-                    .read<AgendamentoItemController>()
-                    .delete();
-                if (result) {
-                  appRouter.pushReplacement('/agendamento');
-                }
-              },
-            ),
-          ],
-        );
+    return ConfirmDialog(
+      onConfirm: () async {
+        bool result = await contextScreen
+            .read<AgendamentoItemController>()
+            .delete();
+        if (result) {
+          appRouter.pushReplacement('/agendamento');
+        }
       },
-    );
+      title: 'Excluir Agendamento',
+      textContent: 'Tem certeza que deseja excluir?',
+    ).show(contextScreen);
+   
   }
 }
