@@ -82,8 +82,6 @@ class _HomePageState extends State<HomePage> {
                   Wrap(
                     alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 10,
-                    runSpacing: 10,
                     children: [
                       Bloco(
                         child: Container(
@@ -232,18 +230,23 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                spacing: 10,
-                                children: [
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: Cores.primaryColor,
-                                  ),
-                                  TituloH2(
-                                    text: "Agendamentos de hoje",
-                                    color: Cores.primaryColor,
-                                  ),
-                                ],
+                              Expanded(
+                                child: Row(
+                                  spacing: 10,
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today,
+                                      color: Cores.primaryColor,
+                                    ),
+                                    Flexible(
+                                      child: TituloH2(
+                                        text: "Agendamentos de hoje",
+                                        color: Cores.primaryColor,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               TextButton(
                                 style: TextButton.styleFrom(
