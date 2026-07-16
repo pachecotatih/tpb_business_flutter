@@ -9,6 +9,7 @@ import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/clientes/cliente_model.dart';
 import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_controller.dart';
+import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 
 class ClienteListaPage extends StatefulWidget {
   const ClienteListaPage({super.key});
@@ -31,6 +32,7 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.read<ClienteListaController>();
     return ThemePage(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Cores.positiveColor,
@@ -42,7 +44,17 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
       title: 'Clientes',
       children: [
         Bloco(
-          child:
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextfieldComponent(
+                label: 'Buscar cliente',
+                text: controller.busca.value,
+                onChange: (value) {
+                  controller.busca.value = value;
+                },
+              ),
+              const SizedBox(height: 10),
               BlocConsumer<
                 ClienteListaController,
                 StateBloc<List<ClienteModel>>
@@ -51,15 +63,21 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  return (state.data ?? []).isEmpty
+
+                  final buscaValue = controller.busca.value.toLowerCase();
+                  final filteredClientes = (state.data ?? []).where((cliente) {
+                    return cliente.nome.toLowerCase().contains(buscaValue);
+                  }).toList();
+
+                  return filteredClientes.isEmpty
                       ? const Center(
                           child: TextoPadrao(text: 'Nenhum cliente cadastrado'),
                         )
                       : ListView.builder(
                           shrinkWrap: true,
-                          itemCount: state.data?.length ?? 0,
+                          itemCount: filteredClientes.length,
                           itemBuilder: (context, index) {
-                            final cliente = state.data![index];
+                            final cliente = filteredClientes[index];
                             return Container(
                               margin: const EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(
@@ -105,6 +123,8 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                       }
                     },
               ),
+            ],
+          ),
         ),
       ],
     );

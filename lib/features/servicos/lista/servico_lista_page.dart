@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
+import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
@@ -33,6 +34,7 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.read<ServicoListaController>();
     return ThemePage(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Cores.positiveColor,
@@ -44,16 +46,33 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
       title: 'Serviços',
       children: [
         Bloco(
-          child:
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextfieldComponent(
+                label: 'Buscar serviço',
+                text: controller.busca.value,
+                onChange: (value) {
+                  controller.busca.value = value;
+                },
+              ),
+              const SizedBox(height: 10),
               BlocConsumer<
                 ServicoListaController,
                 StateBloc<List<ServicoModel>>
               >(
                 builder: (context, state) {
+                  final buscaValue = controller.busca.value.toLowerCase();
+                  final servicosFiltrados = (state.data ?? [])
+                      .where(
+                        (element) =>
+                            element.nome.toLowerCase().contains(buscaValue),
+                      )
+                      .toList();
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  return (state.data ?? []).isEmpty
+                  return servicosFiltrados.isEmpty
                       ? const Center(
                           child: TextoPadrao(
                             text: 'Nenhum serviço foi cadastrado ainda.',
@@ -61,9 +80,9 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                         )
                       : ListView.builder(
                           shrinkWrap: true,
-                          itemCount: state.data?.length ?? 0,
+                          itemCount: servicosFiltrados.length,
                           itemBuilder: (context, index) {
-                            final servico = state.data![index];
+                            final servico = servicosFiltrados[index];
                             return Container(
                               margin: const EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(
@@ -137,6 +156,8 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                       }
                     },
               ),
+            ],
+          ),
         ),
       ],
     );

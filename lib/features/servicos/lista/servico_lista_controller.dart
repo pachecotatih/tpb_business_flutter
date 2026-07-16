@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tpb_business_flutter/core/constants/globals.dart';
 import 'package:tpb_business_flutter/core/services/base_controller.dart';
 import 'package:tpb_business_flutter/core/services/repository.dart';
@@ -7,8 +8,22 @@ import 'package:tpb_business_flutter/features/servicos/servico_model.dart';
 
 class ServicoListaController extends BaseController<List<ServicoModel>> {
   final Repository repository;
+  final ValueNotifier<String> busca = ValueNotifier<String>('');
 
-  ServicoListaController(this.repository) : super(StateBloc(data: []));
+  ServicoListaController(this.repository)
+    : super(StateBloc<List<ServicoModel>>(data: [])) {
+    busca.addListener(() async {
+      emit(state.copyWith(isLoading: true));
+      await Future.delayed(const Duration(milliseconds: 100));
+      emit(state.copyWith(isLoading: false, data: state.data));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    busca.dispose();
+    return super.close();
+  }
 
   Future<void> getServicos() async {
     Response response;
