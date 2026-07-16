@@ -60,7 +60,7 @@ class _ThemePageState extends State<ThemePage> {
                                   if (widget.title != null)
                                     TituloH1(
                                       text: widget.title!,
-                                      color: Cores.colorLogo,
+                                      color: Cores.primaryColor,
                                     ),
 
                                   Spacer(),

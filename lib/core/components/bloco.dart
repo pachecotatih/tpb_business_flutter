@@ -7,7 +7,6 @@ class Bloco extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       margin: const EdgeInsets.all(10),
       child: Material(
         // Substituto do Container interno para habilitar o Material Design

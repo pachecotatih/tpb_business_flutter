@@ -33,7 +33,7 @@ class _MenuAppState extends State<MenuApp> {
           }
         },
       ),
-      iconTheme: IconThemeData(color: Cores.colorLogo),
+      iconTheme: IconThemeData(color: Cores.primaryColor),
       centerTitle: true,
       actions: [],
       title: TextButton(
@@ -69,9 +69,23 @@ class _MenuDrawerState extends State<MenuDrawer> {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(color: Cores.attentionColor),
-            child: Text(
-              'Olá, ${Preferences.instance.name}',
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+            child: Column(
+              spacing: 10,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Image.asset('assets/img/tpb_logo1.png', height: 80),
+                ),
+                Text(
+                  'Olá, ${Preferences.instance.name.split(" ")[0]}',
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
           ListTile(

@@ -57,74 +57,163 @@ class _HomePageState extends State<HomePage> {
               ? [Center(child: CircularProgressIndicator())]
               : [
                   Bloco(
-                    child: Column(
-                      children: [
-                        TituloH1(
-                          text: "Bem vindo, ${Preferences.instance.name}!",
-                        ),
-                        TituloH2(
-                          text:
-                              dataFormatada[0].toUpperCase() +
-                              dataFormatada.substring(1),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Bem vindo, ${Preferences.instance.name}!",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TituloH2(
+                            text:
+                                dataFormatada[0].toUpperCase() +
+                                dataFormatada.substring(1),
+                            fontSize: 14,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
                     alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 10,
+                    runSpacing: 10,
                     children: [
-                      SizedBox(
-                        width: 200,
-                        child: Bloco(
-                          child: Column(
+                      Bloco(
+                        child: Container(
+                          constraints: BoxConstraints(maxWidth: 200),
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 10,
                             children: [
-                              TituloH3(text: "Saldo do dia"),
-                              TextoPadrao(
-                                fontSize: 16,
-                                text:
-                                    Preferences.instance.moeda +
-                                    Util.stringFormatValor(
-                                      state.data?.saldoHoje ?? 0,
-                                    ),
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: (state.data?.saldoHoje ?? 0) > 0
+                                      ? Cores.positiveColor.withValues(
+                                          alpha: 0.2,
+                                        )
+                                      : (state.data?.saldoHoje ?? 0) < 0
+                                      ? Cores.negativeColor.withValues(
+                                          alpha: 0.2,
+                                        )
+                                      : Colors.black45,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Icon(
+                                  (state.data?.saldoHoje ?? 0) > 0
+                                      ? Icons.trending_up
+                                      : (state.data?.saldoHoje ?? 0) < 0
+                                      ? Icons.trending_down
+                                      : Icons.trending_flat,
+                                  color: (state.data?.saldoHoje ?? 0) > 0
+                                      ? Cores.positiveColor
+                                      : (state.data?.saldoHoje ?? 0) < 0
+                                      ? Cores.negativeColor
+                                      : Cores.secondaryText,
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TituloH3(text: "Saldo do dia"),
+                                  TextoPadrao(
+                                    fontSize: 16,
+                                    text:
+                                        Preferences.instance.moeda +
+                                        Util.stringFormatValor(
+                                          state.data?.saldoHoje ?? 0,
+                                        ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 200,
-                        child: Bloco(
-                          child: Column(
+                      Bloco(
+                        child: Container(
+                          constraints: BoxConstraints(maxWidth: 200),
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 10,
                             children: [
-                              TituloH3(text: "Entradas do dia"),
-                              TituloH3(
-                                text:
-                                    Preferences.instance.moeda +
-                                    Util.stringFormatValor(
-                                      state.data?.entradasHoje ?? 0,
-                                    ),
-                                color: Cores.positiveColor,
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Cores.positiveColor.withValues(
+                                    alpha: 0.2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Icon(
+                                  Icons.trending_up,
+                                  color: Cores.positiveColor,
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TituloH3(text: "Entradas do dia"),
+                                  TituloH3(
+                                    text:
+                                        Preferences.instance.moeda +
+                                        Util.stringFormatValor(
+                                          state.data?.entradasHoje ?? 0,
+                                        ),
+                                    color: Cores.positiveColor,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 200,
-                        child: Bloco(
-                          child: Column(
+                      Bloco(
+                        child: Container(
+                          constraints: BoxConstraints(maxWidth: 200),
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 10,
                             children: [
-                              TituloH3(text: "Saídas do dia"),
-                              TituloH3(
-                                text:
-                                    Preferences.instance.moeda +
-                                    Util.stringFormatValor(
-                                      state.data?.saidasHoje ?? 0,
-                                    ),
-                                color: Cores.negativeColor,
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Cores.negativeColor.withValues(
+                                    alpha: 0.2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Icon(
+                                  Icons.trending_down,
+                                  color: Cores.negativeColor,
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TituloH3(text: "Saídas do dia"),
+                                  TituloH3(
+                                    text:
+                                        Preferences.instance.moeda +
+                                        Util.stringFormatValor(
+                                          state.data?.saidasHoje ?? 0,
+                                        ),
+                                    color: Cores.negativeColor,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -143,9 +232,18 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TituloH2(
-                                text: "Agendamentos de hoje",
-                                color: Cores.primaryColor,
+                              Row(
+                                spacing: 10,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today,
+                                    color: Cores.primaryColor,
+                                  ),
+                                  TituloH2(
+                                    text: "Agendamentos de hoje",
+                                    color: Cores.primaryColor,
+                                  ),
+                                ],
                               ),
                               TextButton(
                                 style: TextButton.styleFrom(
@@ -155,7 +253,13 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () {
                                   context.pushReplacement('/agendamento');
                                 },
-                                child: Text("Ver todos"),
+                                child: Row(
+                                  spacing: 5,
+                                  children: [
+                                    Text("Ver todos"),
+                                    Icon(Icons.arrow_forward_ios, size: 14),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
