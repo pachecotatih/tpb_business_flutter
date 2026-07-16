@@ -175,16 +175,15 @@ class _ClienteItemPageState extends State<ClienteItemPage> {
     );
   }
 
-
   Future<void> _deleteCliente(BuildContext contextScreen, String uid) {
     return ConfirmDialog(
       onConfirm: () async {
         bool result = await contextScreen
-                    .read<ClienteItemController>()
-                    .delete();
-                if (result) {
-                  appRouter.pushReplacement('/cliente');
-                }
+            .read<ClienteItemController>()
+            .delete();
+        if (result) {
+          appRouter.pushReplacement('/cliente');
+        }
       },
       title: 'Excluir Cliente',
       textContent: 'Tem certeza que deseja excluir?',

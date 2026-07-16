@@ -129,7 +129,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 },
                 title: 'Sair da conta',
                 textContent: 'Deseja realmente sair da conta?',
-               ).show(context);
+              ).show(context);
             },
           ),
         ],

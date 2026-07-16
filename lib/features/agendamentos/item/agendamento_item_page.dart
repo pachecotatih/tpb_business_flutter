@@ -297,6 +297,5 @@ class _AgendamentoItemPageState extends State<AgendamentoItemPage> {
       title: 'Excluir Agendamento',
       textContent: 'Tem certeza que deseja excluir?',
     ).show(contextScreen);
-   
   }
 }

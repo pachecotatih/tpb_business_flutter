@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
+
 class ConfirmDialog extends StatelessWidget {
   final String title;
   final String textContent;
@@ -14,7 +15,15 @@ class ConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color:Cores.primaryColor)),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          color: Cores.primaryColor,
+        ),
+      ),
       content: Text(textContent, textAlign: TextAlign.center),
       actionsAlignment: MainAxisAlignment.center,
       actions: [

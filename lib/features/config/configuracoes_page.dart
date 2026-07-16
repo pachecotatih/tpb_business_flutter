@@ -26,12 +26,10 @@ class ConfiguracoesPage extends StatelessWidget {
             ConfirmDialog(
               onConfirm: () async {
                 await Util.logoutUser(contextScreen);
-              }
-              ,
+              },
               title: 'Sair da conta',
               textContent: 'Deseja realmente sair da conta?',
             ).show(contextScreen);
-            
           },
         ),
       ],
