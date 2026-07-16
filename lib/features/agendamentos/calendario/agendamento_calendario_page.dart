@@ -62,15 +62,19 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                     : SfCalendar(
                         allowAppointmentResize: true,
                         onTap: (CalendarTapDetails details) {
-                          if (details.targetElement !=
+                          if (details.targetElement ==
                               CalendarElement.appointment) {
-                            return;
+                            final meeting =
+                                details.appointments!.first as Meeting;
+                            final BuildContext contextScreen = context;
+                            _showAgendamentoDialog(contextScreen, meeting);
+                          } else if (details.targetElement ==
+                              CalendarElement.calendarCell) {
+                            context.pushReplacement(
+                              '/agendamento/new',
+                              extra: {'data': details.date},
+                            );
                           }
-
-                          final meeting =
-                              details.appointments!.first as Meeting;
-                          final BuildContext contextScreen = context;
-                          _showAgendamentoDialog(contextScreen, meeting);
                         },
                         monthViewSettings: MonthViewSettings(showAgenda: true),
                         scheduleViewSettings: ScheduleViewSettings(
@@ -178,7 +182,11 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Adicionar pagamento'),
+          title: Text(
+            'Adicionar pagamento',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -208,14 +216,23 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
               ),
             ],
           ),
+          actionsAlignment: MainAxisAlignment.center,
           actions: <Widget>[
             TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Cores.secondaryText,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Cancelar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Cores.positiveColor,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Confirmar'),
               onPressed: () async {
                 meeting.status = value ? 'concluido' : 'agendado';

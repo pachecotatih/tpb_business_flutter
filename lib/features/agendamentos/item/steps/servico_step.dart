@@ -51,6 +51,7 @@ class _ServicoStepState extends State<ServicoStep> {
                     widget.state.data!.servicos ??= [];
                     widget.state.data!.servicos!.add(value);
                   });
+                  FocusScope.of(context).unfocus();
                 },
               ),
             ),
@@ -192,6 +193,7 @@ class _ServicoStepState extends State<ServicoStep> {
       final String minuto24h = picked.minute.toString().padLeft(2, '0');
 
       servico?.duracaoPadrao = '$hora24h:$minuto24h';
+
       setState(() {});
     }
   }
