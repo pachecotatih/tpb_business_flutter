@@ -20,6 +20,7 @@ class AgendamentoCalendarioPage extends StatefulWidget {
 }
 
 class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
+  CalendarController _calendarController = CalendarController();
   @override
   void initState() {
     super.initState();
@@ -49,7 +50,9 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
             onPressed: () {
               context.pushReplacement(
                 '/agendamento/new',
-                extra: {'data': DateTime.now()},
+                extra: {
+                  'data': _calendarController.selectedDate ?? DateTime.now(),
+                },
               );
             },
           ),
@@ -60,6 +63,7 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                 child: (state.isLoading)
                     ? const Center(child: CircularProgressIndicator())
                     : SfCalendar(
+                        controller: _calendarController,
                         allowAppointmentResize: true,
                         onTap: (CalendarTapDetails details) {
                           if (details.targetElement ==
@@ -69,7 +73,8 @@ class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
                             final BuildContext contextScreen = context;
                             _showAgendamentoDialog(contextScreen, meeting);
                           } else if (details.targetElement ==
-                              CalendarElement.calendarCell) {
+                                  CalendarElement.calendarCell &&
+                              _calendarController.view != CalendarView.month) {
                             context.pushReplacement(
                               '/agendamento/new',
                               extra: {'data': details.date},
