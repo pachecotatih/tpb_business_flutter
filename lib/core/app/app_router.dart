@@ -187,12 +187,13 @@ GoRouter appRouter = GoRouter(
           path: 'new',
           name: 'agendamento.novo',
           builder: (context, state) {
-            final date = DateTime.parse(
-              state.pathParameters['data'] ?? DateTime.now().toString(),
-            );
+            DateTime data = state.extra is Map
+                ? (state.extra as Map)["data"]
+                : DateTime.now();
+
             return BlocProvider(
               create: (_) => AgendamentoItemController(DioRepository()),
-              child: AgendamentoItemPage(uid: '', date: date),
+              child: AgendamentoItemPage(uid: '', date: data),
             );
           },
         ),
@@ -201,12 +202,12 @@ GoRouter appRouter = GoRouter(
           name: 'agendamento.editar',
           builder: (context, state) {
             final uid = state.pathParameters['uid'] ?? '';
-            final date = DateTime.parse(
-              state.pathParameters['data'] ?? DateTime.now().toString(),
-            );
+            DateTime data = state.extra is Map
+                ? (state.extra as Map)["data"]
+                : DateTime.now();
             return BlocProvider(
               create: (_) => AgendamentoItemController(DioRepository()),
-              child: AgendamentoItemPage(uid: uid, date: date),
+              child: AgendamentoItemPage(uid: uid, date: data),
             );
           },
         ),
