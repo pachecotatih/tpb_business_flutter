@@ -64,35 +64,59 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                           itemCount: state.data?.length ?? 0,
                           itemBuilder: (context, index) {
                             final servico = state.data![index];
-                            return ListTile(
-                              title: Text(
-                                '${servico.nome} - ${Preferences.instance.moeda}${Util.stringFormatValor(servico.valorPadrao ?? 0.0)}',
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                color: Cores.principalBackground.withValues(
+                                  alpha: 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.grey.shade300),
                               ),
-                              onTap: () => context.pushReplacement(
-                                '/servico/${servico.uid}',
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Checkbox(
-                                    value: servico.ativo,
-                                    onChanged: (value) => context
-                                        .read<ServicoListaController>()
-                                        .updateAtivo(
-                                          servico.uid,
-                                          value ?? false,
-                                        ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Cores.negativeColor,
+                              child: ListTile(
+                                hoverColor: Cores.principalBackground
+                                    .withValues(alpha: 0.5),
+                                title: Text(servico.nome),
+                                subtitle: Wrap(
+                                  spacing: 5,
+                                  children: [
+                                    if (servico.valorPadrao != null)
+                                      Text(
+                                        'Valor: ${Preferences.instance.moeda}${Util.stringFormatValor(servico.valorPadrao ?? 0.0)}',
+                                      ),
+                                    if (servico.valorPadrao != null &&
+                                        servico.duracaoPadrao != null)
+                                      const Text(' | '),
+                                    if (servico.duracaoPadrao != null)
+                                      Text('Duração: ${servico.duracaoPadrao}'),
+                                  ],
+                                ),
+                                onTap: () => context.pushReplacement(
+                                  '/servico/${servico.uid}',
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Checkbox(
+                                      value: servico.ativo,
+                                      onChanged: (value) => context
+                                          .read<ServicoListaController>()
+                                          .updateAtivo(
+                                            servico.uid,
+                                            value ?? false,
+                                          ),
                                     ),
-                                    onPressed: () {
-                                      _deleteServico(context, servico.uid);
-                                    },
-                                  ),
-                                ],
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Cores.negativeColor,
+                                      ),
+                                      onPressed: () {
+                                        _deleteServico(context, servico.uid);
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },

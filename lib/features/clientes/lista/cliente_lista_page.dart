@@ -60,19 +60,31 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                           itemCount: state.data?.length ?? 0,
                           itemBuilder: (context, index) {
                             final cliente = state.data![index];
-                            return ListTile(
-                              title: Text(cliente.nome),
-                              onTap: () => context.pushReplacement(
-                                '/cliente/${cliente.uid}',
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Cores.negativeColor,
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                color: Cores.principalBackground.withValues(
+                                  alpha: 0.1,
                                 ),
-                                onPressed: () {
-                                  _deleteCliente(context, cliente.uid);
-                                },
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.grey.shade300),
+                              ),
+                              child: ListTile(
+                                hoverColor: Cores.principalBackground
+                                    .withValues(alpha: 0.5),
+                                title: Text(cliente.nome),
+                                onTap: () => context.pushReplacement(
+                                  '/cliente/${cliente.uid}',
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Cores.negativeColor,
+                                  ),
+                                  onPressed: () {
+                                    _deleteCliente(context, cliente.uid);
+                                  },
+                                ),
                               ),
                             );
                           },
