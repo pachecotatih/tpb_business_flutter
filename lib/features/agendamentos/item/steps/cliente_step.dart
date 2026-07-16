@@ -46,6 +46,7 @@ class _ClienteStepState extends State<ClienteStep> {
             value: widget.state.data!.clienteId ?? 0,
             onChange: (value) async {
               widget.state.data!.clienteId = value;
+              FocusScope.of(context).unfocus();
             },
           ),
         ),
