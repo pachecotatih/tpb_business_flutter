@@ -30,7 +30,7 @@ class DioRepository implements Repository {
                 status >= 200 &&
                 status < 300 &&
                 status != 401) ||
-            status == 422;
+            (status != null && status >= 400 && status != 401);
       },
     );
   }
