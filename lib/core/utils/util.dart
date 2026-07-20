@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
 
@@ -29,8 +29,8 @@ class Util {
 
   static Future<void> logoutUser(BuildContext context) async {
     bool logout = await context.read<LoginController>().logout();
-    if (logout) {
-      appRouter.pushReplacement('/login');
+    if (logout && context.mounted) {
+      context.pushReplacement('/login');
     }
   }
 

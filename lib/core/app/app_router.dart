@@ -66,11 +66,23 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/configuracoes',
       name: 'configuracoes',
+      redirect: (context, state) {
+        if (Preferences.instance.token.isEmpty) {
+          return '/login';
+        }
+        return '/configuracoes';
+      },
       builder: (context, state) => const ConfiguracoesPage(),
     ),
     GoRoute(
       path: '/user',
       name: 'user',
+      redirect: (context, state) {
+        if (Preferences.instance.token.isEmpty) {
+          return '/login';
+        }
+        return '/user';
+      },
       builder: (context, state) => BlocProvider(
         create: (_) => UserController(DioRepository()),
         child: const UserPage(),
@@ -79,6 +91,12 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/cliente',
       name: 'cliente',
+      redirect: (context, state) {
+        if (Preferences.instance.token.isEmpty) {
+          return '/login';
+        }
+        return '/cliente';
+      },
       builder: (context, state) => BlocProvider(
         create: (_) => ClienteListaController(DioRepository()),
         child: const ClienteListaPage(),
@@ -87,6 +105,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'new',
           name: 'cliente.novo',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/cliente/new';
+          },
           builder: (context, state) {
             bool? isAgendamento = state.extra as bool?;
             return BlocProvider(
@@ -101,6 +125,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: ':uid',
           name: 'cliente.editar',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/cliente/${state.pathParameters['uid']}';
+          },
           builder: (context, state) {
             final uid = state.pathParameters['uid'] ?? '';
             return BlocProvider(
@@ -114,6 +144,12 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/servico',
       name: 'servico',
+      redirect: (context, state) {
+        if (Preferences.instance.token.isEmpty) {
+          return '/login';
+        }
+        return '/servico';
+      },
       builder: (context, state) => BlocProvider(
         create: (_) => ServicoListaController(DioRepository()),
         child: const ServicoListaPage(),
@@ -122,6 +158,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'new',
           name: 'servico.novo',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/servico/new';
+          },
           builder: (context, state) {
             bool? isAgendamento = state.extra as bool?;
             return BlocProvider(
@@ -135,6 +177,12 @@ GoRouter appRouter = GoRouter(
         ),
         GoRoute(
           path: ':uid',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/servico/${state.pathParameters['uid']}';
+          },
           name: 'servico.editar',
           builder: (context, state) {
             final uid = state.pathParameters['uid'] ?? '';
@@ -149,6 +197,12 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/fluxocaixa',
       name: 'fluxocaixa',
+      redirect: (context, state) {
+        if (Preferences.instance.token.isEmpty) {
+          return '/login';
+        }
+        return '/fluxocaixa';
+      },
       builder: (context, state) => BlocProvider(
         create: (_) => FluxoCaixaListaController(DioRepository()),
         child: const FluxoCaixaListaPage(),
@@ -157,6 +211,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'new',
           name: 'fluxocaixa.novo',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/fluxocaixa/new';
+          },
           builder: (context, state) => BlocProvider(
             create: (_) => FluxoCaixaItemController(DioRepository()),
             child: FluxoCaixaItemPage(uid: ''),
@@ -165,6 +225,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: ':uid',
           name: 'fluxocaixa.editar',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/fluxocaixa/${state.pathParameters['uid']}';
+          },
           builder: (context, state) {
             final uid = state.pathParameters['uid'] ?? '';
             return BlocProvider(
@@ -178,6 +244,12 @@ GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/agendamento',
       name: 'agendamento',
+      redirect: (context, state) {
+        if (Preferences.instance.token.isEmpty) {
+          return '/login';
+        }
+        return '/agendamento';
+      },
       builder: (context, state) => BlocProvider(
         create: (_) => AgendamentoCalendarioController(DioRepository()),
         child: const AgendamentoCalendarioPage(),
@@ -186,6 +258,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'new',
           name: 'agendamento.novo',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/agendamento/new';
+          },
           builder: (context, state) {
             DateTime data = state.extra is Map
                 ? (state.extra as Map)["data"]
@@ -200,6 +278,12 @@ GoRouter appRouter = GoRouter(
         GoRoute(
           path: ':uid',
           name: 'agendamento.editar',
+          redirect: (context, state) {
+            if (Preferences.instance.token.isEmpty) {
+              return '/login';
+            }
+            return '/agendamento/${state.pathParameters['uid']}';
+          },
           builder: (context, state) {
             final uid = state.pathParameters['uid'] ?? '';
             DateTime data = state.extra is Map

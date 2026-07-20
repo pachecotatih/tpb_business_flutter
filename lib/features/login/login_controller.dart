@@ -15,7 +15,7 @@ class LoginController extends BaseController<LoginModel> {
   Future<bool> login() async {
     Response response;
     try {
-      emit(state.copyWith(isLoading: true, hasError: null, data: state.data!));
+      emit(state.copyWith(isLoading: true, hasError: null));
       String deviceId = Util.getDeviceId();
       String deviceName = Util.getDeviceName();
       state.data!.deviceId = deviceId;
@@ -40,7 +40,7 @@ class LoginController extends BaseController<LoginModel> {
           Preferences.instance.setEmail(response.data['email']);
           Preferences.instance.setDeviceId(response.data['device_id']);
           return true;
-        case 401:
+        case 400:
           emit(
             state.copyWith(hasError: 'Credenciais inválidas', isLoading: false),
           );
@@ -67,7 +67,7 @@ class LoginController extends BaseController<LoginModel> {
   Future<bool> cadastrar() async {
     Response response;
     try {
-      emit(state.copyWith(isLoading: true, hasError: null, data: state.data!));
+      emit(state.copyWith(isLoading: true, hasError: null));
       try {
         response = await repository.post(
           '${Globals.urlApi}/register',
@@ -112,7 +112,7 @@ class LoginController extends BaseController<LoginModel> {
   Future<bool> logout() async {
     Response response;
     try {
-      emit(state.copyWith(isLoading: true, hasError: null, data: state.data!));
+      emit(state.copyWith(isLoading: true, hasError: null));
       try {
         response = await repository.post('${Globals.urlApi}/logout', {
           'email': Preferences.instance.email,

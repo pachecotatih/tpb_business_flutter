@@ -4,7 +4,6 @@ import 'package:tpb_business_flutter/core/app/app_router.dart';
 import 'package:tpb_business_flutter/core/components/login_screen.dart';
 import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
-import 'package:tpb_business_flutter/core/services/preferences.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/login/login_controller.dart';
 import 'package:tpb_business_flutter/features/login/login_model.dart';
@@ -109,9 +108,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
         listener: (context, state) {
-          if (Preferences.instance.token.isNotEmpty) {
-            appRouter.pushReplacement('/');
-          }
           if (state.hasError != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
