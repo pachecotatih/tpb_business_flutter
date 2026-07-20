@@ -20,7 +20,7 @@ class AgendamentoCalendarioPage extends StatefulWidget {
 }
 
 class _AgendamentoCalendarioPageState extends State<AgendamentoCalendarioPage> {
-  CalendarController _calendarController = CalendarController();
+  final CalendarController _calendarController = CalendarController();
   @override
   void initState() {
     super.initState();
