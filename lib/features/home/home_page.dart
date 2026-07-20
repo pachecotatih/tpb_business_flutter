@@ -103,7 +103,9 @@ class _HomePageState extends State<HomePage> {
                                       ? Cores.negativeColor.withValues(
                                           alpha: 0.2,
                                         )
-                                      : Colors.black45,
+                                      : Cores.secondaryText.withValues(
+                                          alpha: 0.2,
+                                        ),
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                                 child: Icon(

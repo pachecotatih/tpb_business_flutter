@@ -159,11 +159,7 @@ class AgendamentoCalendarioController
 
         novaLista.removeWhere((e) => e.uid == uid);
 
-        emit(
-          state.copyWith(
-            data: MeetingDataSource(novaLista),
-          ),
-        );
+        emit(state.copyWith(data: MeetingDataSource(novaLista)));
         return true;
       }
       emit(

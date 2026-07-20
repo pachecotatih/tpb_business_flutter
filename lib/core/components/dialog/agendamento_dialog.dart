@@ -250,9 +250,7 @@ class AgendamentoDialog extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // Botões
-                Row(
-                  spacing: 5,
-                  children: buttons),
+                Row(spacing: 5, children: buttons),
               ],
             ),
           ),
