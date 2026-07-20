@@ -127,8 +127,8 @@ class _CadastrarPageState extends State<CadastrarPage> {
                             bool result = await context
                                 .read<LoginController>()
                                 .cadastrar();
-                            if (result) {
-                              appRouter.pushReplacement('/login', extra: true);
+                            if (result && context.mounted) {
+                              context.pushReplacement('/login', extra: true);
                             }
                           },
                           child: const Text('Criar Conta'),
