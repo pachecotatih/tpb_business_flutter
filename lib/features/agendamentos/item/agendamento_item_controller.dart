@@ -33,6 +33,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
               ),
             );
             await _getClientes();
+            if (state.hasError != null) return;
             await _getServicos();
             break;
           case 500:
@@ -58,6 +59,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
     } else {
       emit(state.copyWith(data: AgendamentoModel(), isLoading: false));
       await _getClientes();
+      if (state.hasError != null) return;
       await _getServicos();
     }
   }
@@ -111,7 +113,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
       try {
         response = await repository.get('${Globals.urlApi}/servico');
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao obter servicos. ${e.message}");
+        throw Exception("Ocorreu um erro ao obter serviços. ${e.message}");
       }
       switch (response.statusCode) {
         case 200:
@@ -125,7 +127,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao obter servicos',
+              hasError: 'Erro interno ao obter serviços',
               isLoading: false,
             ),
           );
@@ -133,7 +135,7 @@ class AgendamentoItemController extends BaseController<AgendamentoModel> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao obter servicos',
+              hasError: 'Erro ao obter serviços',
               isLoading: false,
             ),
           );

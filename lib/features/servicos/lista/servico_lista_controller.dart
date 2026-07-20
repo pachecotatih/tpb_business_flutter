@@ -32,7 +32,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
       try {
         response = await repository.get('${Globals.urlApi}/servico');
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao obter serviços. ${e.message}");
+        throw Exception("Ocorreu um erro ao obter serviços. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -49,7 +49,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao obter serviços',
+              hasError: 'Erro interno ao obter serviços',
               isLoading: false,
             ),
           );
@@ -57,14 +57,14 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao obter serviços',
+              hasError: 'Erro ao obter serviços',
               isLoading: false,
             ),
           );
           break;
       }
     } catch (e) {
-      emit(state.copyWith(hasError: e.toString()));
+      emit(state.copyWith(hasError: e.toString(), isLoading: false));
     }
   }
 
@@ -75,7 +75,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
       try {
         response = await repository.delete('${Globals.urlApi}/servico/$uid');
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao excluir serviço. ${e.message}");
+        throw Exception("Ocorreu um erro ao excluir serviço. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -90,7 +90,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao excluir serviço',
+              hasError: 'Erro interno ao excluir serviço',
               isLoading: false,
             ),
           );
@@ -98,14 +98,14 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao excluir serviço',
+              hasError: 'Erro ao excluir serviço',
               isLoading: false,
             ),
           );
           break;
       }
     } catch (e) {
-      emit(state.copyWith(hasError: e.toString()));
+      emit(state.copyWith(hasError: e.toString(), isLoading: false));
     }
   }
 
@@ -121,7 +121,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
           {'ativo': ativo},
         );
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao obter serviços. ${e.message}");
+        throw Exception("Ocorreu um erro ao obter serviços. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -130,7 +130,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao alterar o ativo do serviço',
+              hasError: 'Erro interno ao alterar o ativo do serviço',
               isLoading: false,
               data: atualizarAtivoLista(!ativo, uid),
             ),
@@ -139,7 +139,7 @@ class ServicoListaController extends BaseController<List<ServicoModel>> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao alterar o ativo do serviço',
+              hasError: 'Erro ao alterar o ativo do serviço',
               data: atualizarAtivoLista(!ativo, uid),
               isLoading: false,
             ),

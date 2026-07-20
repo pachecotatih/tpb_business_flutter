@@ -19,7 +19,7 @@ class UserController extends BaseController<UserModel> {
       try {
         response = await repository.get('${Globals.urlApi}/user');
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao obter usuário. ${e.message}");
+        throw Exception("Ocorreu um erro ao obter usuário. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -34,7 +34,7 @@ class UserController extends BaseController<UserModel> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao obter usuário',
+              hasError: 'Erro interno ao obter usuário',
               isLoading: false,
             ),
           );
@@ -42,14 +42,14 @@ class UserController extends BaseController<UserModel> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao obter usuário',
+              hasError: 'Erro ao obter usuário',
               isLoading: false,
             ),
           );
           break;
       }
     } catch (e) {
-      emit(state.copyWith(hasError: e));
+      emit(state.copyWith(hasError: e, isLoading: false));
     }
   }
 
@@ -63,7 +63,7 @@ class UserController extends BaseController<UserModel> {
           state.data!.toJson(),
         );
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao atualizar usuário. ${e.message}");
+        throw Exception("Ocorreu um erro ao atualizar usuário. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -81,7 +81,7 @@ class UserController extends BaseController<UserModel> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao atualizar usuário',
+              hasError: 'Erro interno ao atualizar usuário',
               isLoading: false,
             ),
           );
@@ -94,14 +94,14 @@ class UserController extends BaseController<UserModel> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao atualizar usuário',
+              hasError: 'Erro ao atualizar usuário',
               isLoading: false,
             ),
           );
           break;
       }
     } catch (e) {
-      emit(state.copyWith(hasError: e));
+      emit(state.copyWith(hasError: e, isLoading: false));
     }
     return false;
   }
@@ -120,7 +120,7 @@ class UserController extends BaseController<UserModel> {
           );
         } on DioException catch (e) {
           throw Exception(
-            "Ocorreu um erro ao alterar a senha do usuário. ${e.message}",
+            "Ocorreu um erro ao alterar a senha do usuário. ${e.message}",
           );
         }
 
@@ -136,7 +136,7 @@ class UserController extends BaseController<UserModel> {
           case 500:
             emit(
               state.copyWith(
-                hasError: 'Erro interno ao alterar a senha do usuário',
+                hasError: 'Erro interno ao alterar a senha do usuário',
                 isLoading: false,
               ),
             );
@@ -152,7 +152,7 @@ class UserController extends BaseController<UserModel> {
           default:
             emit(
               state.copyWith(
-                hasError: 'Erro ao alterar a senha do usuário',
+                hasError: 'Erro ao alterar a senha do usuário',
                 isLoading: false,
               ),
             );
@@ -181,7 +181,7 @@ class UserController extends BaseController<UserModel> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao excluir usuário',
+              hasError: 'Erro interno ao excluir usuário',
               isLoading: false,
             ),
           );
@@ -189,14 +189,14 @@ class UserController extends BaseController<UserModel> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao excluir usuário',
+              hasError: 'Erro ao excluir usuário',
               isLoading: false,
             ),
           );
           break;
       }
     } catch (e) {
-      emit(state.copyWith(hasError: e));
+      emit(state.copyWith(hasError: e, isLoading: false));
     }
     return false;
   }

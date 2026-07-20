@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tpb_business_flutter/core/components/bloco.dart';
 import 'package:tpb_business_flutter/core/components/dialog/confirm_dialog.dart';
+import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 import 'package:tpb_business_flutter/core/components/textos.dart';
 import 'package:tpb_business_flutter/core/components/theme_page.dart';
 import 'package:tpb_business_flutter/core/constants/cores.dart';
 import 'package:tpb_business_flutter/core/services/state_bloc.dart';
 import 'package:tpb_business_flutter/features/clientes/cliente_model.dart';
 import 'package:tpb_business_flutter/features/clientes/lista/cliente_lista_controller.dart';
-import 'package:tpb_business_flutter/core/components/textfield_component.dart';
 
 class ClienteListaPage extends StatefulWidget {
   const ClienteListaPage({super.key});
@@ -63,7 +63,7 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
+                  
                   final buscaValue = controller.busca.value.toLowerCase();
                   final filteredClientes = (state.data ?? []).where((cliente) {
                     return cliente.nome.toLowerCase().contains(buscaValue);

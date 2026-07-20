@@ -85,6 +85,7 @@ class Preferences {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear();
+      await Preferences.instance.init();
     } catch (e) {
       return false;
     }

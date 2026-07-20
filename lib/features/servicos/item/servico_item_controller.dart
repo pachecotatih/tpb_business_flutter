@@ -19,7 +19,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
         try {
           response = await repository.get('${Globals.urlApi}/servico/$uid');
         } on DioException catch (e) {
-          throw Exception("Ocorreu um erro ao obter serviço. ${e.message}");
+          throw Exception("Ocorreu um erro ao obter serviço. ${e.message}");
         }
 
         switch (response.statusCode) {
@@ -34,7 +34,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
           case 500:
             emit(
               state.copyWith(
-                hasError: 'Erro interno ao obter serviço',
+                hasError: 'Erro interno ao obter serviço',
                 isLoading: false,
               ),
             );
@@ -42,7 +42,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
           default:
             emit(
               state.copyWith(
-                hasError: 'Erro ao obter serviço',
+                hasError: 'Erro ao obter serviço',
                 isLoading: false,
               ),
             );
@@ -71,7 +71,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
           );
         }
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao salvar serviço. ${e.message}");
+        throw Exception("Ocorreu um erro ao salvar serviço. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -92,7 +92,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao salvar serviço',
+              hasError: 'Erro interno ao salvar serviço',
               isLoading: false,
             ),
           );
@@ -100,7 +100,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao salvar serviço',
+              hasError: 'Erro ao salvar serviço',
               isLoading: false,
             ),
           );
@@ -121,7 +121,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
           '${Globals.urlApi}/servico/${state.data!.uid}',
         );
       } on DioException catch (e) {
-        throw Exception("Ocorreu um erro ao excluir serviço. ${e.message}");
+        throw Exception("Ocorreu um erro ao excluir serviço. ${e.message}");
       }
 
       switch (response.statusCode) {
@@ -131,7 +131,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
         case 500:
           emit(
             state.copyWith(
-              hasError: 'Erro interno ao excluir serviço',
+              hasError: 'Erro interno ao excluir serviço',
               isLoading: false,
             ),
           );
@@ -139,7 +139,7 @@ class ServicoItemController extends BaseController<ServicoModel> {
         default:
           emit(
             state.copyWith(
-              hasError: 'Erro ao excluir serviço',
+              hasError: 'Erro ao excluir serviço',
               isLoading: false,
             ),
           );
