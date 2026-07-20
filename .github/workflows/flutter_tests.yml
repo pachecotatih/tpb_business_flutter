@@ -1,0 +1,28 @@
+name: Flutter Fast Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter with Cache
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true # Ativa o cache automático do SDK e dependências do Pub
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Unit Tests
+        run: flutter test
