@@ -139,9 +139,6 @@ class _CadastrarPageState extends State<CadastrarPage> {
           );
         },
         listener: (context, state) {
-          if (Preferences.instance.token.isNotEmpty) {
-            GoRouter.of(context).pushReplacement('/');
-          }
           if (state.hasError != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
