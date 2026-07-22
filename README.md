@@ -15,10 +15,6 @@ A aplicação foi estruturada seguindo boas práticas de desenvolvimento de soft
  Home 
 ![Home](assets/img/screenshots/web/home.png)
 
-| Clientes | Serviços |
-| :---: | :---: |
-| ![Clientes](assets/img/screenshots/web/clientes.png) | ![Serviços](assets/img/screenshots/web/servicos.png) |
-
 Calendário de Agendamentos
 ![Calendário de Agendamentos](assets/img/screenshots/web/agendamento.png)
 
@@ -32,10 +28,8 @@ Fluxo de Caixa
 | :---: | :---: | :---: |
 | ![Home](assets/img/screenshots/mobile/home.png) | ![Menu](assets/img/screenshots/mobile/menu.png) | ![Calendário de Agendamentos](assets/img/screenshots/mobile/agendamentos.png) |
 
-| Fluxo de Caixa | Clientes | Serviços |
-| :---: | :---: | :---: |
-| ![Fluxo de Caixa](assets/img/screenshots/mobile/fluxo_caixa.png) | ![Clientes](assets/img/screenshots/mobile/clientes.png) | ![Serviços](assets/img/screenshots/mobile/servicos.png) |
-
+Fluxo de Caixa
+![Fluxo de Caixa](assets/img/screenshots/mobile/fluxo_caixa.png) 
 ---
 
 ## ✨ Funcionalidades
