@@ -80,6 +80,7 @@ class _ServicoListaPageState extends State<ServicoListaPage> {
                         )
                       : ListView.builder(
                           shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: servicosFiltrados.length,
                           itemBuilder: (context, index) {
                             final servico = servicosFiltrados[index];

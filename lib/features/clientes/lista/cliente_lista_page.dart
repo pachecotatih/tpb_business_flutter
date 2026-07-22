@@ -45,7 +45,6 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
       children: [
         Bloco(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextfieldComponent(
                 label: 'Buscar cliente',
@@ -75,6 +74,7 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                         )
                       : ListView.builder(
                           shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: filteredClientes.length,
                           itemBuilder: (context, index) {
                             final cliente = filteredClientes[index];
