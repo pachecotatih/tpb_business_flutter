@@ -24,49 +24,73 @@ class _ClienteStepState extends State<ClienteStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      spacing: 10,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: CampoSelectPesquisaComponent<int>(
-            items: (widget.state.data!.loadingClientes)
-                ? [
-                    CampoSelectItem<int>(
-                      label: cliente.nome,
-                      value: cliente.id ?? 0,
-                    ),
-                  ]
-                : [
-                    ...(widget.state.data!.clientes ?? []).map(
-                      (e) =>
-                          CampoSelectItem<int>(label: e.nome, value: e.id ?? 0),
-                    ),
-                  ],
-            label: 'Cliente',
-            value: widget.state.data!.clienteId ?? 0,
-            onChange: (value) async {
-              widget.state.data!.clienteId = value;
-              FocusScope.of(context).unfocus();
-            },
-          ),
+        Row(
+          spacing: 10,
+          children: [
+            Expanded(
+              child: CampoSelectPesquisaComponent<ClienteModel>(
+                items: (widget.state.data!.loadingClientes)
+                    ? [
+                        CampoSelectItem<ClienteModel>(
+                          label: cliente.nome,
+                          value: cliente,
+                        ),
+                      ]
+                    : [
+                        ...(widget.state.data!.clientes ?? []).map(
+                          (e) => CampoSelectItem<ClienteModel>(
+                            label: e.nome,
+                            value: e,
+                          ),
+                        ),
+                      ],
+                label: 'Cliente',
+                value: widget.state.data!.cliente ?? ClienteModel(),
+                onChange: (ClienteModel value) async {
+                  widget.state.data!.cliente = value;
+                  widget.state.data!.clienteId = value.id;
+
+                  FocusScope.of(context).unfocus();
+                },
+              ),
+            ),
+            IconButton(
+              style: IconButton.styleFrom(
+                backgroundColor: Cores.positiveColor,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () async {
+                ClienteModel? cliente = await context.push<ClienteModel>(
+                  '/cliente/new',
+                  extra: true,
+                );
+                if (cliente != null) {
+                  widget.state.data!.clientes?.add(cliente);
+                  widget.state.data!.clienteId = cliente.id;
+                }
+              },
+              icon: Icon(Icons.add),
+            ),
+          ],
         ),
-        IconButton(
-          style: IconButton.styleFrom(
-            backgroundColor: Cores.positiveColor,
-            foregroundColor: Colors.white,
+        if ((widget.state.data!.clienteId ?? 0) > 0) ...[
+          SizedBox(height: 20),
+          Text(
+            'Nome: ${widget.state.data!.cliente?.nome}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          onPressed: () async {
-            ClienteModel? cliente = await context.push<ClienteModel>(
-              '/cliente/new',
-              extra: true,
-            );
-            if (cliente != null) {
-              widget.state.data!.clientes?.add(cliente);
-              widget.state.data!.clienteId = cliente.id;
-            }
-          },
-          icon: Icon(Icons.add),
-        ),
+          Text(
+            'Telefone: ${widget.state.data!.cliente?.telefone ?? '-'}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'Email: ${widget.state.data!.cliente?.email ?? '-'}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ],
       ],
     );
   }
