@@ -41,10 +41,7 @@ class UserController extends BaseController<UserModel> {
           break;
         default:
           emit(
-            state.copyWith(
-              hasError: 'Erro ao obter usuário',
-              isLoading: false,
-            ),
+            state.copyWith(hasError: 'Erro ao obter usuário', isLoading: false),
           );
           break;
       }

@@ -45,7 +45,7 @@ void main() {
           'data_inicio': '2026-07-20T09:00:00.000Z',
           'data_fim': '2026-07-20T10:00:00.000Z',
           'valor_total': 150.0,
-        }
+        },
       ],
     };
 
@@ -89,7 +89,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter dados da home'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter dados da home',
+            ),
       ],
     );
 
@@ -109,7 +113,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro ao obter dados da home'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro ao obter dados da home',
+            ),
       ],
     );
 
@@ -128,7 +136,10 @@ void main() {
       verify: (c) {
         expect(c.state.isLoading, false);
         expect(c.state.hasError, isNotNull);
-        expect(c.state.hasError.toString(), contains('Erro ao obter dados da home'));
+        expect(
+          c.state.hasError.toString(),
+          contains('Erro ao obter dados da home'),
+        );
       },
     );
   });

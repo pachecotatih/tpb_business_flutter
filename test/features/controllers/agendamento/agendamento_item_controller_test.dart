@@ -74,25 +74,25 @@ void main() {
       'deve emitir erro quando clientes retornam 500 no modo novo',
       build: () {
         when(() => mockRepository.get(any())).thenAnswer((invocation) async {
-  final url = invocation.positionalArguments.first as String;
+          final url = invocation.positionalArguments.first as String;
 
-  if (url.endsWith('/cliente')) {
-    return Response(
-      requestOptions: RequestOptions(path: url),
-      statusCode: 500,
-    );
-  }
+          if (url.endsWith('/cliente')) {
+            return Response(
+              requestOptions: RequestOptions(path: url),
+              statusCode: 500,
+            );
+          }
 
-  if (url.endsWith('/servico')) {
-    return Response(
-      requestOptions: RequestOptions(path: url),
-      statusCode: 200,
-      data: [],
-    );
-  }
+          if (url.endsWith('/servico')) {
+            return Response(
+              requestOptions: RequestOptions(path: url),
+              statusCode: 200,
+              data: [],
+            );
+          }
 
-  throw UnimplementedError(url);
-});
+          throw UnimplementedError(url);
+        });
         return controller;
       },
       act: (c) => c.get(''),

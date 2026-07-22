@@ -63,7 +63,7 @@ class _ClienteListaPageState extends State<ClienteListaPage> {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  
+
                   final buscaValue = controller.busca.value.toLowerCase();
                   final filteredClientes = (state.data ?? []).where((cliente) {
                     return cliente.nome.toLowerCase().contains(buscaValue);

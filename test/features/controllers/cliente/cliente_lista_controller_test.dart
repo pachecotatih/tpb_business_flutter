@@ -73,7 +73,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter clientes'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter clientes',
+            ),
       ],
     );
 
@@ -111,7 +115,10 @@ void main() {
       act: (c) => c.getClientes(),
       verify: (c) {
         expect(c.state.isLoading, false);
-        expect(c.state.hasError.toString(), contains('Ocorreu um erro ao obter clientes'));
+        expect(
+          c.state.hasError.toString(),
+          contains('Ocorreu um erro ao obter clientes'),
+        );
       },
     );
   });
@@ -120,10 +127,14 @@ void main() {
     blocTest<ClienteListaController, dynamic>(
       'deve remover cliente da lista ao excluir com sucesso (200)',
       build: () {
-        controller.emit(controller.state.copyWith(data: [
-          ClienteModel(id: 1, uid: 'cli-1', nome: 'Tatiana Pacheco'),
-          ClienteModel(id: 2, uid: 'cli-2', nome: 'Maria Silva'),
-        ]));
+        controller.emit(
+          controller.state.copyWith(
+            data: [
+              ClienteModel(id: 1, uid: 'cli-1', nome: 'Tatiana Pacheco'),
+              ClienteModel(id: 2, uid: 'cli-2', nome: 'Maria Silva'),
+            ],
+          ),
+        );
         when(() => mockRepository.delete(any())).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
@@ -143,9 +154,11 @@ void main() {
     blocTest<ClienteListaController, dynamic>(
       'deve emitir erro interno ao tentar excluir e receber 500',
       build: () {
-        controller.emit(controller.state.copyWith(data: [
-          ClienteModel(id: 1, uid: 'cli-1', nome: 'Tatiana'),
-        ]));
+        controller.emit(
+          controller.state.copyWith(
+            data: [ClienteModel(id: 1, uid: 'cli-1', nome: 'Tatiana')],
+          ),
+        );
         when(() => mockRepository.delete(any())).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
@@ -159,16 +172,22 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao excluir cliente'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao excluir cliente',
+            ),
       ],
     );
 
     blocTest<ClienteListaController, dynamic>(
       'deve emitir erro genérico ao tentar excluir com status inválido',
       build: () {
-        controller.emit(controller.state.copyWith(data: [
-          ClienteModel(id: 1, uid: 'cli-1', nome: 'Tatiana'),
-        ]));
+        controller.emit(
+          controller.state.copyWith(
+            data: [ClienteModel(id: 1, uid: 'cli-1', nome: 'Tatiana')],
+          ),
+        );
         when(() => mockRepository.delete(any())).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
@@ -188,18 +207,21 @@ void main() {
   });
 
   group('ClienteListaController - busca ValueNotifier', () {
-    test('deve acionar estados de loading ao alterar o valor de busca', () async {
-      final estados = <dynamic>[];
-      final subscription = controller.stream.listen(estados.add);
+    test(
+      'deve acionar estados de loading ao alterar o valor de busca',
+      () async {
+        final estados = <dynamic>[];
+        final subscription = controller.stream.listen(estados.add);
 
-      controller.busca.value = 'Tatiana';
-      await Future.delayed(const Duration(milliseconds: 200));
+        controller.busca.value = 'Tatiana';
+        await Future.delayed(const Duration(milliseconds: 200));
 
-      expect(estados.length, greaterThanOrEqualTo(2));
-      expect(estados[0].isLoading, true);
-      expect(estados[1].isLoading, false);
+        expect(estados.length, greaterThanOrEqualTo(2));
+        expect(estados[0].isLoading, true);
+        expect(estados[1].isLoading, false);
 
-      await subscription.cancel();
-    });
+        await subscription.cancel();
+      },
+    );
   });
 }

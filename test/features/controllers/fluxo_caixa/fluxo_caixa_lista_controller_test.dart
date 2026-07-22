@@ -153,7 +153,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter fluxo de caixa'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter fluxo de caixa',
+            ),
       ],
     );
 
@@ -173,7 +177,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro ao obter fluxo de caixa'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro ao obter fluxo de caixa',
+            ),
       ],
     );
 
@@ -192,40 +200,46 @@ void main() {
       verify: (c) {
         expect(c.state.isLoading, false);
         expect(c.state.hasError, isNotNull);
-        expect(c.state.hasError.toString(), contains('Ocorreu um erro ao obter fluxo de caixa'));
+        expect(
+          c.state.hasError.toString(),
+          contains('Ocorreu um erro ao obter fluxo de caixa'),
+        );
       },
     );
   });
 
   group('FluxoCaixaListaController - getGrupos', () {
-    test('deve agrupar itens por data e ordenar do mais recente ao mais antigo', () {
-      final itens = [
-        FluxoCaixaItemModel(
-          uid: 'fc-1',
-          descricao: 'A',
-          createdAt: '2026-07-18T10:00:00.000Z',
-        ),
-        FluxoCaixaItemModel(
-          uid: 'fc-2',
-          descricao: 'B',
-          createdAt: '2026-07-20T15:00:00.000Z',
-        ),
-        FluxoCaixaItemModel(
-          uid: 'fc-3',
-          descricao: 'C',
-          createdAt: '2026-07-20T09:00:00.000Z',
-        ),
-      ];
+    test(
+      'deve agrupar itens por data e ordenar do mais recente ao mais antigo',
+      () {
+        final itens = [
+          FluxoCaixaItemModel(
+            uid: 'fc-1',
+            descricao: 'A',
+            createdAt: '2026-07-18T10:00:00.000Z',
+          ),
+          FluxoCaixaItemModel(
+            uid: 'fc-2',
+            descricao: 'B',
+            createdAt: '2026-07-20T15:00:00.000Z',
+          ),
+          FluxoCaixaItemModel(
+            uid: 'fc-3',
+            descricao: 'C',
+            createdAt: '2026-07-20T09:00:00.000Z',
+          ),
+        ];
 
-      final grupos = controller.getGrupos(itens);
+        final grupos = controller.getGrupos(itens);
 
-      expect(grupos.length, 2); // duas datas distintas: 20 e 18
-      // O mais recente deve vir primeiro
-      expect(grupos[0].data.day, 20);
-      expect(grupos[1].data.day, 18);
-      // O dia 20 deve ter 2 itens
-      expect(grupos[0].fluxoCaixaList.length, 2);
-    });
+        expect(grupos.length, 2); // duas datas distintas: 20 e 18
+        // O mais recente deve vir primeiro
+        expect(grupos[0].data.day, 20);
+        expect(grupos[1].data.day, 18);
+        // O dia 20 deve ter 2 itens
+        expect(grupos[0].fluxoCaixaList.length, 2);
+      },
+    );
 
     test('deve retornar lista vazia quando fluxoCaixaList for nula', () {
       final grupos = controller.getGrupos(null);

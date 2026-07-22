@@ -31,7 +31,12 @@ void main() {
 
   group('ServicoListaController - getServicos', () {
     final listResponse = [
-      {'uid': 's1', 'nome': 'Corte de Cabelo', 'valor_padrao': 50.0, 'ativo': true},
+      {
+        'uid': 's1',
+        'nome': 'Corte de Cabelo',
+        'valor_padrao': 50.0,
+        'ativo': true,
+      },
       {'uid': 's2', 'nome': 'Manicure', 'valor_padrao': 35.0, 'ativo': false},
     ];
 
@@ -74,7 +79,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter serviços'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter serviços',
+            ),
       ],
     );
 
@@ -103,10 +112,14 @@ void main() {
     blocTest<ServicoListaController, dynamic>(
       'deve remover serviço da lista ao excluir com sucesso (200)',
       build: () {
-        controller.emit(controller.state.copyWith(data: [
-          ServicoModel(uid: 's1', nome: 'Corte de Cabelo'),
-          ServicoModel(uid: 's2', nome: 'Manicure'),
-        ]));
+        controller.emit(
+          controller.state.copyWith(
+            data: [
+              ServicoModel(uid: 's1', nome: 'Corte de Cabelo'),
+              ServicoModel(uid: 's2', nome: 'Manicure'),
+            ],
+          ),
+        );
         when(() => mockRepository.delete(any())).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
@@ -125,9 +138,11 @@ void main() {
     blocTest<ServicoListaController, dynamic>(
       'deve emitir erro interno ao excluir e receber 500',
       build: () {
-        controller.emit(controller.state.copyWith(data: [
-          ServicoModel(uid: 's1', nome: 'Corte de Cabelo'),
-        ]));
+        controller.emit(
+          controller.state.copyWith(
+            data: [ServicoModel(uid: 's1', nome: 'Corte de Cabelo')],
+          ),
+        );
         when(() => mockRepository.delete(any())).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
@@ -141,16 +156,22 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao excluir serviço'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao excluir serviço',
+            ),
       ],
     );
 
     blocTest<ServicoListaController, dynamic>(
       'deve emitir erro genérico para status inválido ao excluir',
       build: () {
-        controller.emit(controller.state.copyWith(data: [
-          ServicoModel(uid: 's1', nome: 'Corte de Cabelo'),
-        ]));
+        controller.emit(
+          controller.state.copyWith(
+            data: [ServicoModel(uid: 's1', nome: 'Corte de Cabelo')],
+          ),
+        );
         when(() => mockRepository.delete(any())).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
@@ -170,73 +191,100 @@ void main() {
   });
 
   group('ServicoListaController - updateAtivo', () {
-    test('deve retornar true e ativar o serviço localmente ao ter sucesso (200)', () async {
-      controller.emit(controller.state.copyWith(data: [
-        ServicoModel(uid: 's1', nome: 'Corte de Cabelo', ativo: false),
-      ]));
+    test(
+      'deve retornar true e ativar o serviço localmente ao ter sucesso (200)',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: [
+              ServicoModel(uid: 's1', nome: 'Corte de Cabelo', ativo: false),
+            ],
+          ),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.updateAtivo('s1', true);
-      expect(result, true);
-      expect(controller.state.data![0].ativo, true);
-    });
+        final result = await controller.updateAtivo('s1', true);
+        expect(result, true);
+        expect(controller.state.data![0].ativo, true);
+      },
+    );
 
-    test('deve reverter o ativo localmente e retornar false ao receber 500', () async {
-      controller.emit(controller.state.copyWith(data: [
-        ServicoModel(uid: 's1', nome: 'Corte de Cabelo', ativo: false),
-      ]));
+    test(
+      'deve reverter o ativo localmente e retornar false ao receber 500',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: [
+              ServicoModel(uid: 's1', nome: 'Corte de Cabelo', ativo: false),
+            ],
+          ),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 500,
+          ),
+        );
 
-      final result = await controller.updateAtivo('s1', true);
-      expect(result, false);
-      expect(controller.state.data![0].ativo, false);
-      expect(controller.state.hasError.toString(), 'Erro interno ao alterar o ativo do serviço');
-    });
+        final result = await controller.updateAtivo('s1', true);
+        expect(result, false);
+        expect(controller.state.data![0].ativo, false);
+        expect(
+          controller.state.hasError.toString(),
+          'Erro interno ao alterar o ativo do serviço',
+        );
+      },
+    );
 
-    test('deve reverter o ativo e emitir erro genérico para status padrão', () async {
-      controller.emit(controller.state.copyWith(data: [
-        ServicoModel(uid: 's1', nome: 'Corte de Cabelo', ativo: true),
-      ]));
+    test(
+      'deve reverter o ativo e emitir erro genérico para status padrão',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: [
+              ServicoModel(uid: 's1', nome: 'Corte de Cabelo', ativo: true),
+            ],
+          ),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 400,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 400,
+          ),
+        );
 
-      final result = await controller.updateAtivo('s1', false);
-      expect(result, false);
-      expect(controller.state.data![0].ativo, true);
-      expect(controller.state.hasError, 'Erro ao alterar o ativo do serviço');
-    });
+        final result = await controller.updateAtivo('s1', false);
+        expect(result, false);
+        expect(controller.state.data![0].ativo, true);
+        expect(controller.state.hasError, 'Erro ao alterar o ativo do serviço');
+      },
+    );
   });
 
   group('ServicoListaController - busca ValueNotifier', () {
-    test('deve acionar estados de loading ao alterar o valor de busca', () async {
-      final estados = <dynamic>[];
-      final subscription = controller.stream.listen(estados.add);
+    test(
+      'deve acionar estados de loading ao alterar o valor de busca',
+      () async {
+        final estados = <dynamic>[];
+        final subscription = controller.stream.listen(estados.add);
 
-      controller.busca.value = 'Corte';
-      await Future.delayed(const Duration(milliseconds: 200));
+        controller.busca.value = 'Corte';
+        await Future.delayed(const Duration(milliseconds: 200));
 
-      expect(estados.length, greaterThanOrEqualTo(2));
-      expect(estados[0].isLoading, true);
-      expect(estados[1].isLoading, false);
+        expect(estados.length, greaterThanOrEqualTo(2));
+        expect(estados[0].isLoading, true);
+        expect(estados[1].isLoading, false);
 
-      await subscription.cancel();
-    });
+        await subscription.cancel();
+      },
+    );
   });
 }

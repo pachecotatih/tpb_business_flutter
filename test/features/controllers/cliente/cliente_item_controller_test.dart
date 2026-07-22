@@ -81,7 +81,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter cliente'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter cliente',
+            ),
       ],
     );
 
@@ -112,61 +116,74 @@ void main() {
   });
 
   group('ClienteItemController - save', () {
-    test('deve enviar POST e retornar true ao criar novo cliente (uid vazio)', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: '', nome: 'Novo Cliente')),
-      );
+    test(
+      'deve enviar POST e retornar true ao criar novo cliente (uid vazio)',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: ClienteModel(uid: '', nome: 'Novo Cliente'),
+          ),
+        );
 
-      when(() => mockRepository.post(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {'id': 3, 'uid': 'cli-3', 'nome': 'Novo Cliente'},
-          statusCode: 201,
-        ),
-      );
+        when(() => mockRepository.post(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'id': 3, 'uid': 'cli-3', 'nome': 'Novo Cliente'},
+            statusCode: 201,
+          ),
+        );
 
-      final result = await controller.save();
-      expect(result, true);
-      expect(controller.state.data!.uid, 'cli-3');
-      verify(() => mockRepository.post(any(), any())).called(1);
-    });
+        final result = await controller.save();
+        expect(result, true);
+        expect(controller.state.data!.uid, 'cli-3');
+        verify(() => mockRepository.post(any(), any())).called(1);
+      },
+    );
 
-    test('deve enviar PUT e retornar true ao atualizar cliente existente', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: 'cli-1', nome: 'Atualizado')),
-      );
+    test(
+      'deve enviar PUT e retornar true ao atualizar cliente existente',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: ClienteModel(uid: 'cli-1', nome: 'Atualizado'),
+          ),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {'id': 1, 'uid': 'cli-1', 'nome': 'Atualizado'},
-          statusCode: 200,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'id': 1, 'uid': 'cli-1', 'nome': 'Atualizado'},
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.save();
-      expect(result, true);
-      expect(controller.state.data!.nome, 'Atualizado');
-      verify(() => mockRepository.put(any(), any())).called(1);
-    });
+        final result = await controller.save();
+        expect(result, true);
+        expect(controller.state.data!.nome, 'Atualizado');
+        verify(() => mockRepository.put(any(), any())).called(1);
+      },
+    );
 
-    test('deve retornar false e emitir erro de validação ao receber 422', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
-      );
+    test(
+      'deve retornar false e emitir erro de validação ao receber 422',
+      () async {
+        controller.emit(
+          controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {'errors': 'Nome é obrigatório'},
-          statusCode: 422,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'errors': 'Nome é obrigatório'},
+            statusCode: 422,
+          ),
+        );
 
-      final result = await controller.save();
-      expect(result, false);
-      expect(controller.state.hasError, 'Nome é obrigatório');
-    });
+        final result = await controller.save();
+        expect(result, false);
+        expect(controller.state.hasError, 'Nome é obrigatório');
+      },
+    );
 
     test('deve retornar false e emitir erro interno ao receber 500', () async {
       controller.emit(
@@ -174,10 +191,8 @@ void main() {
       );
 
       when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
+        (_) async =>
+            Response(requestOptions: RequestOptions(path: ''), statusCode: 500),
       );
 
       final result = await controller.save();
@@ -185,74 +200,88 @@ void main() {
       expect(controller.state.hasError, 'Erro interno ao salvar cliente');
     });
 
-    test('deve retornar false e emitir erro genérico para status padrão', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
-      );
+    test(
+      'deve retornar false e emitir erro genérico para status padrão',
+      () async {
+        controller.emit(
+          controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 400,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 400,
+          ),
+        );
 
-      final result = await controller.save();
-      expect(result, false);
-      expect(controller.state.hasError, 'Erro ao salvar cliente');
-    });
+        final result = await controller.save();
+        expect(result, false);
+        expect(controller.state.hasError, 'Erro ao salvar cliente');
+      },
+    );
   });
 
   group('ClienteItemController - delete', () {
-    test('deve retornar true e limpar dados ao excluir com sucesso (200)', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: 'cli-1', nome: 'Tatiana')),
-      );
+    test(
+      'deve retornar true e limpar dados ao excluir com sucesso (200)',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: ClienteModel(uid: 'cli-1', nome: 'Tatiana'),
+          ),
+        );
 
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-        ),
-      );
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.delete();
-      expect(result, true);
-      verify(() => mockRepository.delete(any())).called(1);
-    });
+        final result = await controller.delete();
+        expect(result, true);
+        verify(() => mockRepository.delete(any())).called(1);
+      },
+    );
 
-    test('deve retornar false e emitir erro interno ao falhar com 500', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
-      );
+    test(
+      'deve retornar false e emitir erro interno ao falhar com 500',
+      () async {
+        controller.emit(
+          controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
+        );
 
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
-      );
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 500,
+          ),
+        );
 
-      final result = await controller.delete();
-      expect(result, false);
-      expect(controller.state.hasError, 'Erro interno ao excluir cliente');
-    });
+        final result = await controller.delete();
+        expect(result, false);
+        expect(controller.state.hasError, 'Erro interno ao excluir cliente');
+      },
+    );
 
-    test('deve retornar false e emitir erro genérico para status padrão', () async {
-      controller.emit(
-        controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
-      );
+    test(
+      'deve retornar false e emitir erro genérico para status padrão',
+      () async {
+        controller.emit(
+          controller.state.copyWith(data: ClienteModel(uid: 'cli-1')),
+        );
 
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 404,
-        ),
-      );
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 404,
+          ),
+        );
 
-      final result = await controller.delete();
-      expect(result, false);
-      expect(controller.state.hasError, 'Erro ao excluir cliente');
-    });
+        final result = await controller.delete();
+        expect(result, false);
+        expect(controller.state.hasError, 'Erro ao excluir cliente');
+      },
+    );
   });
 }

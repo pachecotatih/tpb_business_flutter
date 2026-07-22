@@ -24,7 +24,9 @@ class Util {
       return "web_${DateTime.now().millisecondsSinceEpoch}";
     }
     try {
-      if (Platform.isAndroid) return "android_${DateTime.now().millisecondsSinceEpoch}";
+      if (Platform.isAndroid) {
+        return "android_${DateTime.now().millisecondsSinceEpoch}";
+      }
     } catch (_) {}
     return "test_${DateTime.now().millisecondsSinceEpoch}";
   }

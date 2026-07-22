@@ -78,7 +78,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter usuário'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter usuário',
+            ),
       ],
     );
 
@@ -104,66 +108,68 @@ void main() {
   });
 
   group('UserController - updateUser', () {
-    test('deve retornar true e atualizar preferências ao receber 200', () async {
-      controller.emit(controller.state.copyWith(
-        data: UserModel(
-          name: 'Tatiana Nova',
-          email: 'nova@test.com',
-          moeda: 'US\$',
-          telefone: '11988888888',
-          documento: '111.222.333-44',
-        ),
-      ));
+    test(
+      'deve retornar true e atualizar preferências ao receber 200',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: UserModel(
+              name: 'Tatiana Nova',
+              email: 'nova@test.com',
+              moeda: 'US\$',
+              telefone: '11988888888',
+              documento: '111.222.333-44',
+            ),
+          ),
+        );
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {
-            'name': 'Tatiana Nova',
-            'email': 'nova@test.com',
-            'telefone': '11988888888',
-            'documento': '111.222.333-44',
-            'moeda': 'US\$',
-          },
-          statusCode: 200,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {
+              'name': 'Tatiana Nova',
+              'email': 'nova@test.com',
+              'telefone': '11988888888',
+              'documento': '111.222.333-44',
+              'moeda': 'US\$',
+            },
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.updateUser();
-      expect(result, true);
-      expect(Preferences.instance.name, 'Tatiana Nova');
-      expect(Preferences.instance.email, 'nova@test.com');
-      expect(Preferences.instance.moeda, 'US\$');
-    });
+        final result = await controller.updateUser();
+        expect(result, true);
+        expect(Preferences.instance.name, 'Tatiana Nova');
+        expect(Preferences.instance.email, 'nova@test.com');
+        expect(Preferences.instance.moeda, 'US\$');
+      },
+    );
 
-    test('deve retornar false e emitir erro de validação ao receber 422', () async {
-      controller.emit(
-        controller.state.copyWith(data: UserModel()),
-      );
+    test(
+      'deve retornar false e emitir erro de validação ao receber 422',
+      () async {
+        controller.emit(controller.state.copyWith(data: UserModel()));
 
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {'errors': 'E-mail inválido'},
-          statusCode: 422,
-        ),
-      );
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'errors': 'E-mail inválido'},
+            statusCode: 422,
+          ),
+        );
 
-      final result = await controller.updateUser();
-      expect(result, false);
-      expect(controller.state.hasError, 'E-mail inválido');
-    });
+        final result = await controller.updateUser();
+        expect(result, false);
+        expect(controller.state.hasError, 'E-mail inválido');
+      },
+    );
 
     test('deve retornar false e emitir erro interno ao receber 500', () async {
-      controller.emit(
-        controller.state.copyWith(data: UserModel()),
-      );
+      controller.emit(controller.state.copyWith(data: UserModel()));
 
       when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
+        (_) async =>
+            Response(requestOptions: RequestOptions(path: ''), statusCode: 500),
       );
 
       final result = await controller.updateUser();
@@ -173,108 +179,140 @@ void main() {
   });
 
   group('UserController - changePasswordUser', () {
-    test('deve retornar true ao alterar senha com sucesso quando senhas conferem', () async {
-      controller.emit(controller.state.copyWith(
-        data: UserModel(password: 'nova_senha_123', confirmPassword: 'nova_senha_123'),
-      ));
+    test(
+      'deve retornar true ao alterar senha com sucesso quando senhas conferem',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: UserModel(
+              password: 'nova_senha_123',
+              confirmPassword: 'nova_senha_123',
+            ),
+          ),
+        );
 
-      when(() => mockRepository.post(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {
-            'name': 'Tatiana',
-            'email': 'tatiana@test.com',
-            'telefone': '11999999999',
-            'documento': '123',
-            'moeda': 'R\$',
-          },
-          statusCode: 200,
-        ),
-      );
+        when(() => mockRepository.post(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {
+              'name': 'Tatiana',
+              'email': 'tatiana@test.com',
+              'telefone': '11999999999',
+              'documento': '123',
+              'moeda': 'R\$',
+            },
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.changePasswordUser();
-      expect(result, true);
-    });
+        final result = await controller.changePasswordUser();
+        expect(result, true);
+      },
+    );
 
-    test('deve retornar false e emitir erro de validação quando senhas não conferem', () async {
-      controller.emit(controller.state.copyWith(
-        data: UserModel(password: 'senha_a', confirmPassword: 'senha_b'),
-      ));
+    test(
+      'deve retornar false e emitir erro de validação quando senhas não conferem',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: UserModel(password: 'senha_a', confirmPassword: 'senha_b'),
+          ),
+        );
 
-      final result = await controller.changePasswordUser();
-      expect(result, false);
-      expect(controller.state.hasError, 'Senhas não conferem');
-      verifyNever(() => mockRepository.post(any(), any()));
-    });
+        final result = await controller.changePasswordUser();
+        expect(result, false);
+        expect(controller.state.hasError, 'Senhas não conferem');
+        verifyNever(() => mockRepository.post(any(), any()));
+      },
+    );
 
     test('deve retornar false quando senha estiver vazia', () async {
-      controller.emit(controller.state.copyWith(
-        data: UserModel(password: '', confirmPassword: ''),
-      ));
+      controller.emit(
+        controller.state.copyWith(
+          data: UserModel(password: '', confirmPassword: ''),
+        ),
+      );
 
       final result = await controller.changePasswordUser();
       expect(result, false);
       expect(controller.state.hasError, 'Senhas não conferem');
     });
 
-    test('deve retornar false e emitir erro de validação ao receber 422', () async {
-      controller.emit(controller.state.copyWith(
-        data: UserModel(password: 'curta', confirmPassword: 'curta'),
-      ));
+    test(
+      'deve retornar false e emitir erro de validação ao receber 422',
+      () async {
+        controller.emit(
+          controller.state.copyWith(
+            data: UserModel(password: 'curta', confirmPassword: 'curta'),
+          ),
+        );
 
-      when(() => mockRepository.post(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {'errors': 'Senha deve ter no mínimo 8 caracteres'},
-          statusCode: 422,
-        ),
-      );
+        when(() => mockRepository.post(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'errors': 'Senha deve ter no mínimo 8 caracteres'},
+            statusCode: 422,
+          ),
+        );
 
-      final result = await controller.changePasswordUser();
-      expect(result, false);
-      expect(controller.state.hasError, 'Senha deve ter no mínimo 8 caracteres');
-    });
+        final result = await controller.changePasswordUser();
+        expect(result, false);
+        expect(
+          controller.state.hasError,
+          'Senha deve ter no mínimo 8 caracteres',
+        );
+      },
+    );
   });
 
   group('UserController - deleteUser', () {
-    test('deve retornar true e limpar preferências ao excluir conta com sucesso (200)', () async {
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-        ),
-      );
+    test(
+      'deve retornar true e limpar preferências ao excluir conta com sucesso (200)',
+      () async {
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.deleteUser();
-      expect(result, true);
-      expect(Preferences.instance.token, '');
-      expect(Preferences.instance.email, '');
-    });
+        final result = await controller.deleteUser();
+        expect(result, true);
+        expect(Preferences.instance.token, '');
+        expect(Preferences.instance.email, '');
+      },
+    );
 
-    test('deve retornar false e emitir erro interno ao falhar com 500', () async {
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
-      );
+    test(
+      'deve retornar false e emitir erro interno ao falhar com 500',
+      () async {
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 500,
+          ),
+        );
 
-      final result = await controller.deleteUser();
-      expect(result, false);
-      expect(controller.state.hasError, 'Erro interno ao excluir usuário');
-    });
+        final result = await controller.deleteUser();
+        expect(result, false);
+        expect(controller.state.hasError, 'Erro interno ao excluir usuário');
+      },
+    );
 
-    test('deve retornar false e emitir erro genérico para status padrão', () async {
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 400,
-        ),
-      );
+    test(
+      'deve retornar false e emitir erro genérico para status padrão',
+      () async {
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 400,
+          ),
+        );
 
-      final result = await controller.deleteUser();
-      expect(result, false);
-      expect(controller.state.hasError, 'Erro ao excluir usuário');
-    });
+        final result = await controller.deleteUser();
+        expect(result, false);
+        expect(controller.state.hasError, 'Erro ao excluir usuário');
+      },
+    );
   });
 }

@@ -229,7 +229,7 @@ void main() {
 
         final result = await controller.logout();
         expect(result, true);
-        
+
         // As preferências devem ser limpas
         expect(Preferences.instance.token, '');
         expect(Preferences.instance.email, '');

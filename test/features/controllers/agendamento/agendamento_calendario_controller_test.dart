@@ -50,9 +50,9 @@ void main() {
             'nome': 'Serviço Teste',
             'valor_padrao': 100.0,
             'ativo': true,
-          }
+          },
         ],
-      }
+      },
     ];
 
     blocTest<AgendamentoCalendarioController, dynamic>(
@@ -96,7 +96,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro interno ao obter agendamentos'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro interno ao obter agendamentos',
+            ),
       ],
     );
 
@@ -116,7 +120,11 @@ void main() {
         isA<dynamic>().having((s) => s.isLoading, 'isLoading', true),
         isA<dynamic>()
             .having((s) => s.isLoading, 'isLoading', false)
-            .having((s) => s.hasError, 'hasError', 'Erro ao obter agendamentos'),
+            .having(
+              (s) => s.hasError,
+              'hasError',
+              'Erro ao obter agendamentos',
+            ),
       ],
     );
 
@@ -160,10 +168,8 @@ void main() {
 
     test('deve retornar true ao atualizar com sucesso (200)', () async {
       when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-        ),
+        (_) async =>
+            Response(requestOptions: RequestOptions(path: ''), statusCode: 200),
       );
 
       final result = await controller.updateAgendamentos(meeting);
@@ -173,30 +179,34 @@ void main() {
 
     test('deve retornar false e emitir erro interno ao receber 500', () async {
       when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
+        (_) async =>
+            Response(requestOptions: RequestOptions(path: ''), statusCode: 500),
       );
 
       final result = await controller.updateAgendamentos(meeting);
       expect(result, false);
-      expect(controller.state.hasError, 'Erro interno ao atualizar agendamento');
-    });
-
-    test('deve retornar false e emitir erro de validação ao receber 422', () async {
-      when(() => mockRepository.put(any(), any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {'errors': 'Data de início inválida'},
-          statusCode: 422,
-        ),
+      expect(
+        controller.state.hasError,
+        'Erro interno ao atualizar agendamento',
       );
-
-      final result = await controller.updateAgendamentos(meeting);
-      expect(result, false);
-      expect(controller.state.hasError, 'Data de início inválida');
     });
+
+    test(
+      'deve retornar false e emitir erro de validação ao receber 422',
+      () async {
+        when(() => mockRepository.put(any(), any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'errors': 'Data de início inválida'},
+            statusCode: 422,
+          ),
+        );
+
+        final result = await controller.updateAgendamentos(meeting);
+        expect(result, false);
+        expect(controller.state.hasError, 'Data de início inválida');
+      },
+    );
 
     test('deve retornar false ao lançar DioException', () async {
       when(() => mockRepository.put(any(), any())).thenThrow(
@@ -213,49 +223,58 @@ void main() {
   });
 
   group('AgendamentoCalendarioController - deleteAgendamento', () {
-    test('deve retornar true e remover o meeting do estado ao excluir com sucesso', () async {
-      final meetingParaExcluir = Meeting(uid: 'agend-123');
-      controller.emit(
-        controller.state.copyWith(data: MeetingDataSource([meetingParaExcluir])),
-      );
+    test(
+      'deve retornar true e remover o meeting do estado ao excluir com sucesso',
+      () async {
+        final meetingParaExcluir = Meeting(uid: 'agend-123');
+        controller.emit(
+          controller.state.copyWith(
+            data: MeetingDataSource([meetingParaExcluir]),
+          ),
+        );
 
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-        ),
-      );
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 200,
+          ),
+        );
 
-      final result = await controller.deleteAgendamento('agend-123');
-      expect(result, true);
-      expect(controller.state.data!.appointments!.length, 0);
-    });
+        final result = await controller.deleteAgendamento('agend-123');
+        expect(result, true);
+        expect(controller.state.data!.appointments!.length, 0);
+      },
+    );
 
-    test('deve retornar false e emitir erro ao falhar (status não 200)', () async {
-      controller.emit(
-        controller.state.copyWith(data: MeetingDataSource([])),
-      );
+    test(
+      'deve retornar false e emitir erro ao falhar (status não 200)',
+      () async {
+        controller.emit(controller.state.copyWith(data: MeetingDataSource([])));
 
-      when(() => mockRepository.delete(any())).thenAnswer(
-        (_) async => Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 500,
-        ),
-      );
+        when(() => mockRepository.delete(any())).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 500,
+          ),
+        );
 
-      final result = await controller.deleteAgendamento('agend-123');
-      expect(result, false);
-      expect(controller.state.hasError, 'Erro ao excluir agendamento');
-    });
+        final result = await controller.deleteAgendamento('agend-123');
+        expect(result, false);
+        expect(controller.state.hasError, 'Erro ao excluir agendamento');
+      },
+    );
 
     test('deve retornar false ao lançar Exception', () async {
-      when(() => mockRepository.delete(any())).thenThrow(
-        Exception('Falha de conexão'),
-      );
+      when(
+        () => mockRepository.delete(any()),
+      ).thenThrow(Exception('Falha de conexão'));
 
       final result = await controller.deleteAgendamento('agend-123');
       expect(result, false);
-      expect(controller.state.hasError.toString(), contains('Falha de conexão'));
+      expect(
+        controller.state.hasError.toString(),
+        contains('Falha de conexão'),
+      );
     });
   });
 }
