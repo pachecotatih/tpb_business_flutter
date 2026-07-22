@@ -10,9 +10,22 @@ A aplicação foi estruturada seguindo boas práticas de desenvolvimento de soft
 
 ## 📷 Screenshots
 
-| Dashboard (Home) | Calendário de Agendamentos | Fluxo de Caixa |
-| :---: | :---: | :---: |
-| *[Em breve]* | *[Em breve]* | *[Em breve]* |
+### Website
+
+ Home 
+![Home](assets/img/screenshots/web/home.png)
+
+| Clientes | Serviços |
+| :---: | :---: |
+| ![Clientes](assets/img/screenshots/web/clientes.png) | ![Serviços](assets/img/screenshots/web/servicos.png) |
+
+Calendário de Agendamentos
+![Calendário de Agendamentos](assets/img/screenshots/web/agendamento.png)
+
+Fluxo de Caixa
+![Fluxo de Caixa](assets/img/screenshots/web/fluxo_caixa.png)
+
+
 
 ---
 
