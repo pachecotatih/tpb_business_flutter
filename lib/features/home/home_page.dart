@@ -85,11 +85,12 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Bloco(
                         child: Container(
-                          constraints: BoxConstraints(maxWidth: 200),
+                          constraints: BoxConstraints(maxWidth: (MediaQuery.of(context).size.width <= 900?120:200)),
                           width: double.infinity,
                           padding: const EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             spacing: 10,
                             children: [
                               Container(
@@ -124,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  TituloH3(text: "Saldo do dia"),
+                                  TituloH3(text: "Saldo"),
                                   TextoPadrao(
                                     fontSize: 16,
                                     text:
@@ -141,11 +142,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Bloco(
                         child: Container(
-                          constraints: BoxConstraints(maxWidth: 200),
+                          constraints: BoxConstraints(maxWidth: (MediaQuery.of(context).size.width <= 900?120:200)),
                           width: double.infinity,
                           padding: const EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             spacing: 10,
                             children: [
                               Container(
@@ -164,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  TituloH3(text: "Entradas do dia"),
+                                  TituloH3(text: "Entradas"),
                                   TituloH3(
                                     text:
                                         Preferences.instance.moeda +
@@ -181,11 +183,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Bloco(
                         child: Container(
-                          constraints: BoxConstraints(maxWidth: 200),
+                          constraints: BoxConstraints(maxWidth: (MediaQuery.of(context).size.width <= 900?120:200)),
                           width: double.infinity,
                           padding: const EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             spacing: 10,
                             children: [
                               Container(
@@ -204,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  TituloH3(text: "Saídas do dia"),
+                                  TituloH3(text: "Saídas"),
                                   TituloH3(
                                     text:
                                         Preferences.instance.moeda +
