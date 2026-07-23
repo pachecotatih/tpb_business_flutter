@@ -28,17 +28,16 @@ class LoginController extends BaseController<LoginModel> {
       } on DioException catch (e) {
         throw Exception("Ocorreu um erro ao efetuar login. ${e.message}");
       }
-
       switch (response.statusCode) {
         case 200:
           emit(state.copyWith(data: state.data, isLoading: false));
-          Preferences.instance.setToken(response.data['access_token']);
-          Preferences.instance.setRefreshToken(response.data['refresh_token']);
-          Preferences.instance.setUser(response.data['user']);
-          Preferences.instance.setName(response.data['name']);
-          Preferences.instance.setMoeda(response.data['moeda'] ?? "R\$");
-          Preferences.instance.setEmail(response.data['email']);
-          Preferences.instance.setDeviceId(response.data['device_id']);
+          await Preferences.instance.setToken(response.data['access_token']);
+          await Preferences.instance.setRefreshToken(response.data['refresh_token']);
+          await Preferences.instance.setUser(response.data['user']);
+          await Preferences.instance.setName(response.data['name']);
+          await Preferences.instance.setMoeda(response.data['moeda'] ?? "R\$");
+          await Preferences.instance.setEmail(response.data['email']);
+          await Preferences.instance.setDeviceId(response.data['device_id']);
           return true;
         case 400:
           emit(
