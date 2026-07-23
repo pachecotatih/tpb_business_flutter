@@ -45,4 +45,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Environments
 .env
+.env.production
+
+# Firebase
+
+.firebaserc
+firebase.json
+.firebase
