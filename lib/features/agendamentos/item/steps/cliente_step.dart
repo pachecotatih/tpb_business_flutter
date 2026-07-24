@@ -69,6 +69,7 @@ class _ClienteStepState extends State<ClienteStep> {
                 );
                 if (cliente != null) {
                   widget.state.data!.clientes?.add(cliente);
+                  widget.state.data!.cliente = cliente;
                   widget.state.data!.clienteId = cliente.id;
                 }
               },
