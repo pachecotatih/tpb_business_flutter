@@ -47,10 +47,8 @@ class _ServicoStepState extends State<ServicoStep> {
                 label: 'Serviço',
                 value: ServicoModel(),
                 onChange: (value) async {
-                  setState(() {
-                    widget.state.data!.servicos ??= [];
-                    widget.state.data!.servicos!.add(value);
-                  });
+                  widget.state.data!.servicos ??= [];
+                  widget.state.data!.servicos!.add(value);
                   FocusScope.of(context).unfocus();
                 },
               ),
@@ -66,10 +64,10 @@ class _ServicoStepState extends State<ServicoStep> {
                   extra: true,
                 );
                 if (servicoApi != null) {
-                  setState(() {
-                    widget.state.data!.servicosInit?.add(servicoApi);
-                    widget.state.data!.servicos?.add(servicoApi);
-                  });
+                  widget.state.data!.servicosInit ??= [];
+                  widget.state.data!.servicosInit?.add(servicoApi);
+                  widget.state.data!.servicos ??= [];
+                  widget.state.data!.servicos?.add(servicoApi);
                 }
               },
               icon: Icon(Icons.add),
