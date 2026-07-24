@@ -68,133 +68,136 @@ class _FluxoCaixaListaPageState extends State<FluxoCaixaListaPage> {
             if (state.isLoading)
               const Center(child: CircularProgressIndicator())
             else
-              Column(
-                children: [
-                  SaldoAtualCard(
-                    saldo: state.data?.saldo ?? 0,
-                    entrada: state.data?.totalEntradas ?? 0,
-                    saida: state.data?.totalSaidas ?? 0,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height - 320,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: state.data?.grupos?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        FluxoCaixaGrupoModel grupo = state.data!.grupos![index];
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                              ),
-                              child: TextoPadrao(
-                                text: DateFormat.yMMMd(
-                                  'pt_BR',
-                                ).format(grupo.data),
-                              ),
-                            ),
-                            Bloco(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: grupo.fluxoCaixaList.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  FluxoCaixaItemModel fluxoCaixa =
-                                      grupo.fluxoCaixaList[index];
-                                  return ListTile(
-                                    onTap: () => context.pushReplacement(
-                                      '/fluxocaixa/${fluxoCaixa.uid}',
-                                    ),
-                                    title: Wrap(
-                                      crossAxisAlignment:
-                                          WrapCrossAlignment.center,
-                                      runSpacing: 10,
-                                      spacing: 10,
-                                      children: [
-                                        ArrowIcon(
-                                          icon:
-                                              fluxoCaixa.tipoMovimentacao ==
-                                                  'entrada'
-                                              ? Icons.arrow_upward_sharp
-                                              : Icons.arrow_downward_sharp,
-                                          color1:
-                                              fluxoCaixa.tipoMovimentacao ==
-                                                  'entrada'
-                                              ? Cores.positiveColor.withValues(
-                                                  alpha: 0.2,
-                                                )
-                                              : Cores.negativeColor.withValues(
-                                                  alpha: 0.2,
-                                                ),
-                                          color2:
-                                              fluxoCaixa.tipoMovimentacao ==
-                                                  'entrada'
-                                              ? Cores.positiveColor
-                                              : Cores.negativeColor,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(fluxoCaixa.descricao ?? ''),
-                                            Text(
-                                              fluxoCaixa.tipoMovimentacao ==
-                                                      'entrada'
-                                                  ? 'Pago em ${Util.dateFormatString(fluxoCaixa.dataPagamento!)}'
-                                                  : 'Vence em ${Util.dateFormatString(fluxoCaixa.dataVencimento!)}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Cores.secondaryText,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '${Preferences.instance.moeda}${Util.stringFormatValor(fluxoCaixa.valor ?? 0)}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                            color:
-                                                fluxoCaixa.tipoMovimentacao ==
-                                                    'entrada'
-                                                ? Cores.positiveColor
-                                                : Cores.negativeColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          _getFormaPagamento(
-                                            fluxoCaixa.formaPagamento,
-                                          ),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Cores.secondaryText,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+               Container(
+                 height: MediaQuery.of(context).size.height * 0.8,
+                 padding: const EdgeInsets.only(bottom: 60),
+                 child: Column(
+                   children: [
+                     SaldoAtualCard(
+                       saldo: state.data?.saldo ?? 0,
+                       entrada: state.data?.totalEntradas ?? 0,
+                       saida: state.data?.totalSaidas ?? 0,
+                     ),
+                     Expanded(
+                       child: ListView.builder(
+                         shrinkWrap: true,
+                         physics: const AlwaysScrollableScrollPhysics(),
+                         itemCount: state.data?.grupos?.length ?? 0,
+                         itemBuilder: (context, index) {
+                           FluxoCaixaGrupoModel grupo = state.data!.grupos![index];
+                           return Column(
+                             mainAxisSize: MainAxisSize.min,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Container(
+                                 padding: const EdgeInsets.all(8.0),
+                                 margin: const EdgeInsets.symmetric(
+                                   horizontal: 8.0,
+                                 ),
+                                 child: TextoPadrao(
+                                   text: DateFormat.yMMMd(
+                                     'pt_BR',
+                                   ).format(grupo.data),
+                                 ),
+                               ),
+                               Bloco(
+                                 child: ListView.builder(
+                                   shrinkWrap: true,
+                                   itemCount: grupo.fluxoCaixaList.length,
+                                   physics: const NeverScrollableScrollPhysics(),
+                                   itemBuilder: (context, index) {
+                                     FluxoCaixaItemModel fluxoCaixa =
+                                         grupo.fluxoCaixaList[index];
+                                     return ListTile(
+                                       onTap: () => context.pushReplacement(
+                                         '/fluxocaixa/${fluxoCaixa.uid}',
+                                       ),
+                                       title: Wrap(
+                                         crossAxisAlignment:
+                                             WrapCrossAlignment.center,
+                                         runSpacing: 10,
+                                         spacing: 10,
+                                         children: [
+                                           ArrowIcon(
+                                             icon:
+                                                 fluxoCaixa.tipoMovimentacao ==
+                                                     'entrada'
+                                                 ? Icons.arrow_upward_sharp
+                                                 : Icons.arrow_downward_sharp,
+                                             color1:
+                                                 fluxoCaixa.tipoMovimentacao ==
+                                                     'entrada'
+                                                 ? Cores.positiveColor.withValues(
+                                                     alpha: 0.2,
+                                                   )
+                                                 : Cores.negativeColor.withValues(
+                                                     alpha: 0.2,
+                                                   ),
+                                             color2:
+                                                 fluxoCaixa.tipoMovimentacao ==
+                                                     'entrada'
+                                                 ? Cores.positiveColor
+                                                 : Cores.negativeColor,
+                                           ),
+                                           Column(
+                                             crossAxisAlignment:
+                                                 CrossAxisAlignment.start,
+                                             children: [
+                                               Text(fluxoCaixa.descricao ?? ''),
+                                               Text(
+                                                 fluxoCaixa.tipoMovimentacao ==
+                                                         'entrada'
+                                                     ? 'Pago em ${Util.dateFormatString(fluxoCaixa.dataPagamento!)}'
+                                                     : 'Vence em ${Util.dateFormatString(fluxoCaixa.dataVencimento!)}',
+                                                 style: TextStyle(
+                                                   fontSize: 12,
+                                                   color: Cores.secondaryText,
+                                                 ),
+                                               ),
+                                             ],
+                                           ),
+                                         ],
+                                       ),
+                                       trailing: Column(
+                                         mainAxisSize: MainAxisSize.min,
+                                         crossAxisAlignment:
+                                             CrossAxisAlignment.end,
+                                         children: [
+                                           Text(
+                                             '${Preferences.instance.moeda}${Util.stringFormatValor(fluxoCaixa.valor ?? 0)}',
+                                             style: TextStyle(
+                                               fontWeight: FontWeight.bold,
+                                               fontSize: 14,
+                                               color:
+                                                   fluxoCaixa.tipoMovimentacao ==
+                                                       'entrada'
+                                                   ? Cores.positiveColor
+                                                   : Cores.negativeColor,
+                                             ),
+                                           ),
+                                           Text(
+                                             _getFormaPagamento(
+                                               fluxoCaixa.formaPagamento,
+                                             ),
+                                             style: TextStyle(
+                                               fontSize: 12,
+                                               color: Cores.secondaryText,
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                     );
+                                   },
+                                 ),
+                               ),
+                             ],
+                           );
+                         },
+                       ),
+                     ),
+                   ],
+                 ),
+               ),
           ],
         );
       },
